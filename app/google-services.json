@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "601294260119",
+    "project_id": "zerowastehero-8eb74",
+    "storage_bucket": "zerowastehero-8eb74.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:601294260119:android:1abe41e2618d4dee3c66d2",
+        "android_client_info": {
+          "package_name": "com.example.zerowastehero"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBESHn9ZVxL_-gNDDhqLHdrZIgKgj6la6M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
