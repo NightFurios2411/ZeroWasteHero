@@ -2,18 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/DestHome"
+        android:id="@id/DestHome"
+        android:icon="@drawable/home_icon"
         android:title="Home" />
     <item
-        android:id="@+id/DestCommunity"
+        android:id="@id/DestCommunity"
+        android:icon="@drawable/community_icon"
         android:title="Community" />
     <item
-        android:id="@+id/DestScan"
+        android:id="@id/DestScan"
+        android:icon="@drawable/scan_icon"
         android:title="Scan" />
     <item
-        android:id="@+id/DestMap"
+        android:id="@id/DestMap"
+        android:icon="@drawable/location_icon"
         android:title="Map" />
     <item
-        android:id="@+id/DestProfile"
+        android:id="@id/DestProfile"
+        android:icon="@drawable/user_profile_icon"
         android:title="Profile" />
 </menu>

@@ -1,4 +1,4 @@
-package com.example.zerowastehero;
+package com.example.zerowastehero.Auth;
 
 import android.os.Bundle;
 
@@ -8,14 +8,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.zerowastehero.R;
+
+public class AuthActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.LLMain), (v, insets) -> {
+        setContentView(R.layout.activity_auth);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.LLAuth), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
