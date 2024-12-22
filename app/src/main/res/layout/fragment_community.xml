@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/CSCommunity"
+    android:id="@+id/SVCommunity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".Main.Community.CommunityFragment">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/LLCommunity"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="116dp"
-        android:layout_marginTop="344dp"
-        android:text="Im the community Fragment"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:orientation="vertical">
+
+        <include layout="@layout/item_challenge_card"/>
+
+        <include layout="@layout/item_tips_card"/>
+
+        <include layout="@layout/item_post_card"/>
+
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/RVPost"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            tools:listitem="@layout/item_post" />-->
+
+    </LinearLayout>
+</ScrollView>

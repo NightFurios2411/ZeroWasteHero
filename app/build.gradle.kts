@@ -45,6 +45,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
 
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
