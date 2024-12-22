@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/SVCommunity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".Main.Community.CommunityFragment">
+
+    <LinearLayout
+        android:id="@+id/LLCommunity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/item_challenge_card"/>
+
+        <include layout="@layout/item_tips_card"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RVPost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_post" />
+
+    </LinearLayout>
+</ScrollView>

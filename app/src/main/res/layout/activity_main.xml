@@ -5,15 +5,17 @@
     android:id="@+id/DLMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical"
+    tools:context=".Main.MainActivity">
 
     <LinearLayout
+        android:id="@+id/LLMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/TBMainActivity"
+            android:id="@+id/TBMain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
@@ -24,20 +26,17 @@
             android:id="@+id/NHFMain"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             app:defaultNavHost="true"
-            app:navGraph="@navigation/nav_zero_waste_hero" />
+            app:navGraph="@navigation/nav_graph" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/BottomNavView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:menu="@menu/menu_bottom" />
     </LinearLayout>
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/SideNavView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
