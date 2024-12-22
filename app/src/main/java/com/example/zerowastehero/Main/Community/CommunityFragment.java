@@ -3,13 +3,16 @@ package com.example.zerowastehero.Main.Community;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 
 import com.example.zerowastehero.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,6 +20,11 @@ import com.example.zerowastehero.R;
  * create an instance of this fragment.
  */
 public class CommunityFragment extends Fragment {
+
+    private FloatingActionButton FABCommunity, FABCreatePost, FABCreateProof;
+    private TextView TVCreatePost, TVCreateProof;
+    private View darkOverlay;
+    private boolean isFABOpen = false;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -63,7 +71,53 @@ public class CommunityFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_community, container, false);
+
+        FABCommunity = view.findViewById(R.id.FABCommunity);
+        FABCreatePost = view.findViewById(R.id.FABCreatePost);
+        FABCreateProof = view.findViewById(R.id.FABCreateProof);
+        darkOverlay = view.findViewById(R.id.DarkOverlay);
+        TVCreatePost = view.findViewById(R.id.TVCreatePost);
+        TVCreateProof = view.findViewById(R.id.TVCreateProof);
+
+        FABCommunity.setOnClickListener(v -> toggleFABMenu());
+        darkOverlay.setOnClickListener(v -> closeFABMenu());
+        FABCreatePost.setOnClickListener(v -> {
+            closeFABMenu();
+            Navigation.findNavController(view).navigate(R.id.DestCreatePost);
+        });
+        FABCreateProof.setOnClickListener(v -> {
+            closeFABMenu();
+            Navigation.findNavController(view).navigate(R.id.DestCreateProof);
+        });
         return view;
+    }
+
+    private void toggleFABMenu() {
+        if(isFABOpen) {
+            closeFABMenu();
+        } else {
+            openFABMenu();
+        }
+    }
+
+    private void openFABMenu() {
+        FABCommunity.setVisibility(View.GONE);
+        FABCreatePost.setVisibility(View.VISIBLE);
+        TVCreatePost.setVisibility(View.VISIBLE);
+        FABCreateProof.setVisibility(View.VISIBLE);
+        TVCreateProof.setVisibility(View.VISIBLE);
+        darkOverlay.setVisibility(View.VISIBLE);
+        isFABOpen = true;
+    }
+
+    private void closeFABMenu() {
+        FABCommunity.setVisibility(View.VISIBLE);
+        FABCreatePost.setVisibility(View.GONE);
+        TVCreatePost.setVisibility(View.GONE);
+        FABCreateProof.setVisibility(View.GONE);
+        TVCreateProof.setVisibility(View.GONE);
+        darkOverlay.setVisibility(View.GONE);
+        isFABOpen = false;
     }
 
 }
