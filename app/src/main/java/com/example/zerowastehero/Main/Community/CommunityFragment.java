@@ -3,16 +3,18 @@ package com.example.zerowastehero.Main.Community;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 
 //import com.example.zerowastehero.Main.Community.Adapter.PostAdapter;
 import com.example.zerowastehero.DataBinding.Model.PostModel;
 import com.example.zerowastehero.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +26,10 @@ import java.util.List;
  */
 public class CommunityFragment extends Fragment {
 
-//    private RecyclerView recyclerView;
-//    private PostAdapter postAdapter;
-//    private List<PostModel> postList = new ArrayList<>();
+    private FloatingActionButton FABCommunity, FABCreatePost, FABCreateProof;
+    private TextView TVCreatePost, TVCreateProof;
+    private View darkOverlay;
+    private boolean isFABOpen = false;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -74,23 +77,51 @@ public class CommunityFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_community, container, false);
 
-//        recyclerView = view.findViewById(R.id.RVPost);
-//
-//        // Initialize RecyclerView and Adapter
-//        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-//        postAdapter = new PostAdapter(postList);
-//        recyclerView.setAdapter(postAdapter);
-//
-//        // Add simple data (you can replace this with your actual data)
-//        loadPosts();
+        FABCommunity = view.findViewById(R.id.FABCommunity);
+        FABCreatePost = view.findViewById(R.id.FABCreatePost);
+        FABCreateProof = view.findViewById(R.id.FABCreateProof);
+        darkOverlay = view.findViewById(R.id.DarkOverlay);
+        TVCreatePost = view.findViewById(R.id.TVCreatePost);
+        TVCreateProof = view.findViewById(R.id.TVCreateProof);
 
+        FABCommunity.setOnClickListener(v -> toggleFABMenu());
+        darkOverlay.setOnClickListener(v -> closeFABMenu());
+        FABCreatePost.setOnClickListener(v -> {
+            closeFABMenu();
+            Navigation.findNavController(view).navigate(R.id.DestCreatePost);
+        });
+        FABCreateProof.setOnClickListener(v -> {
+            closeFABMenu();
+            Navigation.findNavController(view).navigate(R.id.DestCreateProof);
+        });
         return view;
     }
 
-//    private void loadPosts() {
-//        postList.add(new PostModel("Title 1", "Description 1"));
-//        postList.add(new PostModel("Title 2", "Description 2"));
-//        postList.add(new PostModel("Title 3", "Description 3"));
-//        postAdapter.notifyDataSetChanged();
-//    }
+    private void toggleFABMenu() {
+        if(isFABOpen) {
+            closeFABMenu();
+        } else {
+            openFABMenu();
+        }
+    }
+
+    private void openFABMenu() {
+        FABCommunity.setVisibility(View.GONE);
+        FABCreatePost.setVisibility(View.VISIBLE);
+        TVCreatePost.setVisibility(View.VISIBLE);
+        FABCreateProof.setVisibility(View.VISIBLE);
+        TVCreateProof.setVisibility(View.VISIBLE);
+        darkOverlay.setVisibility(View.VISIBLE);
+        isFABOpen = true;
+    }
+
+    private void closeFABMenu() {
+        FABCommunity.setVisibility(View.VISIBLE);
+        FABCreatePost.setVisibility(View.GONE);
+        TVCreatePost.setVisibility(View.GONE);
+        FABCreateProof.setVisibility(View.GONE);
+        TVCreateProof.setVisibility(View.GONE);
+        darkOverlay.setVisibility(View.GONE);
+        isFABOpen = false;
+    }
 }
