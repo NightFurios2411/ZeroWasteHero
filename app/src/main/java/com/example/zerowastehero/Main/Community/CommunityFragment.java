@@ -11,8 +11,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+//import com.example.zerowastehero.Main.Community.Adapter.PostAdapter;
+import com.example.zerowastehero.DataBinding.Model.PostModel;
 import com.example.zerowastehero.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -119,5 +124,4 @@ public class CommunityFragment extends Fragment {
         darkOverlay.setVisibility(View.GONE);
         isFABOpen = false;
     }
-
 }
