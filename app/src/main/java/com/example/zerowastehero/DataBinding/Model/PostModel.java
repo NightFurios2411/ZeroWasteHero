@@ -1,16 +1,16 @@
 package com.example.zerowastehero.DataBinding.Model;
 
 public class PostModel {
-    public String title;
-    public String description;
+    public String postTitle;
+    public String postDescription;
 
     public PostModel() {}
 
     public PostModel(String title, String description) {
-        this.title = title;
-        this.description = description;
+        this.postTitle = title;
+        this.postDescription = description;
     }
 
-    public String getTitle() { return title; }
-    public String getDescription() { return description; }
+    public String getPostTitle() { return postTitle; }
+    public String getPostDescription() { return postDescription; }
 }

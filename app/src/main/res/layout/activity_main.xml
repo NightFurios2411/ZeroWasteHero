@@ -39,4 +39,11 @@
             app:menu="@menu/menu_bottom" />
     </LinearLayout>
 
+    <View
+        android:id="@+id/darkOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone" />
+
 </androidx.drawerlayout.widget.DrawerLayout>

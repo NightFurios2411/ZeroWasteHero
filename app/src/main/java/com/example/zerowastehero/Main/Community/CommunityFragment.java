@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +15,11 @@ import android.widget.TextView;
 
 //import com.example.zerowastehero.Main.Community.Adapter.PostAdapter;
 import com.example.zerowastehero.DataBinding.Model.PostModel;
+import com.example.zerowastehero.Main.Community.Adapter.PostAdapter;
 import com.example.zerowastehero.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,9 +28,10 @@ import java.util.List;
  */
 public class CommunityFragment extends Fragment {
 
+    private ArrayList<PostModel> postModels = new ArrayList<>();
     private FloatingActionButton FABCommunity, FABCreatePost, FABCreateProof;
     private TextView TVCreatePost, TVCreateProof;
-    private View darkOverlay;
+    private View darkOverlayCommunity, darkOverlay;
     private boolean isFABOpen = false;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -80,12 +83,14 @@ public class CommunityFragment extends Fragment {
         FABCommunity = view.findViewById(R.id.FABCommunity);
         FABCreatePost = view.findViewById(R.id.FABCreatePost);
         FABCreateProof = view.findViewById(R.id.FABCreateProof);
-        darkOverlay = view.findViewById(R.id.DarkOverlay);
+        darkOverlayCommunity = view.findViewById(R.id.DarkOverlayCommunity);
+        darkOverlay = requireActivity().findViewById(R.id.darkOverlay);
         TVCreatePost = view.findViewById(R.id.TVCreatePost);
         TVCreateProof = view.findViewById(R.id.TVCreateProof);
 
         FABCommunity.setOnClickListener(v -> toggleFABMenu());
-        darkOverlay.setOnClickListener(v -> closeFABMenu());
+        darkOverlayCommunity.setOnClickListener(v -> closeFABMenu());
+//        darkOverlay.setOnClickListener(v -> closeFABMenu());
         FABCreatePost.setOnClickListener(v -> {
             closeFABMenu();
             Navigation.findNavController(view).navigate(R.id.DestCreatePost);
@@ -94,6 +99,13 @@ public class CommunityFragment extends Fragment {
             closeFABMenu();
             Navigation.findNavController(view).navigate(R.id.DestCreateProof);
         });
+
+        setupPostModels();
+
+        RecyclerView recyclerView = view.findViewById(R.id.RVPost);
+        PostAdapter adapter = new PostAdapter(getContext(), postModels);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         return view;
     }
 
@@ -111,7 +123,8 @@ public class CommunityFragment extends Fragment {
         TVCreatePost.setVisibility(View.VISIBLE);
         FABCreateProof.setVisibility(View.VISIBLE);
         TVCreateProof.setVisibility(View.VISIBLE);
-        darkOverlay.setVisibility(View.VISIBLE);
+        darkOverlayCommunity.setVisibility(View.VISIBLE);
+//        darkOverlay.setVisibility(View.VISIBLE);
         isFABOpen = true;
     }
 
@@ -121,7 +134,19 @@ public class CommunityFragment extends Fragment {
         TVCreatePost.setVisibility(View.GONE);
         FABCreateProof.setVisibility(View.GONE);
         TVCreateProof.setVisibility(View.GONE);
-        darkOverlay.setVisibility(View.GONE);
+        darkOverlayCommunity.setVisibility(View.GONE);
+//        darkOverlay.setVisibility(View.GONE);
         isFABOpen = false;
+    }
+
+    private void setupPostModels() {
+        postModels.add(new PostModel("Today’s Achievement!", "Cleaned up the park near my neighborhood! It was so satisfying to see it spotless again. Let’s keep our environment clean!"));
+        postModels.add(new PostModel("DIY Tips for Plastic Bottles!","Turn your old soda bottles into hanging garden pots! Here’s a quick guide: Cut, paint, and hang. Let’s upcycle instead of waste."));
+        postModels.add(new PostModel("Rubbish Spotted in Town", "Spotted litter near the riverbank. Let’s team up this weekend to clean it up! Anyone nearby, join me?"));
+        postModels.add(new PostModel("Rubbish Spotted in Town", "Spotted litter near the riverbank. Let’s team up this weekend to clean it up! Anyone nearby, join me?"));
+        postModels.add(new PostModel("Rubbish Spotted in Town", "Spotted litter near the riverbank. Let’s team up this weekend to clean it up! Anyone nearby, join me?"));
+        postModels.add(new PostModel("Rubbish Spotted in Town", "Spotted litter near the riverbank. Let’s team up this weekend to clean it up! Anyone nearby, join me?"));
+        postModels.add(new PostModel("Rubbish Spotted in Town", "Spotted litter near the riverbank. Let’s team up this weekend to clean it up! Anyone nearby, join me?"));
+        postModels.add(new PostModel("Rubbish Spotted in Town", "Spotted litter near the riverbank. Let’s team up this weekend to clean it up! Anyone nearby, join me?"));
     }
 }
