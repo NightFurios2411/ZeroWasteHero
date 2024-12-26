@@ -1,8 +1,9 @@
 package com.example.zerowastehero.DataBinding.Model;
 
 public class PostModel {
-    public String postTitle;
-    public String postDescription;
+    private String postTitle;
+    private String postDescription;
+    private String postDate;
 
     public PostModel() {}
 
@@ -13,4 +14,5 @@ public class PostModel {
 
     public String getPostTitle() { return postTitle; }
     public String getPostDescription() { return postDescription; }
+    public String getPostDate() { return postDate; }
 }

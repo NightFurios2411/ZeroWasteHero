@@ -10,52 +10,88 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.zerowastehero.DataBinding.Model.PostModel;
+import com.example.zerowastehero.Main.Community.Interface.PostInterface;
 import com.example.zerowastehero.R;
 
 import java.util.ArrayList;
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
+
+    // Constants for view types
+    private static final int VIEW_TYPE_CHALLENGE = 0;
+    private static final int VIEW_TYPE_TIPS = 1;
+    private static final int VIEW_TYPE_POST = 2;
+
+    private PostInterface postInterface;
 
     private Context context;
-    private ArrayList<PostModel> postsModels;
+    private ArrayList<PostModel> postModels;
 
-    public PostAdapter(Context context, ArrayList<PostModel> postsModels) {
+    public PostAdapter(Context context, ArrayList<PostModel> postsModels, PostInterface postInterface) {
         this.context = context;
-        this.postsModels = postsModels;
+        this.postModels = postsModels;
+        this.postInterface = postInterface;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) return VIEW_TYPE_CHALLENGE;
+        else if (position == 1) return VIEW_TYPE_TIPS;
+        else return VIEW_TYPE_POST;
     }
 
     @NonNull
     @Override
-    public PostAdapter.PostHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Inflate the layout for each item in the RecyclerView
-        View view = LayoutInflater.from(context).inflate(R.layout.item_post_card, parent, false);
-        return new PostHolder(view);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        // Inflate Challenge Card
+        if (viewType == VIEW_TYPE_CHALLENGE) return new PostViewHolder(inflater.inflate(R.layout.item_challenge_card, parent, false), postInterface);
+        // Inflate Tips Card
+        else if (viewType == VIEW_TYPE_TIPS) return new PostViewHolder(inflater.inflate(R.layout.item_tips_card, parent, false), postInterface);
+        // Inflate Post Card
+        else return new PostViewHolder(inflater.inflate(R.layout.item_post_card, parent, false), postInterface);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PostAdapter.PostHolder holder, int position) {
-        // Bind data to the views in each item
-
-        holder.TVPostTitle.setText(postsModels.get(position).getPostTitle());
-        holder.TVPostDescription.setText(postsModels.get(position).getPostDescription());
+    public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
+        int viewType = getItemViewType(position);
+        if (viewType == VIEW_TYPE_POST) {
+            int adjustedPosition = position - 2; // Offset for Challenge and Tips cards
+            PostModel post = postModels.get(adjustedPosition);
+            holder.TVPostTitle.setText(post.getPostTitle());
+            holder.TVPostDescription.setText(post.getPostDescription());
+        }
+        // No binding needed for VIEW_TYPE_CHALLENGE and VIEW_TYPE_TIPS
     }
 
     @Override
     public int getItemCount() {
         // Return the total number of items in the RecyclerView
-        return postsModels.size();
+        return Math.max(2, postModels.size() + 2);
     }
 
-    public static class PostHolder extends RecyclerView.ViewHolder {
+    public static class PostViewHolder extends RecyclerView.ViewHolder {
         // Define views in the item layout
 
-        private TextView TVPostTitle, TVPostDescription;
+        private TextView TVPostTitle, TVPostDescription, TVPostDate;
 
-        public PostHolder(@NonNull View itemView) {
+        public PostViewHolder(@NonNull View itemView, PostInterface postInterface) {
             super(itemView);
 
+            // Initialize views in the item layout
             TVPostTitle = itemView.findViewById(R.id.TVPostTitle);
             TVPostDescription = itemView.findViewById(R.id.TVPostDescription);
+
+            itemView.setOnClickListener(v -> {
+                if (postInterface != null) {
+                    int position = getAbsoluteAdapterPosition();
+
+                    if (position != RecyclerView.NO_POSITION) {
+                        postInterface.onPostClick(position);
+                    }
+                }
+            });
         }
     }
 }

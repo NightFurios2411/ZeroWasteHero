@@ -3,12 +3,18 @@ package com.example.zerowastehero.Main.Community;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.zerowastehero.DataBinding.Model.ReplyModel;
+import com.example.zerowastehero.Main.Community.Adapter.ReplyAdapter;
 import com.example.zerowastehero.R;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +22,8 @@ import com.example.zerowastehero.R;
  * create an instance of this fragment.
  */
 public class PostViewFragment extends Fragment {
+
+    private ArrayList<ReplyModel> replyModels = new ArrayList<>();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,6 +69,28 @@ public class PostViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_post_view, container, false);
+        View view = inflater.inflate(R.layout.fragment_post_view, container, false);
+
+        setupReplyModels();
+
+        // Set up RecyclerView for reply
+        RecyclerView recyclerView = view.findViewById(R.id.RVReply);
+        ReplyAdapter adapter = new ReplyAdapter(getContext(), replyModels);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        return view;
+    }
+
+    private void setupReplyModels() {
+        replyModels.add(new ReplyModel("Great job! Keep it up."));
+        replyModels.add(new ReplyModel("Amazing effort! You’re an inspiration."));
+        replyModels.add(new ReplyModel("Let’s join hands to clean up together!"));
+        replyModels.add(new ReplyModel("Wow, that DIY tip is super creative. Thanks!"));
+        replyModels.add(new ReplyModel("I’ll bring my friends for the clean-up this weekend."));
+        replyModels.add(new ReplyModel("Such a thoughtful initiative. Kudos to you!"));
+        replyModels.add(new ReplyModel("Turtles are lucky to have you around!"));
+        replyModels.add(new ReplyModel("Eco-friendly goals! Love the tote bag idea."));
+        replyModels.add(new ReplyModel("Count me in for the playground clean-up."));
+        replyModels.add(new ReplyModel("Amazing teamwork! Keep the environment clean."));
     }
 }

@@ -1,5 +1,6 @@
 package com.example.zerowastehero.Main.Community;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -15,7 +16,9 @@ import android.widget.TextView;
 
 //import com.example.zerowastehero.Main.Community.Adapter.PostAdapter;
 import com.example.zerowastehero.DataBinding.Model.PostModel;
+import com.example.zerowastehero.DataBinding.Model.ReplyModel;
 import com.example.zerowastehero.Main.Community.Adapter.PostAdapter;
+import com.example.zerowastehero.Main.Community.Interface.PostInterface;
 import com.example.zerowastehero.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -26,7 +29,7 @@ import java.util.ArrayList;
  * Use the {@link CommunityFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CommunityFragment extends Fragment {
+public class CommunityFragment extends Fragment implements PostInterface {
 
     private ArrayList<PostModel> postModels = new ArrayList<>();
     private FloatingActionButton FABCommunity, FABCreatePost, FABCreateProof;
@@ -102,8 +105,9 @@ public class CommunityFragment extends Fragment {
 
         setupPostModels();
 
+        // Set up RecyclerView for post
         RecyclerView recyclerView = view.findViewById(R.id.RVPost);
-        PostAdapter adapter = new PostAdapter(getContext(), postModels);
+        PostAdapter adapter = new PostAdapter(getContext(), postModels, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         return view;
@@ -140,13 +144,18 @@ public class CommunityFragment extends Fragment {
     }
 
     private void setupPostModels() {
-        postModels.add(new PostModel("Today’s Achievement!", "Cleaned up the park near my neighborhood! It was so satisfying to see it spotless again. Let’s keep our environment clean!"));
+        postModels.add(new PostModel("Today’s Achievement!","Cleaned up the park near my neighborhood! It was so satisfying to see it spotless again. Let’s keep our environment clean!"));
         postModels.add(new PostModel("DIY Tips for Plastic Bottles!","Turn your old soda bottles into hanging garden pots! Here’s a quick guide: Cut, paint, and hang. Let’s upcycle instead of waste."));
-        postModels.add(new PostModel("Rubbish Spotted in Town", "Spotted litter near the riverbank. Let’s team up this weekend to clean it up! Anyone nearby, join me?"));
-        postModels.add(new PostModel("Rubbish Spotted in Town", "Spotted litter near the riverbank. Let’s team up this weekend to clean it up! Anyone nearby, join me?"));
-        postModels.add(new PostModel("Rubbish Spotted in Town", "Spotted litter near the riverbank. Let’s team up this weekend to clean it up! Anyone nearby, join me?"));
-        postModels.add(new PostModel("Rubbish Spotted in Town", "Spotted litter near the riverbank. Let’s team up this weekend to clean it up! Anyone nearby, join me?"));
-        postModels.add(new PostModel("Rubbish Spotted in Town", "Spotted litter near the riverbank. Let’s team up this weekend to clean it up! Anyone nearby, join me?"));
-        postModels.add(new PostModel("Rubbish Spotted in Town", "Spotted litter near the riverbank. Let’s team up this weekend to clean it up! Anyone nearby, join me?"));
+        postModels.add(new PostModel("Rubbish Spotted in Town","Spotted litter near the riverbank. Let’s team up this weekend to clean it up! Anyone nearby, join me?"));
+        postModels.add(new PostModel("Community Recycling Effort!","A big thank you to everyone who participated in today’s recycling drive. Together, we collected over 200kg of waste!"));
+        postModels.add(new PostModel("Beach Clean-up Success!","Spent the morning cleaning up the beach with friends. The turtles will thank us! Let’s keep this energy going."));
+        postModels.add(new PostModel("Upcycling Inspiration!","Made an eco-friendly tote bag from old T-shirts. Stylish and sustainable! Who wants to learn how?"));
+        postModels.add(new PostModel("Urban Garden Update","The community garden is thriving thanks to compost made from kitchen scraps. Nature wins!"));
+        postModels.add(new PostModel("Litter Alert!","Noticed trash piling up at the old playground. Let’s organize a clean-up crew. Volunteers needed!"));
+    }
+
+    @Override
+    public void onPostClick(int position) {
+        Navigation.findNavController(requireView()).navigate(R.id.DestPostView);
     }
 }

@@ -39,4 +39,14 @@
         android:name="com.example.zerowastehero.Main.Community.CreateProofFragment"
         android:label="Create Proof"
         tools:layout="@layout/fragment_create_proof"/>
+    <fragment
+        android:id="@+id/DestPostView"
+        android:name="com.example.zerowastehero.Main.Community.PostViewFragment"
+        android:label="Post"
+        tools:layout="@layout/fragment_post_view" />
+    <fragment
+        android:id="@+id/DestSearchUser"
+        android:name="com.example.zerowastehero.Main.Community.SearchUserFragment"
+        android:label="Search User"
+        tools:layout="@layout/fragment_search_user" />
 </navigation>
