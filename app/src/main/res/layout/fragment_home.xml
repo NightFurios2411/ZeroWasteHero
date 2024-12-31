@@ -26,7 +26,7 @@
         android:layout_marginTop="100dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView2"
-        tools:src="@tools:sample/avatars" />
+        android:background="@drawable/shape_circle" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
