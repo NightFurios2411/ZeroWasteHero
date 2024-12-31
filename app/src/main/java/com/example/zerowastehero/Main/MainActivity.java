@@ -86,27 +86,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupPostModels() {
-        postModels.add(new PostModel("Today’s Achievement!","Cleaned up the park near my neighborhood! It was so satisfying to see it spotless again. Let’s keep our environment clean!", userModels.get(0).getUserID()));
-        postModels.add(new PostModel("DIY Tips for Plastic Bottles!","Turn your old soda bottles into hanging garden pots! Here’s a quick guide: Cut, paint, and hang. Let’s upcycle instead of waste.", userModels.get(1).getUserID()));
-        postModels.add(new PostModel("Rubbish Spotted in Town","Spotted litter near the riverbank. Let’s team up this weekend to clean it up! Anyone nearby, join me?", userModels.get(0).getUserID()));
-        postModels.add(new PostModel("Community Recycling Effort!","A big thank you to everyone who participated in today’s recycling drive. Together, we collected over 200kg of waste!", userModels.get(1).getUserID()));
-        postModels.add(new PostModel("Beach Clean-up Success!","Spent the morning cleaning up the beach with friends. The turtles will thank us! Let’s keep this energy going.", userModels.get(0).getUserID()));
-        postModels.add(new PostModel("Upcycling Inspiration!","Made an eco-friendly tote bag from old T-shirts. Stylish and sustainable! Who wants to learn how?", userModels.get(1).getUserID()));
-        postModels.add(new PostModel("Urban Garden Update","The community garden is thriving thanks to compost made from kitchen scraps. Nature wins!", userModels.get(0).getUserID()));
-        postModels.add(new PostModel("Litter Alert!","Noticed trash piling up at the old playground. Let’s organize a clean-up crew. Volunteers needed!", userModels.get(1).getUserID()));
+        postModels.add(new PostModel("Today’s Achievement!","Cleaned up the park near my neighborhood! It was so satisfying to see it spotless again. Let’s keep our environment clean!", userModels.get(0).getUserID(), userModels.get(0).getUsername()));
+        postModels.add(new PostModel("DIY Tips for Plastic Bottles!","Turn your old soda bottles into hanging garden pots! Here’s a quick guide: Cut, paint, and hang. Let’s upcycle instead of waste.", userModels.get(1).getUserID(), userModels.get(1).getUsername()));
+        postModels.add(new PostModel("Rubbish Spotted in Town","Spotted litter near the riverbank. Let’s team up this weekend to clean it up! Anyone nearby, join me?", userModels.get(0).getUserID(), userModels.get(0).getUsername()));
+        postModels.add(new PostModel("Community Recycling Effort!","A big thank you to everyone who participated in today’s recycling drive. Together, we collected over 200kg of waste!", userModels.get(1).getUserID(), userModels.get(1).getUsername()));
+        postModels.add(new PostModel("Beach Clean-up Success!","Spent the morning cleaning up the beach with friends. The turtles will thank us! Let’s keep this energy going.", userModels.get(0).getUserID(), userModels.get(0).getUsername()));
+        postModels.add(new PostModel("Upcycling Inspiration!","Made an eco-friendly tote bag from old T-shirts. Stylish and sustainable! Who wants to learn how?", userModels.get(1).getUserID(), userModels.get(1).getUsername()));
+        postModels.add(new PostModel("Urban Garden Update","The community garden is thriving thanks to compost made from kitchen scraps. Nature wins!", userModels.get(0).getUserID(), userModels.get(0).getUsername()));
+        postModels.add(new PostModel("Litter Alert!","Noticed trash piling up at the old playground. Let’s organize a clean-up crew. Volunteers needed!", userModels.get(1).getUserID(), userModels.get(1).getUsername()));
     }
 
     private void setupReplyModels() {
-        replyModels.add(new ReplyModel("Great job! Keep it up.", postModels.get(0).getPostID(), userModels.get(0).getUserID()));
-        replyModels.add(new ReplyModel("Amazing effort! You’re an inspiration.", postModels.get(1).getPostID(), userModels.get(1).getUserID()));
-        replyModels.add(new ReplyModel("Let’s join hands to clean up together!", postModels.get(2).getPostID(), userModels.get(0).getUserID()));
-        replyModels.add(new ReplyModel("Wow, that DIY tip is super creative. Thanks!", postModels.get(3).getPostID(), userModels.get(1).getUserID()));
-        replyModels.add(new ReplyModel("I’ll bring my friends for the clean-up this weekend.", postModels.get(4).getPostID(), userModels.get(1).getUserID()));
-        replyModels.add(new ReplyModel("Such a thoughtful initiative. Kudos to you!", postModels.get(5).getPostID(), userModels.get(0).getUserID()));
-        replyModels.add(new ReplyModel("Turtles are lucky to have you around!", postModels.get(6).getPostID(), userModels.get(1).getUserID()));
-        replyModels.add(new ReplyModel("Eco-friendly goals! Love the tote bag idea.", postModels.get(7).getPostID(), userModels.get(0).getUserID()));
-        replyModels.add(new ReplyModel("Count me in for the playground clean-up.", postModels.get(0).getPostID(), userModels.get(1).getUserID()));
-        replyModels.add(new ReplyModel("Amazing teamwork! Keep the environment clean.", postModels.get(1).getPostID(), userModels.get(0).getUserID()));
+        replyModels.add(new ReplyModel("Great job! Keep it up.", postModels.get(0).getPostID(), userModels.get(0).getUserID(), userModels.get(0).getUsername()));
+        replyModels.add(new ReplyModel("Amazing effort! You’re an inspiration.", postModels.get(1).getPostID(), userModels.get(1).getUserID(), userModels.get(1).getUsername()));
+        replyModels.add(new ReplyModel("Let’s join hands to clean up together!", postModels.get(2).getPostID(), userModels.get(0).getUserID(), userModels.get(0).getUsername()));
+        replyModels.add(new ReplyModel("Wow, that DIY tip is super creative. Thanks!", postModels.get(3).getPostID(), userModels.get(1).getUserID(), userModels.get(1).getUsername()));
+        replyModels.add(new ReplyModel("I’ll bring my friends for the clean-up this weekend.", postModels.get(4).getPostID(), userModels.get(1).getUserID(), userModels.get(0).getUsername()));
+        replyModels.add(new ReplyModel("Such a thoughtful initiative. Kudos to you!", postModels.get(5).getPostID(), userModels.get(0).getUserID(), userModels.get(1).getUsername()));
+        replyModels.add(new ReplyModel("Turtles are lucky to have you around!", postModels.get(6).getPostID(), userModels.get(1).getUserID(), userModels.get(0).getUsername()));
+        replyModels.add(new ReplyModel("Eco-friendly goals! Love the tote bag idea.", postModels.get(7).getPostID(), userModels.get(0).getUserID(), userModels.get(1).getUsername()));
+        replyModels.add(new ReplyModel("Count me in for the playground clean-up.", postModels.get(0).getPostID(), userModels.get(1).getUserID(), userModels.get(0).getUsername()));
+        replyModels.add(new ReplyModel("Amazing teamwork! Keep the environment clean.", postModels.get(1).getPostID(), userModels.get(0).getUserID(), userModels.get(1).getUsername()));
     }
 
     public void setupBottomNavMenu(NavController navController) {

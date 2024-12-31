@@ -1,7 +1,6 @@
 package com.example.zerowastehero.Main.Community.Adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,9 @@ import com.example.zerowastehero.DataBinding.Model.PostModel;
 import com.example.zerowastehero.DataBinding.Model.ReplyModel;
 import com.example.zerowastehero.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -24,12 +25,12 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private Context context;
     private ArrayList<ReplyModel> replyModels;
-    private PostModel postModel;
+    private PostModel post;
 
-    public ReplyAdapter(Context context, ArrayList<ReplyModel> replyModels, PostModel postModel) {
+    public ReplyAdapter(Context context, ArrayList<ReplyModel> replyModels, PostModel post) {
         this.context = context;
         this.replyModels = replyModels;
-        this.postModel = postModel;
+        this.post = post;
     }
 
     @Override
@@ -61,8 +62,15 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         // Bind Post data
         if (viewType == VIEW_TYPE_POST) {
             PostViewHolder postViewHolder = (PostViewHolder) holder;
-            postViewHolder.TVPostTitle.setText(postModel.getPostTitle());
-            postViewHolder.TVPostDescription.setText(postModel.getPostDescription());
+            // Convert postCreatedAt to formatted date
+            long timestamp = Long.parseLong(post.getCreatedAt());
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.getDefault());
+            String formattedDate = sdf.format(timestamp);
+
+            postViewHolder.TVPostTitle.setText(post.getPostTitle());
+            postViewHolder.TVPostDescription.setText(post.getPostDescription());
+            postViewHolder.TVUserName.setText(post.getUserName());
+            postViewHolder.TVPostDate.setText(formattedDate);
         }
 
         // Bind Reply data
@@ -70,7 +78,15 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             int adjustedPosition = position - 1; // Adjust for the Post card
             ReplyModel reply = replyModels.get(adjustedPosition);
             ReplyViewHolder replyViewHolder = (ReplyViewHolder) holder;
+
+            // Convert postCreatedAt to formatted date
+            long timestamp = Long.parseLong(reply.getCreatedAt());
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.getDefault());
+            String formattedDate = sdf.format(timestamp);
+
             replyViewHolder.TVReplyDescription.setText(reply.getReplyDescription());
+            replyViewHolder.TVReplyUserName.setText(reply.getUserName());
+            replyViewHolder.TVReplyDate.setText(formattedDate);
         }
     }
 
@@ -81,22 +97,26 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     // ViewHolder for Post data
     public static class PostViewHolder extends RecyclerView.ViewHolder {
-        private TextView TVPostTitle, TVPostDescription;
+        private TextView TVPostTitle, TVPostDescription, TVUserName, TVPostDate;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
             TVPostTitle = itemView.findViewById(R.id.TVPostTitle);
             TVPostDescription = itemView.findViewById(R.id.TVPostDescription);
+            TVUserName = itemView.findViewById(R.id.TVUserName);
+            TVPostDate = itemView.findViewById(R.id.TVPostDate);
         }
     }
 
     // ViewHolder for Reply data
     public static class ReplyViewHolder extends RecyclerView.ViewHolder {
-        private TextView TVReplyDescription;
+        private TextView TVReplyDescription, TVReplyUserName, TVReplyDate;
 
         public ReplyViewHolder(@NonNull View itemView) {
             super(itemView);
             TVReplyDescription = itemView.findViewById(R.id.TVReplyDescription);
+            TVReplyUserName = itemView.findViewById(R.id.TVReplyUserName);
+            TVReplyDate = itemView.findViewById(R.id.ReplyDate);
         }
     }
 }

@@ -11,10 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.zerowastehero.DataBinding.Model.PostModel;
+import com.example.zerowastehero.DataBinding.Model.UserModel;
 import com.example.zerowastehero.Main.Community.Interface.CommunityInterface;
 import com.example.zerowastehero.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.PostViewHolder> {
 
@@ -73,8 +76,16 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Post
             int adjustedPosition = position - 2; // Offset for Challenge and Tips cards
             PostModel post = postModels.get(adjustedPosition);
             String postID = post.getPostID();
+
+            // Convert postCreatedAt to formatted date
+            long timestamp = Long.parseLong(post.getCreatedAt());
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.getDefault());
+            String formattedDate = sdf.format(timestamp);
+
             holder.TVPostTitle.setText(post.getPostTitle());
             holder.TVPostDescription.setText(post.getPostDescription());
+            holder.TVUserName.setText(post.getUserName());
+            holder.TVPostDate.setText(formattedDate);
 
             holder.itemView.setOnClickListener(v -> {
                 if (postInterface != null) {
@@ -94,7 +105,7 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Post
     public static class PostViewHolder extends RecyclerView.ViewHolder {
         // Define views in the item layout
 
-        private TextView TVPostTitle, TVPostDescription, TVPostDate;
+        private TextView TVPostTitle, TVPostDescription, TVPostDate, TVUserName;
 
         public PostViewHolder(@NonNull View itemView, CommunityInterface postInterface) {
             super(itemView);
@@ -102,6 +113,8 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Post
             // Initialize views in the item layout
             TVPostTitle = itemView.findViewById(R.id.TVPostTitle);
             TVPostDescription = itemView.findViewById(R.id.TVPostDescription);
+            TVUserName = itemView.findViewById(R.id.TVUserName);
+            TVPostDate = itemView.findViewById(R.id.TVPostDate);
 
             itemView.setOnClickListener(v -> {
                 if (postInterface != null) {
