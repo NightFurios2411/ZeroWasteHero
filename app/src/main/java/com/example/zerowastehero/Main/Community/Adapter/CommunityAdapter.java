@@ -1,5 +1,6 @@
 package com.example.zerowastehero.Main.Community.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,24 +11,25 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.zerowastehero.DataBinding.Model.PostModel;
-import com.example.zerowastehero.Main.Community.Interface.PostInterface;
+import com.example.zerowastehero.Main.Community.Interface.CommunityInterface;
 import com.example.zerowastehero.R;
 
 import java.util.ArrayList;
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
+public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.PostViewHolder> {
 
     // Constants for view types
     private static final int VIEW_TYPE_CHALLENGE = 0;
     private static final int VIEW_TYPE_TIPS = 1;
     private static final int VIEW_TYPE_POST = 2;
 
-    private PostInterface postInterface;
+    private CommunityInterface postInterface;
 
     private Context context;
-    private ArrayList<PostModel> postModels;
+    private static ArrayList<PostModel> postModels;
+    private AlertDialog.Builder builder;
 
-    public PostAdapter(Context context, ArrayList<PostModel> postsModels, PostInterface postInterface) {
+    public CommunityAdapter(Context context, ArrayList<PostModel> postsModels, CommunityInterface postInterface) {
         this.context = context;
         this.postModels = postsModels;
         this.postInterface = postInterface;
@@ -56,11 +58,29 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         int viewType = getItemViewType(position);
-        if (viewType == VIEW_TYPE_POST) {
+        if (viewType == VIEW_TYPE_CHALLENGE) {
+            holder.itemView.setOnClickListener(v -> {
+                if (postInterface != null) {
+                    postInterface.onChallengeClick();
+                }
+            });
+        } else if (viewType == VIEW_TYPE_TIPS) {
+            holder.itemView.setOnClickListener(v -> {
+                if (postInterface != null) {
+                }
+            });
+        } else if (viewType == VIEW_TYPE_POST) {
             int adjustedPosition = position - 2; // Offset for Challenge and Tips cards
             PostModel post = postModels.get(adjustedPosition);
+            String postID = post.getPostID();
             holder.TVPostTitle.setText(post.getPostTitle());
             holder.TVPostDescription.setText(post.getPostDescription());
+
+            holder.itemView.setOnClickListener(v -> {
+                if (postInterface != null) {
+                    postInterface.onPostClick(adjustedPosition);
+                }
+            });
         }
         // No binding needed for VIEW_TYPE_CHALLENGE and VIEW_TYPE_TIPS
     }
@@ -76,7 +96,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         private TextView TVPostTitle, TVPostDescription, TVPostDate;
 
-        public PostViewHolder(@NonNull View itemView, PostInterface postInterface) {
+        public PostViewHolder(@NonNull View itemView, CommunityInterface postInterface) {
             super(itemView);
 
             // Initialize views in the item layout

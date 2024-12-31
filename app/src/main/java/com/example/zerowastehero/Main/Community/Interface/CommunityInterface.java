@@ -1,5 +1,6 @@
 package com.example.zerowastehero.Main.Community.Interface;
 
-public interface PostInterface {
+public interface CommunityInterface {
     void onPostClick(int position);
+    void onChallengeClick();
 }

@@ -1,6 +1,7 @@
 package com.example.zerowastehero.Main.Community.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +10,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.zerowastehero.DataBinding.Model.PostModel;
 import com.example.zerowastehero.DataBinding.Model.ReplyModel;
 import com.example.zerowastehero.R;
 
 import java.util.ArrayList;
 
-public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ReplyHolder> {
+public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     // Constants for view types
     private static final int VIEW_TYPE_POST = 0;
@@ -22,52 +24,78 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ReplyHolder>
 
     private Context context;
     private ArrayList<ReplyModel> replyModels;
+    private PostModel postModel;
 
-    public ReplyAdapter(Context context, ArrayList<ReplyModel> replyModels) {
+    public ReplyAdapter(Context context, ArrayList<ReplyModel> replyModels, PostModel postModel) {
         this.context = context;
         this.replyModels = replyModels;
+        this.postModel = postModel;
     }
 
     @Override
     public int getItemViewType(int position) {
+        // Position 0 will display the Post item
         if (position == 0) return VIEW_TYPE_POST;
         else return VIEW_TYPE_REPLY;
     }
 
     @NonNull
     @Override
-    public ReplyAdapter.ReplyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflate the layout for each item in the RecyclerView
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        // Inflate Post Card
-        if (viewType == VIEW_TYPE_POST) return new ReplyHolder(inflater.inflate(R.layout.item_post_card, parent, false));
-        // Inflate Reply Card
-        else return new ReplyHolder(inflater.inflate(R.layout.item_reply_card, parent, false));
+
+        // Inflate Post card for VIEW_TYPE_POST
+        if (viewType == VIEW_TYPE_POST) {
+            return new PostViewHolder(inflater.inflate(R.layout.item_post_card, parent, false));
+        }
+        // Inflate Reply card for VIEW_TYPE_REPLY
+        else {
+            return new ReplyViewHolder(inflater.inflate(R.layout.item_reply_card, parent, false));
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ReplyAdapter.ReplyHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         int viewType = getItemViewType(position);
-        if (viewType == VIEW_TYPE_REPLY) {
-            int adjustedPosition = position - 1; // Offset for Post card
-            ReplyModel reply = replyModels.get(adjustedPosition);
-            holder.TVReplyDescription.setText(reply.getReplyDescription());
+
+        // Bind Post data
+        if (viewType == VIEW_TYPE_POST) {
+            PostViewHolder postViewHolder = (PostViewHolder) holder;
+            postViewHolder.TVPostTitle.setText(postModel.getPostTitle());
+            postViewHolder.TVPostDescription.setText(postModel.getPostDescription());
         }
-        // No binding needed for VIEW_TYPE_POST
+
+        // Bind Reply data
+        if (viewType == VIEW_TYPE_REPLY) {
+            int adjustedPosition = position - 1; // Adjust for the Post card
+            ReplyModel reply = replyModels.get(adjustedPosition);
+            ReplyViewHolder replyViewHolder = (ReplyViewHolder) holder;
+            replyViewHolder.TVReplyDescription.setText(reply.getReplyDescription());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return Math.max(1,replyModels.size() + 1);
+        return Math.max(1, replyModels.size() + 1); // +1 for the Post item
     }
 
-    public static class ReplyHolder extends RecyclerView.ViewHolder {
+    // ViewHolder for Post data
+    public static class PostViewHolder extends RecyclerView.ViewHolder {
+        private TextView TVPostTitle, TVPostDescription;
 
-        private TextView TVReplyDescription, TVReplyDate;
-
-        public ReplyHolder(@NonNull View itemView) {
+        public PostViewHolder(@NonNull View itemView) {
             super(itemView);
+            TVPostTitle = itemView.findViewById(R.id.TVPostTitle);
+            TVPostDescription = itemView.findViewById(R.id.TVPostDescription);
+        }
+    }
 
+    // ViewHolder for Reply data
+    public static class ReplyViewHolder extends RecyclerView.ViewHolder {
+        private TextView TVReplyDescription;
+
+        public ReplyViewHolder(@NonNull View itemView) {
+            super(itemView);
             TVReplyDescription = itemView.findViewById(R.id.TVReplyDescription);
         }
     }
