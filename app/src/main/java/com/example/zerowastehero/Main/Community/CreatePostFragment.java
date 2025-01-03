@@ -8,6 +8,9 @@ import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,11 +23,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.zerowastehero.DataBinding.Cache.CurrentUser;
 import com.example.zerowastehero.DataBinding.Model.PostModel;
+import com.example.zerowastehero.DataBinding.Model.UserModel;
 import com.example.zerowastehero.DataBinding.ViewModel.SharedPostModel;
+import com.example.zerowastehero.Main.Community.Adapter.PostAdapter;
 import com.example.zerowastehero.R;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +47,10 @@ public class CreatePostFragment extends Fragment {
 
     ArrayList<PostModel> postModels = new ArrayList<PostModel>();
     SharedPostModel sharedPostModel;
+    UserModel currentUser;
+    FirebaseUser user;
+    FirebaseFirestore db;
+    FirebaseAuth mAuth;
 
     ImageView IVSearchImage, IVImageSelected;
     Button BtnSubmitPost;
@@ -80,6 +96,15 @@ public class CreatePostFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         sharedPostModel = new ViewModelProvider(requireActivity()).get(SharedPostModel.class);
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        user = mAuth.getCurrentUser();
+
+        if (sharedPostModel.getPosts().getValue() != null) {
+            postModels = new ArrayList<>(sharedPostModel.getPosts().getValue());
+        } else {
+            postModels = new ArrayList<>(); // Ensure it's never null
+        }
     }
 
     @Override
@@ -105,6 +130,7 @@ public class CreatePostFragment extends Fragment {
             mediaPickerLauncher.launch(request);
         });
 
+        IVImageSelected.setTag("");
         mediaPickerLauncher = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
             if (uri != null) {
                 // Handle the selected media URI
@@ -112,6 +138,7 @@ public class CreatePostFragment extends Fragment {
                 // Example: Display the selected image in an ImageView
                 IVImageSelected.setVisibility(View.VISIBLE);
                 IVImageSelected.setImageURI(uri);
+                IVImageSelected.setTag(uri);
             } else {
                 Log.d("MediaPicker", "No media selected");
             }
@@ -149,46 +176,75 @@ public class CreatePostFragment extends Fragment {
             public void afterTextChanged(Editable editable) {}
         });
 
-        BtnSubmitPost.setOnClickListener(v -> {
-            String titleText = ETPostTitleText.getText().toString().trim();
-            String descriptionText = ETPostDescriptionText.getText().toString().trim();
-
-            if (IVImageSelected.getVisibility() == View.VISIBLE) {
-                // Post with image
-                Uri imageUri = IVImageSelected.getTag() != null ? (Uri) IVImageSelected.getTag() : null;
-
-                if (imageUri != null) {
-                    createPostWithImage(titleText, descriptionText, imageUri);
-                } else {
-                    Toast.makeText(getContext(), "Something went wrong with the selected image.", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                // Post without image
-                createPostWithoutImage(titleText, descriptionText);
-            }
-
-            // Observe the LiveData from SharedPostModel
-            sharedPostModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
-                // This block will be called whenever the posts data changes
-                if (posts != null) {
-                    postModels.clear(); // Clear old data if necessary
-                    postModels.addAll(posts); // Add new posts to the list
-                }
-            });
-        });
+        BtnSubmitPost.setOnClickListener(v -> submitPost());
 
         return view;
+    }
+
+    private void submitPost() {
+        String title = ETPostTitleText.getText().toString().trim();
+        String description = ETPostDescriptionText.getText().toString().trim();
+        String postImageURL = IVImageSelected.getTag().toString().trim();
+
+        String userID = user.getUid();
+        String email = user.getEmail();
+        db.collection("users").document(userID).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        UserModel user = documentSnapshot.toObject(UserModel.class);
+                        String username = user.getUsername();
+                        if (postImageURL.isEmpty() || postImageURL == null) {
+                            createPostWithoutImage(username, userID, title, description);
+                        } else {
+                            createPostWithImage(username, userID, title, description, Uri.parse(postImageURL));
+                        }
+                        // Use these details in your activity
+                        Log.d("Firestore", "User Name: " + username + ", Email: " + email);
+                    } else {
+                        Log.d("Firestore", "No such user found!");
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("Firestore", "Error fetching user data", e));
     }
 
     private void bothEditTextFilled(boolean text1, boolean text2) {
         BtnSubmitPost.setEnabled(text1 && text2);
     }
 
-    private void createPostWithImage(String title,String description, Uri imageUri) {
+    private void createPostWithImage(String userName, String userID, String title,String description, Uri imageUri) {
 
     }
 
-    private void createPostWithoutImage(String title, String description) {
-//        postmodels.add(new Post());
+    private void createPostWithoutImage(String userName,String userID, String title, String description) {
+        if (user == null) {
+            Toast.makeText(getContext(), "User not authenticated. Please log in.", Toast.LENGTH_SHORT).show();
+            Log.e("CreatePostFragment", "FirebaseUser is null. Cannot create a post.");
+            return;
+        }
+
+        DocumentReference newPostRef = db.collection("posts").document();
+        String postID = newPostRef.getId();
+
+        PostModel newPost = new PostModel(title, description, userID, userName, "", new Timestamp(new Date()));
+        newPost.setPostID(postID);
+        newPost.setPostType("post");
+
+        // Add the post to Firestore
+        newPostRef.set(newPost)
+                .addOnSuccessListener(aVoid -> {
+                    // Add the new post to the sharedPostModel
+                    postModels.add(newPost);
+                    sharedPostModel.setPosts(postModels);
+
+                    Log.d("CreatePostFragment", "Post successfully added to Firestore with ID: " + postID);
+
+                    // Navigate back or give feedback to the user
+                    requireActivity().getSupportFragmentManager().popBackStack();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("CreatePostFragment", "Error adding post to Firestore: ", e);
+
+                    // Handle the error (e.g., show a message to the user)
+                });
     }
 }

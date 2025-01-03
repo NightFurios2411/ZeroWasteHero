@@ -11,30 +11,30 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.zerowastehero.DataBinding.Model.PostModel;
-import com.example.zerowastehero.DataBinding.Model.UserModel;
-import com.example.zerowastehero.Main.Community.Interface.CommunityInterface;
+import com.example.zerowastehero.Main.Community.Interface.PostInterface;
 import com.example.zerowastehero.R;
+import com.google.firebase.Timestamp;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.PostViewHolder> {
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
 
     // Constants for view types
     private static final int VIEW_TYPE_CHALLENGE = 0;
     private static final int VIEW_TYPE_TIPS = 1;
     private static final int VIEW_TYPE_POST = 2;
 
-    private CommunityInterface postInterface;
+    private PostInterface postInterface;
 
     private Context context;
     private static ArrayList<PostModel> postModels;
     private AlertDialog.Builder builder;
 
-    public CommunityAdapter(Context context, ArrayList<PostModel> postsModels, CommunityInterface postInterface) {
+    public PostAdapter(Context context, ArrayList<PostModel> postsModels, PostInterface postInterface) {
         this.context = context;
-        this.postModels = postsModels;
+        postModels = postsModels;
         this.postInterface = postInterface;
     }
 
@@ -75,17 +75,8 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Post
         } else if (viewType == VIEW_TYPE_POST) {
             int adjustedPosition = position - 2; // Offset for Challenge and Tips cards
             PostModel post = postModels.get(adjustedPosition);
-            String postID = post.getPostID();
 
-            // Convert postCreatedAt to formatted date
-            long timestamp = Long.parseLong(post.getCreatedAt());
-            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.getDefault());
-            String formattedDate = sdf.format(timestamp);
-
-            holder.TVPostTitle.setText(post.getPostTitle());
-            holder.TVPostDescription.setText(post.getPostDescription());
-            holder.TVUserName.setText(post.getUserName());
-            holder.TVPostDate.setText(formattedDate);
+            holder.postBind(post);
 
             holder.itemView.setOnClickListener(v -> {
                 if (postInterface != null) {
@@ -107,7 +98,7 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Post
 
         private TextView TVPostTitle, TVPostDescription, TVPostDate, TVUserName;
 
-        public PostViewHolder(@NonNull View itemView, CommunityInterface postInterface) {
+        public PostViewHolder(@NonNull View itemView, PostInterface postInterface) {
             super(itemView);
 
             // Initialize views in the item layout
@@ -125,6 +116,18 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Post
                     }
                 }
             });
+        }
+
+        public void postBind(PostModel post) {
+            TVPostTitle.setText(post.getPostTitle());
+            TVPostDescription.setText(post.getPostDescription());
+            TVUserName.setText(post.getUserName());
+            TVPostDate.setText(setDateFormatted(post.getCreatedAt()));
+        }
+
+        public String setDateFormatted(Timestamp createdAt) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.getDefault());
+            return sdf.format(createdAt.toDate());
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.zerowastehero.Main.Community.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.zerowastehero.DataBinding.Model.PostModel;
 import com.example.zerowastehero.DataBinding.Model.ReplyModel;
 import com.example.zerowastehero.R;
+import com.google.firebase.Timestamp;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,6 +35,17 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         this.post = post;
     }
 
+    // Method to update the PostModel and notify the adapter
+    public void setPost(PostModel newPost) {
+        this.post = newPost;
+        notifyItemChanged(0); // Refresh the Post item at position 0
+    }
+
+    public void setReplyModels(ArrayList<ReplyModel> newReplyModels) {
+        this.replyModels = replyModels;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemViewType(int position) {
         // Position 0 will display the Post item
@@ -46,26 +59,27 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // Inflate Post card for VIEW_TYPE_POST
-        if (viewType == VIEW_TYPE_POST) {
-            return new PostViewHolder(inflater.inflate(R.layout.item_post_card, parent, false));
-        }
+        if (viewType == VIEW_TYPE_POST) return new PostViewHolder(inflater.inflate(R.layout.item_post_card, parent, false));
         // Inflate Reply card for VIEW_TYPE_REPLY
-        else {
-            return new ReplyViewHolder(inflater.inflate(R.layout.item_reply_card, parent, false));
-        }
+        else return new ReplyViewHolder(inflater.inflate(R.layout.item_reply_card, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (post == null) {
+            Log.e("ReplyAdapter", "Post object is null");
+            return;
+        }
+
         int viewType = getItemViewType(position);
 
         // Bind Post data
         if (viewType == VIEW_TYPE_POST) {
             PostViewHolder postViewHolder = (PostViewHolder) holder;
             // Convert postCreatedAt to formatted date
-            long timestamp = Long.parseLong(post.getCreatedAt());
+            Timestamp timestamp = post.getCreatedAt();
             SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.getDefault());
-            String formattedDate = sdf.format(timestamp);
+            String formattedDate = sdf.format(timestamp.toDate());
 
             postViewHolder.TVPostTitle.setText(post.getPostTitle());
             postViewHolder.TVPostDescription.setText(post.getPostDescription());
@@ -79,14 +93,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             ReplyModel reply = replyModels.get(adjustedPosition);
             ReplyViewHolder replyViewHolder = (ReplyViewHolder) holder;
 
-            // Convert postCreatedAt to formatted date
-            long timestamp = Long.parseLong(reply.getCreatedAt());
-            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.getDefault());
-            String formattedDate = sdf.format(timestamp);
-
-            replyViewHolder.TVReplyDescription.setText(reply.getReplyDescription());
-            replyViewHolder.TVReplyUserName.setText(reply.getUserName());
-            replyViewHolder.TVReplyDate.setText(formattedDate);
+            replyViewHolder.replyBind(reply);
         }
     }
 
@@ -116,7 +123,18 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             super(itemView);
             TVReplyDescription = itemView.findViewById(R.id.TVReplyDescription);
             TVReplyUserName = itemView.findViewById(R.id.TVReplyUserName);
-            TVReplyDate = itemView.findViewById(R.id.ReplyDate);
+            TVReplyDate = itemView.findViewById(R.id.TVReplyDate);
+        }
+
+        public void replyBind(ReplyModel reply) {
+            TVReplyDescription.setText(reply.getReplyDescription());
+            TVReplyUserName.setText(reply.getUserName());
+            TVReplyDate.setText(setDateFormatted(reply.getCreatedAt()));
+        }
+
+        public String setDateFormatted(Timestamp createdAt) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.getDefault());
+            return sdf.format(createdAt.toDate());
         }
     }
 }

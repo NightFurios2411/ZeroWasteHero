@@ -1,40 +1,59 @@
     package com.example.zerowastehero.Main.Community;
 
+    import static android.content.ContentValues.TAG;
+
     import android.app.AlertDialog;
     import android.os.Bundle;
 
+    import androidx.annotation.NonNull;
+    import androidx.annotation.Nullable;
+    import androidx.core.view.MenuProvider;
     import androidx.fragment.app.Fragment;
     import androidx.lifecycle.ViewModelProvider;
     import androidx.navigation.Navigation;
     import androidx.recyclerview.widget.LinearLayoutManager;
     import androidx.recyclerview.widget.RecyclerView;
 
+    import android.util.Log;
+    import android.view.ContextMenu;
     import android.view.LayoutInflater;
+    import android.view.Menu;
+    import android.view.MenuInflater;
     import android.view.View;
     import android.view.ViewGroup;
     import android.widget.TextView;
+    import android.widget.Toast;
 
 
     //import com.example.zerowastehero.Main.Community.Adapter.PostAdapter;
     import com.example.zerowastehero.DataBinding.Model.PostModel;
     import com.example.zerowastehero.DataBinding.ViewModel.SharedPostModel;
-    import com.example.zerowastehero.Main.Community.Adapter.CommunityAdapter;
-    import com.example.zerowastehero.Main.Community.Interface.CommunityInterface;
+    import com.example.zerowastehero.Main.Community.Adapter.PostAdapter;
+    import com.example.zerowastehero.Main.Community.Interface.PostInterface;
     import com.example.zerowastehero.R;
     import com.google.android.material.floatingactionbutton.FloatingActionButton;
+    import com.google.firebase.firestore.DocumentSnapshot;
+    import com.google.firebase.firestore.FirebaseFirestore;
+    import com.google.firebase.firestore.FirebaseFirestoreException;
+    import com.google.firebase.firestore.ListenerRegistration;
+    import com.google.firebase.firestore.Query;
+    import com.google.firebase.firestore.QuerySnapshot;
 
     import java.util.ArrayList;
+    import java.util.List;
 
     /**
      * A simple {@link Fragment} subclass.
      * Use the {@link CommunityFragment#newInstance} factory method to
      * create an instance of this fragment.
      */
-    public class CommunityFragment extends Fragment implements CommunityInterface {
+    public class CommunityFragment extends Fragment implements PostInterface {
 
         private ArrayList<PostModel> postModels = new ArrayList<>();
         private SharedPostModel sharedPostModel;
-        private CommunityAdapter adapter;
+        private PostAdapter adapter;
+        private FirebaseFirestore db;
+        private ListenerRegistration firestoreListener;
 
         private FloatingActionButton FABCommunity, FABCreatePost, FABCreateProof;
         private TextView TVCreatePost, TVCreateProof;
@@ -79,7 +98,7 @@
                 mParam1 = getArguments().getString(ARG_PARAM1);
                 mParam2 = getArguments().getString(ARG_PARAM2);
             }
-            sharedPostModel = new ViewModelProvider(requireActivity()).get(SharedPostModel.class);
+            db = FirebaseFirestore.getInstance();
         }
 
         @Override
@@ -97,23 +116,19 @@
             TVCreatePost = view.findViewById(R.id.TVCreatePost);
             TVCreateProof = view.findViewById(R.id.TVCreateProof);
 
-            // Set up RecyclerView for post
-            RecyclerView recyclerView = view.findViewById(R.id.RVPost);
-            adapter = new CommunityAdapter(getContext(), postModels, this);
-            recyclerView.setAdapter(adapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            // Initialize Firestore
+            db = FirebaseFirestore.getInstance();
 
-            // Observe the LiveData from SharedPostModel
-            sharedPostModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
-                // This block will be called whenever the posts data changes
-                if (posts != null) {
-                    postModels.clear(); // Clear old data if necessary
-                    postModels.addAll(posts); // Add new posts to the list
-                    if (adapter != null) {
-                        adapter.notifyDataSetChanged();
-                    }
-                }
-            });
+            // Fetch posts
+            postModels = new ArrayList<>();
+            loadPosts();
+
+            // Set up RecyclerView for post
+            RecyclerView RVPost = view.findViewById(R.id.RVPost);
+            RVPost.setLayoutManager(new LinearLayoutManager(getContext()));
+
+            adapter = new PostAdapter(getContext(), postModels, this);
+            RVPost.setAdapter(adapter);
 
             FABCommunity.setOnClickListener(v -> toggleFABMenu());
             darkOverlayCommunity.setOnClickListener(v -> closeFABMenu());
@@ -127,6 +142,21 @@
                 Navigation.findNavController(view).navigate(R.id.DestCreateProof);
             });
             return view;
+        }
+
+        private void loadPosts() {
+            db.collection("posts")
+                    .orderBy("createdAt", Query.Direction.DESCENDING)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        postModels.clear();
+                        for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                            PostModel post = doc.toObject(PostModel.class);
+                            postModels.add(post);
+                        }
+                        adapter.notifyDataSetChanged();
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         }
 
         private void toggleFABMenu() {
@@ -162,8 +192,15 @@
         @Override
         public void onPostClick(int position) {
             Bundle bundle = new Bundle();
+            Log.d("Community Fragment", "Position: " + position);
             String postID = postModels.get(position).getPostID();
+            Log.d("Community Fragment", "Post ID: " + postID);
+            if (postID.isEmpty() || postID == null) {
+                Log.e("Community Fragment", "Post ID is empty or null");
+                return;
+            }
             bundle.putString("postID", postID);
+            Log.d("Community Fragment", "Passed postID to Post View: " + bundle.getString("postID"));
             Navigation.findNavController(requireView()).navigate(R.id.DestPostView, bundle);
         }
 
