@@ -3,10 +3,12 @@ package com.example.zerowastehero.Main.Map;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.zerowastehero.R;
 
@@ -16,6 +18,8 @@ import com.example.zerowastehero.R;
  * create an instance of this fragment.
  */
 public class MapFragment extends Fragment {
+
+    TextView BtnSearchView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,6 +65,17 @@ public class MapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_map, container, false);
+        View view = inflater.inflate(R.layout.fragment_map, container, false);
+
+        // Initialize view
+        BtnSearchView = view.findViewById(R.id.BtnSearchView);
+
+        BtnSearchView.setOnClickListener(v -> navigateView(v, R.id.DestSearchMap));
+
+        return view;
+    }
+
+    private void navigateView(View view, int dest) {
+        Navigation.findNavController(view).navigate(dest);
     }
 }

@@ -3,10 +3,12 @@ package com.example.zerowastehero.Main.Profile;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.example.zerowastehero.R;
 
@@ -16,6 +18,8 @@ import com.example.zerowastehero.R;
  * create an instance of this fragment.
  */
 public class ProfilePageFragment extends Fragment {
+
+    ImageButton IBChallengesView, IBLoyaltyView, IBRedeemedView, IBMyStatsView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,6 +65,22 @@ public class ProfilePageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profilepage, container, false);
+        View view = inflater.inflate(R.layout.fragment_profilepage, container, false);
+
+        // Initialize view
+        IBChallengesView = view.findViewById(R.id.IBChallengesView);
+        IBLoyaltyView = view.findViewById(R.id.IBLoyaltyView);
+        IBRedeemedView = view.findViewById(R.id.IBRedeemedView);
+        IBMyStatsView = view.findViewById(R.id.IBMyStatsView);
+
+        IBChallengesView.setOnClickListener(v -> viewNavigation(v, R.id.DestChallenges));
+        IBLoyaltyView.setOnClickListener(v -> viewNavigation(v, R.id.DestLoyalty));
+        IBRedeemedView.setOnClickListener(v -> viewNavigation(v, R.id.DestRedeemed));
+        IBMyStatsView.setOnClickListener(v -> viewNavigation(v, R.id.DestMyStats));
+        return view;
+    }
+
+    private void viewNavigation(View view, int destID) {
+        Navigation.findNavController(view).navigate(destID);
     }
 }

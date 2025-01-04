@@ -12,10 +12,10 @@ import com.example.zerowastehero.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link DonationCentreFragment#newInstance} factory method to
+ * Use the {@link RecycleCenterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DonationCentreFragment extends Fragment {
+public class RecycleCenterFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class DonationCentreFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public DonationCentreFragment() {
+    public RecycleCenterFragment() {
         // Required empty public constructor
     }
 
@@ -39,8 +39,8 @@ public class DonationCentreFragment extends Fragment {
      * @return A new instance of fragment DonationCentreFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DonationCentreFragment newInstance(String param1, String param2) {
-        DonationCentreFragment fragment = new DonationCentreFragment();
+    public static RecycleCenterFragment newInstance(String param1, String param2) {
+        RecycleCenterFragment fragment = new RecycleCenterFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class DonationCentreFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_donation_centre, container, false);
+        return inflater.inflate(R.layout.fragment_recycle_center, container, false);
     }
 }

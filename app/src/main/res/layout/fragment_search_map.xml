@@ -10,101 +10,59 @@
     android:padding="16dp">
 
     <!-- Top Bar -->
-    <RelativeLayout
+
+    <SearchView
+        android:id="@+id/SVSearchRecycleLocation"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="#C8E6C9">
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false"
+        android:queryHint="Search here" />
 
-        <ImageView
-            android:id="@+id/backButton"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="16dp"
-            android:src="@android:drawable/ic_menu_revert" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RVLocationSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
+    <!-- Recent Locations -->
+
+    <!-- List of Recent Items -->
+    <LinearLayout
+        android:id="@+id/LLSearchMapRecentQueries"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:visibility="visible">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Locations"
-            android:textSize="18sp"
+            android:layout_marginBottom="8dp"
+            android:text="Recent"
             android:textColor="#000000"
+            android:textSize="16sp"
             android:textStyle="bold" />
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:orientation="horizontal"
-        android:background="#F5F5F5"
-        android:elevation="2dp"
-        android:layout_marginTop="16dp"
-        android:padding="8dp"
-        android:gravity="center_vertical">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@android:drawable/ic_menu_search"
-            android:layout_marginEnd="8dp" />
-
-        <EditText
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:hint="Search"
-            android:background="@null"
-            android:padding="8dp"
-            android:textSize="16sp" />
-
-
-
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@android:drawable/ic_btn_speak_now" />
-
-    </LinearLayout>
-
-    <!-- Recent Locations -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Recent"
-        android:textSize="16sp"
-        android:textColor="#000000"
-        android:textStyle="bold" />
-
-    <!-- List of Recent Items -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingVertical="12dp"
-            android:gravity="center_vertical">
+            android:paddingVertical="12dp">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@android:drawable/ic_menu_recent_history"
-                android:layout_marginEnd="16dp" />
+                android:layout_marginEnd="16dp"
+                android:src="@android:drawable/ic_menu_recent_history" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Suria Pantai Residency"
-                android:textSize="16sp"
-                android:textColor="#000000" />
+                android:textColor="#000000"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <View
@@ -115,33 +73,34 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingVertical="12dp"
-            android:gravity="center_vertical">
+            android:paddingVertical="12dp">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@android:drawable/ic_menu_recent_history"
-                android:layout_marginEnd="16dp" />
+                android:layout_marginEnd="16dp"
+                android:src="@android:drawable/ic_menu_recent_history" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Bangsar"
-                android:textSize="16sp"
-                android:textColor="#000000" />
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="More from recent history"
+            android:textColor="#9E9E9E"
+            android:textSize="14sp" />
 
         <!-- Add more items similar to above -->
     </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="More from recent history"
-        android:textSize="14sp"
-        android:textColor="#9E9E9E" />
 
 </LinearLayout>

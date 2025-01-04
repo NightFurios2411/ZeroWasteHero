@@ -8,43 +8,21 @@
     android:background="@color/white">
 
     <!-- Header -->
-    <LinearLayout
-        android:id="@+id/header"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="#8BC34A"
-        android:orientation="vertical"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/map_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Map"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
 
     <!-- Search bar -->
-    <EditText
-        android:id="@+id/search_bar"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="169dp"
-        android:layout_marginTop="21dp"
-        android:background="#4CAF50"
-        android:hint="Search"
-        android:padding="8dp"
+    <TextView
+        android:id="@+id/BtnSearchView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/shape_button"
+        android:padding="10dp"
+        android:text="Search"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header" />
-
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Recycling Center Info Section -->
 
@@ -52,73 +30,70 @@
         android:id="@+id/map_view"
         android:layout_width="0dp"
         android:layout_height="300dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="4dp"
         android:src="@drawable/map_placeholder"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/BtnSearchView" />
 
     <LinearLayout
-android:id="@+id/info_section"
-android:layout_width="0dp"
-android:layout_height="wrap_content"
-android:orientation="vertical"
-android:background="@android:color/white"
-android:padding="16dp"
-app:layout_constraintTop_toBottomOf="@id/map_view"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintEnd_toEndOf="parent"
-app:layout_constraintBottom_toBottomOf="parent">
-
-<!-- Recycling Center Name -->
-<TextView
-    android:id="@+id/center_name"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Alam Flora KL"
-    android:textSize="18sp"
-    android:textStyle="bold"
-    android:textColor="@android:color/black" />
-
-<!-- Recycling Center Description -->
-<TextView
-    android:id="@+id/center_description"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:text="Recycling bin near you. You can drop off your items in the bin and scan the QR to gain points in exchange for vouchers."
-    android:textSize="14sp"
-    android:textColor="@android:color/darker_gray" />
-
-<!-- Action Buttons -->
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:layout_marginTop="16dp"
-    android:weightSum="2">
-
-    <Button
-        android:id="@+id/directions_button"
+        android:id="@+id/info_section"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_weight="1"
-        android:backgroundTint="#4CAF50"
-        android:text="Directions"
-        android:textColor="@android:color/black" />
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/map_view">
 
-    <Button
-        android:id="@+id/google_maps_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_weight="1"
-        android:backgroundTint="#8BC34A"
-        android:text="Open in Google Maps"
-        android:textColor="@android:color/black" />
-</LinearLayout>
-</LinearLayout>
+        <!-- Recycling Center Name -->
+        <TextView
+            android:id="@+id/center_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Alam Flora KL"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Recycling Center Description -->
+        <TextView
+            android:id="@+id/center_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Recycling bin near you. You can drop off your items in the bin and scan the QR to gain points in exchange for vouchers."
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp" />
+
+        <!-- Action Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/directions_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#4CAF50"
+                android:text="Directions"
+                android:textColor="@android:color/black" />
+
+            <Button
+                android:id="@+id/google_maps_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#8BC34A"
+                android:text="Open in Google Maps"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

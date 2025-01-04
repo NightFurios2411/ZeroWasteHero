@@ -88,6 +88,7 @@ public class SearchUserFragment extends Fragment implements SearchUserInterface 
 
         db = FirebaseFirestore.getInstance();
 
+        // Set up RecyclerView
         RVSearchUser.setLayoutManager(new LinearLayoutManager(getContext()));
         searchUserAdapter = new SearchUserAdapter(userModels, this);
         RVSearchUser.setAdapter(searchUserAdapter);
