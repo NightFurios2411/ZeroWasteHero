@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#F5F5F5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Klean @ KL Sentral"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:padding="8dp"
+            android:gravity="center"/>
+
+        <!-- Image -->
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/sample_imagee"
+            android:scaleType="centerCrop"
+            android:contentDescription="Donation Center Image"/>
+
+        <!-- Google Maps Button -->
+        <Button
+            android:id="@+id/mapsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Google Maps"
+            android:background="#C5E1A5"
+            android:textColor="#000"
+            android:layout_marginTop="16dp"/>
+
+        <!-- Information Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:padding="16dp"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/info1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="✓ Donation Centre"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/info2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="✓ Drop-Off"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <!-- Recycle Categories -->
+        <TextView
+            android:id="@+id/recycleCategoryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recycle Category : Paper, Plastic, Bottle"
+            android:layout_marginTop="16dp"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <!-- Events -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:padding="16dp"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/eventTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Events"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/eventDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Let's Donate"/>
+
+            <Button
+                android:id="@+id/joinNowButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Join Now"
+                android:layout_marginTop="8dp"
+                android:background="#C5E1A5"/>
+        </LinearLayout>
+
+        <!-- Report Button -->
+        <Button
+            android:id="@+id/reportButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Report"
+            android:layout_marginTop="16dp"
+            android:background="#FFCDD2"/>
+    </LinearLayout>
+</ScrollView>
+
