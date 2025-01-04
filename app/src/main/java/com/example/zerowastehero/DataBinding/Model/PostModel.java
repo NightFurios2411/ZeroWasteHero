@@ -10,7 +10,6 @@ public class PostModel {
     private String userID; // FK
     private String userName;
     private Timestamp createdAt;
-    private String postTitle;
     private String postDescription;
     private String postImageURL;
     private String proofBeforeImageURL;
@@ -25,11 +24,10 @@ public class PostModel {
     public PostModel() {
     }
 
-    public PostModel(String title, String description, String userID, String userName, String postImageURL, Timestamp createdAt) {
+    public PostModel(String description, String userID, String userName, String postImageURL, Timestamp createdAt) {
         this.postID = "";
         this.userName = userName;
         this.userID = userID;
-        this.postTitle = title;
         this.postDescription = description;
         this.postImageURL = postImageURL;
         this.createdAt = createdAt;
@@ -42,9 +40,7 @@ public class PostModel {
     public String getPostID() { return postID; }
     public void setPostID(String postID) { this.postID = postID; }
     public String getUserID() { return userID; }
-    public String getPostTitle() { return postTitle; }
     public String getUserName() { return userName; }
-    public void setPostTitle(String postTitle) { this.postTitle = postTitle; }
     public String getPostDescription() { return postDescription; }
     public void setPostDescription(String postDescription) { this.postDescription = postDescription; }
     public Timestamp getCreatedAt() { return createdAt; }

@@ -96,13 +96,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public static class PostViewHolder extends RecyclerView.ViewHolder {
         // Define views in the item layout
 
-        private TextView TVPostTitle, TVPostDescription, TVPostDate, TVUserName;
+        private TextView TVPostDescription, TVPostDate, TVUserName;
 
         public PostViewHolder(@NonNull View itemView, PostInterface postInterface) {
             super(itemView);
 
             // Initialize views in the item layout
-            TVPostTitle = itemView.findViewById(R.id.TVPostTitle);
             TVPostDescription = itemView.findViewById(R.id.TVPostDescription);
             TVUserName = itemView.findViewById(R.id.TVUserName);
             TVPostDate = itemView.findViewById(R.id.TVPostDate);
@@ -119,7 +118,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         }
 
         public void postBind(PostModel post) {
-            TVPostTitle.setText(post.getPostTitle());
             TVPostDescription.setText(post.getPostDescription());
             TVUserName.setText(post.getUserName());
             TVPostDate.setText(setDateFormatted(post.getCreatedAt()));

@@ -81,7 +81,6 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.getDefault());
             String formattedDate = sdf.format(timestamp.toDate());
 
-            postViewHolder.TVPostTitle.setText(post.getPostTitle());
             postViewHolder.TVPostDescription.setText(post.getPostDescription());
             postViewHolder.TVUserName.setText(post.getUserName());
             postViewHolder.TVPostDate.setText(formattedDate);

@@ -19,28 +19,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/ETPostTitleText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:background="#00000000"
-        android:ems="10"
-        android:gravity="start|top"
-        android:hint="What's Happening"
-        android:inputType="textMultiLine"
-        android:minHeight="48dp"
-        android:paddingVertical="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/createPostUserProfile"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
         android:id="@+id/ETPostDescriptionText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:background="#00000000"
         android:ems="10"
@@ -51,7 +34,7 @@
         android:paddingVertical="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/createPostUserProfile"
-        app:layout_constraintTop_toBottomOf="@id/ETPostTitleText" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/BtnSubmitPost"

@@ -17,7 +17,7 @@
             app:destination="@id/DestScan" />
         <action
             android:id="@+id/action_DestHome_to_DestProfile"
-            app:destination="@id/DestProfile" />
+            app:destination="@id/DestProfilePage" />
         <action
             android:id="@+id/action_DestHome_to_DestMap"
             app:destination="@id/DestMap" />
@@ -46,10 +46,9 @@
         android:label="Map"
         tools:layout="@layout/fragment_map" />
     <fragment
-        android:id="@+id/DestProfile"
-        android:name="com.example.zerowastehero.Main.Profile.ProfileFragment"
-        android:label="Profile"
-        tools:layout="@layout/fragment_profile" />
+        android:id="@+id/DestProfilePage"
+        android:name="com.example.zerowastehero.Main.Profile.ProfilePageFragment"
+        android:label="Profile Page" />
     <fragment
         android:id="@+id/DestScan"
         android:name="com.example.zerowastehero.Main.Scan.ScanFragment"

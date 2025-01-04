@@ -118,7 +118,6 @@ public class CreatePostFragment extends Fragment {
         IVImageSelected = view.findViewById(R.id.IVImageSelected);
         BtnSubmitPost = view.findViewById(R.id.BtnSubmitPost);
         ETPostDescriptionText = view.findViewById(R.id.ETPostDescriptionText);
-        ETPostTitleText = view.findViewById(R.id.ETPostTitleText);
 
         IVSearchImage.setOnClickListener(v -> {
             // Create a PickVisualMediaRequest to specify the type of media
@@ -144,22 +143,6 @@ public class CreatePostFragment extends Fragment {
             }
         });
 
-        ETPostTitleText.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                boolean titleFilled = !ETPostTitleText.getText().toString().trim().isEmpty();
-                boolean descriptionFilled = !ETPostDescriptionText.getText().toString().trim().isEmpty();
-                bothEditTextFilled(titleFilled, descriptionFilled);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {}
-        });
-
         ETPostDescriptionText.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -167,9 +150,7 @@ public class CreatePostFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                boolean titleFilled = !ETPostTitleText.getText().toString().trim().isEmpty();
-                boolean descriptionFilled = !ETPostDescriptionText.getText().toString().trim().isEmpty();
-                bothEditTextFilled(titleFilled, descriptionFilled);
+                BtnSubmitPost.setEnabled(true);
             }
 
             @Override
@@ -182,7 +163,6 @@ public class CreatePostFragment extends Fragment {
     }
 
     private void submitPost() {
-        String title = ETPostTitleText.getText().toString().trim();
         String description = ETPostDescriptionText.getText().toString().trim();
         String postImageURL = IVImageSelected.getTag().toString().trim();
 
@@ -194,9 +174,9 @@ public class CreatePostFragment extends Fragment {
                         UserModel user = documentSnapshot.toObject(UserModel.class);
                         String username = user.getUsername();
                         if (postImageURL.isEmpty() || postImageURL == null) {
-                            createPostWithoutImage(username, userID, title, description);
+                            createPostWithoutImage(username, userID, description);
                         } else {
-                            createPostWithImage(username, userID, title, description, Uri.parse(postImageURL));
+                            createPostWithImage(username, userID, description, Uri.parse(postImageURL));
                         }
                         // Use these details in your activity
                         Log.d("Firestore", "User Name: " + username + ", Email: " + email);
@@ -211,11 +191,11 @@ public class CreatePostFragment extends Fragment {
         BtnSubmitPost.setEnabled(text1 && text2);
     }
 
-    private void createPostWithImage(String userName, String userID, String title,String description, Uri imageUri) {
+    private void createPostWithImage(String userName, String userID, String description, Uri imageUri) {
 
     }
 
-    private void createPostWithoutImage(String userName,String userID, String title, String description) {
+    private void createPostWithoutImage(String userName,String userID, String description) {
         if (user == null) {
             Toast.makeText(getContext(), "User not authenticated. Please log in.", Toast.LENGTH_SHORT).show();
             Log.e("CreatePostFragment", "FirebaseUser is null. Cannot create a post.");
@@ -225,7 +205,7 @@ public class CreatePostFragment extends Fragment {
         DocumentReference newPostRef = db.collection("posts").document();
         String postID = newPostRef.getId();
 
-        PostModel newPost = new PostModel(title, description, userID, userName, "", new Timestamp(new Date()));
+        PostModel newPost = new PostModel(description, userID, userName, "", new Timestamp(new Date()));
         newPost.setPostID(postID);
         newPost.setPostType("post");
 
