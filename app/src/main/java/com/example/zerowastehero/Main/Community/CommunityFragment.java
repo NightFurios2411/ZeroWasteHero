@@ -31,6 +31,7 @@
     import com.example.zerowastehero.Main.Community.Adapter.PostAdapter;
     import com.example.zerowastehero.Main.Community.Interface.PostInterface;
     import com.example.zerowastehero.R;
+    import com.google.android.material.bottomnavigation.BottomNavigationView;
     import com.google.android.material.floatingactionbutton.FloatingActionButton;
     import com.google.firebase.firestore.DocumentSnapshot;
     import com.google.firebase.firestore.FirebaseFirestore;
@@ -54,6 +55,7 @@
         private PostAdapter adapter;
         private FirebaseFirestore db;
         private ListenerRegistration firestoreListener;
+        private BottomNavigationView bottomNavigationView;
 
         private FloatingActionButton FABCommunity, FABCreatePost, FABCreateProof;
         private TextView TVCreatePost, TVCreateProof;
@@ -115,6 +117,9 @@
             darkOverlay = requireActivity().findViewById(R.id.darkOverlay);
             TVCreatePost = view.findViewById(R.id.TVCreatePost);
             TVCreateProof = view.findViewById(R.id.TVCreateProof);
+            bottomNavigationView = requireActivity().findViewById(R.id.BottomNavView);
+
+            bottomNavigationView.setVisibility(View.VISIBLE);
 
             // Initialize Firestore
             db = FirebaseFirestore.getInstance();

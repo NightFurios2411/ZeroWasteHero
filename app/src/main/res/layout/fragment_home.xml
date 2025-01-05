@@ -26,7 +26,8 @@
         android:layout_marginTop="100dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView2"
-        android:background="@drawable/shape_circle" />
+        android:background="@drawable/shape_circle"
+        android:src="@drawable/icon_placeholder_profile"/>
 
     <Button
         android:id="@+id/BtnLogOut"
