@@ -1,66 +1,103 @@
 package com.example.zerowastehero.Main.Profile;
 
+
+
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.zerowastehero.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ProfileFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public ProfileFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+public class ProfileFragment extends AppCompatActivity {
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+        setContentView(R.layout.activity_main);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        // Claim Points Button
+        Button claimPointsButton = findViewById(R.id.claim_points_button);
+        claimPointsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(ProfileFragment.this, "Points Claimed!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Reward Buttons
+        Button reward3000Button = findViewById(R.id.reward_3000);
+        reward3000Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(ProfileFragment.this, "Redeemed 3000 Points!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Button reward5000Button = findViewById(R.id.reward_5000);
+        reward5000Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(ProfileFragment.this, "Redeemed 5000 Points!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Button reward10000Button = findViewById(R.id.reward_10000);
+        reward10000Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(ProfileFragment.this, "Redeemed 10000 Points!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Navigation Buttons
+        Button navHomeButton = findViewById(R.id.nav_home);
+        navHomeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(ProfileFragment.this, "Navigating to Home!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Button navChallengesButton = findViewById(R.id.nav_challenges);
+        navChallengesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(ProfileFragment.this, "Navigating to Challenges!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Button navSeeRewardsButton = findViewById(R.id.nav_seeRewards);
+        navSeeRewardsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(ProfileFragment.this, "Navigating to Rewards!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Partner Loyalty Program Button
+        Button partnerLoyaltyProgramButton = findViewById(R.id.nav_partner_loyalty);
+        partnerLoyaltyProgramButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(ProfileFragment.this, "Opening Partner Loyalty Program!", Toast.LENGTH_SHORT).show();
+                // Add intent to navigate to PartnerLoyaltyProgramActivity
+                // Intent intent = new Intent(MainActivity.this, PartnerLoyaltyProgramActivity.class);
+                // startActivity(intent);
+            }
+        });
+
+        // My Stats Button
+        Button myStatsButton = findViewById(R.id.nav_my_stats);
+        myStatsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(ProfileFragment.this, "Opening My Stats!", Toast.LENGTH_SHORT).show();
+                // Add intent to navigate to MyStatsActivity
+                // Intent intent = new Intent(MainActivity.this, MyStatsActivity.class);
+                // startActivity(intent);
+            }
+        });
     }
 }
