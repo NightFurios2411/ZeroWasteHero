@@ -120,7 +120,7 @@
     <fragment
         android:id="@+id/DestSearchMap"
         android:name="com.example.zerowastehero.Main.Map.SearchMapFragment"
-        android:label="Locations" >
+        android:label="Location Search" >
         <action
             android:id="@+id/action_DestSearchMap_to_recycleCenterFragment"
             app:destination="@id/DestRecycleCenter" />
