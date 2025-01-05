@@ -90,7 +90,9 @@
                 android:layout_height="52dp"
                 android:layout_margin="5dp"
                 android:background="#00FFFFFF"
-                app:srcCompat="@drawable/frame_2608634" />
+                android:contentDescription="redeemed"
+                app:srcCompat="@drawable/frame_2608634"
+                />
 
             <ImageButton
                 android:id="@+id/IBChallengesView"
@@ -98,6 +100,7 @@
                 android:layout_height="52dp"
                 android:layout_margin="5dp"
                 android:background="#00FFFFFF"
+                android:contentDescription="challenges"
                 app:srcCompat="@drawable/frame_2608636" />
 
             <ImageButton
@@ -106,6 +109,7 @@
                 android:layout_height="59dp"
                 android:layout_margin="5dp"
                 android:background="#00FFFFFF"
+                android:contentDescription="loyalty"
                 app:srcCompat="@drawable/frame_2608637" />
 
             <ImageButton
@@ -114,7 +118,16 @@
                 android:layout_height="54dp"
                 android:layout_margin="5dp"
                 android:background="#00FFFFFF"
+                android:contentDescription="redeemed"
                 app:srcCompat="@drawable/frame_2608638" />
+
+            <ImageButton
+                android:id="@+id/leader"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="#00FFFFFF"
+                android:contentDescription="leaderboard"
+                app:srcCompat="@drawable/leader" />
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -150,12 +163,13 @@
 
                         <ImageButton
                             android:id="@+id/imageButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
                             android:layout_gravity="center"
                             android:layout_margin="5dp"
                             android:layout_marginTop="5dp"
                             android:background="#00FFFFFF"
+                            android:contentDescription="button"
                             app:srcCompat="@drawable/frame_2608640" />
 
                         <TextView
@@ -178,12 +192,13 @@
 
                         <ImageButton
                             android:id="@+id/imageButton2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
                             android:layout_gravity="center"
                             android:layout_margin="5dp"
                             android:layout_marginTop="5dp"
                             android:background="#00FFFFFF"
+                            android:contentDescription="button"
                             app:srcCompat="@drawable/rectangle_11" />
 
                         <TextView
