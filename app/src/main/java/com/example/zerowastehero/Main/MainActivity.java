@@ -44,9 +44,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // EdgeToEdge.enable(this);
-        setContentView(R.layout.fragment_report_list);
+        setContentView(R.layout.fragment_leaderboard);
 
-        Toolbar toolbar = findViewById(R.id.storage);
+        Toolbar toolbar = findViewById(R.id.leaderboard);
         setSupportActionBar(toolbar);
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.NHFMain);
