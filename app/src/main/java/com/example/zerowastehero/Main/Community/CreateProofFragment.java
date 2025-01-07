@@ -1,14 +1,37 @@
 package com.example.zerowastehero.Main.Community;
 
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.zerowastehero.DataBinding.Model.PostModel;
+import com.example.zerowastehero.DataBinding.Model.UserModel;
+import com.example.zerowastehero.DataBinding.ViewModel.SharedPostModel;
 import com.example.zerowastehero.R;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +39,17 @@ import com.example.zerowastehero.R;
  * create an instance of this fragment.
  */
 public class CreateProofFragment extends Fragment {
+
+    private ArrayList<PostModel> postModels = new ArrayList<>();
+    private SharedPostModel sharedPostModel;
+    private FirebaseUser user;
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
+
+    private Button BtnSubmitProof;
+    private EditText ETProofDescriptionText;
+    private ShapeableImageView IVCreatePostBeforeImage, IVCreateProofAfterImage;
+    private ActivityResultLauncher<PickVisualMediaRequest> mediaPickerLauncher;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -55,12 +89,119 @@ public class CreateProofFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        user = mAuth.getCurrentUser();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create_proof, container, false);
+        View view = inflater.inflate(R.layout.fragment_create_proof, container, false);
+
+        // Initialize view
+        BtnSubmitProof = view.findViewById(R.id.BtnSubmitProof);
+        ETProofDescriptionText = view.findViewById(R.id.ETProofDescriptionText);
+        IVCreatePostBeforeImage = view.findViewById(R.id.IVCreatePostBeforeImage);
+        IVCreateProofAfterImage = view.findViewById(R.id.IVCreateProofAfterImage);
+
+        IVCreatePostBeforeImage.setOnClickListener(v -> pickImage(IVCreatePostBeforeImage));
+        IVCreateProofAfterImage.setOnClickListener(v -> pickImage(IVCreateProofAfterImage));
+
+        BtnSubmitProof.setEnabled(false);
+        ETProofDescriptionText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Check if text is not empty and both images are selected
+                BtnSubmitProof.setEnabled(!charSequence.toString().trim().isEmpty() &&
+                        !IVCreatePostBeforeImage.getTag().toString().isEmpty() &&
+                        !IVCreateProofAfterImage.getTag().toString().isEmpty()); // Enable button
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+        BtnSubmitProof.setOnClickListener(v -> submitProof());
+
+        return view;
+    }
+
+    private void pickImage(ShapeableImageView imageView) {
+        PickVisualMediaRequest request = new PickVisualMediaRequest.Builder()
+                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageAndVideo.INSTANCE)
+                .build();
+
+        mediaPickerLauncher.launch(request);
+
+        imageView.setTag("");
+        mediaPickerLauncher = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+            if (uri != null) {
+                // Handle the selected media URI
+                Log.d("MediaPicker", "Selected URI: " + uri);
+                // Example: Display the selected image in an ImageView
+                imageView.setImageURI(uri);
+                imageView.setTag(uri);
+            } else {
+                Log.d("MediaPicker", "No media selected");
+            }
+        });
+    }
+
+    private void submitProof() {
+        String description = ETProofDescriptionText.getText().toString().trim();
+        String beforeImageURL = IVCreatePostBeforeImage.getTag().toString().trim();
+        String afterImageURL = IVCreateProofAfterImage.getTag().toString().trim();
+
+        String userID = user.getUid();
+        String email = user.getEmail();
+        db.collection("users").document(userID).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        UserModel user = documentSnapshot.toObject(UserModel.class);
+                        String username = user.getUsername();
+                        createProof(username, userID, description, Uri.parse(beforeImageURL), Uri.parse(afterImageURL));
+                        Log.d("Firestore", "User Name: " + username + ", Email: " + email);
+                    } else {
+                        Log.e("Firestore", "No such user found!");
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("Firestore", "Error fetching user data", e));
+    }
+
+    private void createProof(String username, String userID, String description, Uri beforeImageUri, Uri afterImageUri) {
+        if (user == null) {
+            Toast.makeText(getContext(), "User authentication failed. Please log in", Toast.LENGTH_SHORT).show();
+            Log.e("CreateProofFragment", "FirebaseUser is null. Can't create a proof");
+            return;
+        }
+
+        DocumentReference newPostRef = db.collection("posts").document();
+        String postID = newPostRef.getId();
+
+        PostModel newPost = new PostModel(description, userID, username, "", beforeImageUri.toString(), afterImageUri.toString(), "proof", new Timestamp(new Date()));
+        newPost.setPostID(postID);
+
+        // Add the post to Firestore
+        newPostRef.set(newPost)
+                .addOnSuccessListener(aVoid -> {
+                    // Add the new post to the sharedPostModel
+                    postModels.add(newPost);
+                    sharedPostModel.setPosts(postModels);
+
+                    Log.d("CreateProofFragment", "Proof successfully added to Firestore with ID: " + postID);
+
+                    // Navigate back or give feedback to the user
+                    requireActivity().getSupportFragmentManager().popBackStack();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("CreateProofFragment", "Error adding proof to Firestore: ", e);
+
+                    // Handle the error (e.g., show a message to the user)
+                });
     }
 }

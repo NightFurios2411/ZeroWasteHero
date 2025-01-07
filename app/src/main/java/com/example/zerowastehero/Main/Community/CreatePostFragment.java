@@ -54,7 +54,7 @@ public class CreatePostFragment extends Fragment {
 
     ImageView IVSearchImage, IVImageSelected;
     Button BtnSubmitPost;
-    EditText ETPostDescriptionText, ETPostTitleText;
+    EditText ETPostDescriptionText;
     ActivityResultLauncher<PickVisualMediaRequest> mediaPickerLauncher;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -119,17 +119,62 @@ public class CreatePostFragment extends Fragment {
         BtnSubmitPost = view.findViewById(R.id.BtnSubmitPost);
         ETPostDescriptionText = view.findViewById(R.id.ETPostDescriptionText);
 
-        IVSearchImage.setOnClickListener(v -> {
-            // Create a PickVisualMediaRequest to specify the type of media
-            PickVisualMediaRequest request = new PickVisualMediaRequest.Builder()
-                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageAndVideo.INSTANCE)
-                    .build();
+        IVSearchImage.setOnClickListener(v -> pickImage(IVImageSelected));
 
-            // Launch the media picker
-            mediaPickerLauncher.launch(request);
+//        IVSearchImage.setOnClickListener(v -> {
+//            // Create a PickVisualMediaRequest to specify the type of media
+//            PickVisualMediaRequest request = new PickVisualMediaRequest.Builder()
+//                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageAndVideo.INSTANCE)
+//                    .build();
+//
+//            // Launch the media picker
+//            mediaPickerLauncher.launch(request);
+//        });
+//
+//        IVImageSelected.setTag("");
+//        mediaPickerLauncher = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+//            if (uri != null) {
+//                // Handle the selected media URI
+//                Log.d("MediaPicker", "Selected URI: " + uri);
+//                // Example: Display the selected image in an ImageView
+//                IVImageSelected.setVisibility(View.VISIBLE);
+//                IVImageSelected.setImageURI(uri);
+//                IVImageSelected.setTag(uri);
+//            } else {
+//                Log.d("MediaPicker", "No media selected");
+//            }
+//        });
+
+        BtnSubmitPost.setEnabled(false);
+        ETPostDescriptionText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                BtnSubmitPost.setEnabled(!charSequence.toString().trim().isEmpty());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
         });
 
-        IVImageSelected.setTag("");
+        BtnSubmitPost.setOnClickListener(v -> submitPost());
+
+        return view;
+    }
+
+    private void pickImage(ImageView imageViewHolder) {
+        // Create a PickVisualMediaRequest to specify the type of media
+        PickVisualMediaRequest request = new PickVisualMediaRequest.Builder()
+                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageAndVideo.INSTANCE)
+                .build();
+
+        // Launch the media picker
+        mediaPickerLauncher.launch(request);
+
+        imageViewHolder.setTag("");
         mediaPickerLauncher = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
             if (uri != null) {
                 // Handle the selected media URI
@@ -142,24 +187,6 @@ public class CreatePostFragment extends Fragment {
                 Log.d("MediaPicker", "No media selected");
             }
         });
-
-        ETPostDescriptionText.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                BtnSubmitPost.setEnabled(true);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {}
-        });
-
-        BtnSubmitPost.setOnClickListener(v -> submitPost());
-
-        return view;
     }
 
     private void submitPost() {
@@ -181,14 +208,10 @@ public class CreatePostFragment extends Fragment {
                         // Use these details in your activity
                         Log.d("Firestore", "User Name: " + username + ", Email: " + email);
                     } else {
-                        Log.d("Firestore", "No such user found!");
+                        Log.e("Firestore", "No such user found!");
                     }
                 })
                 .addOnFailureListener(e -> Log.e("Firestore", "Error fetching user data", e));
-    }
-
-    private void bothEditTextFilled(boolean text1, boolean text2) {
-        BtnSubmitPost.setEnabled(text1 && text2);
     }
 
     private void createPostWithImage(String userName, String userID, String description, Uri imageUri) {
@@ -198,16 +221,15 @@ public class CreatePostFragment extends Fragment {
     private void createPostWithoutImage(String userName,String userID, String description) {
         if (user == null) {
             Toast.makeText(getContext(), "User not authenticated. Please log in.", Toast.LENGTH_SHORT).show();
-            Log.e("CreatePostFragment", "FirebaseUser is null. Cannot create a post.");
+            Log.e("CreatePostFragment", "FirebaseUser is null. Can't create a post.");
             return;
         }
 
         DocumentReference newPostRef = db.collection("posts").document();
         String postID = newPostRef.getId();
 
-        PostModel newPost = new PostModel(description, userID, userName, "", new Timestamp(new Date()));
+        PostModel newPost = new PostModel(description, userID, userName, "", "", "", "post", new Timestamp(new Date()));
         newPost.setPostID(postID);
-        newPost.setPostType("post");
 
         // Add the post to Firestore
         newPostRef.set(newPost)

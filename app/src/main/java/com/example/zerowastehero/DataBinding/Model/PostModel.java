@@ -24,12 +24,15 @@ public class PostModel {
     public PostModel() {
     }
 
-    public PostModel(String description, String userID, String userName, String postImageURL, Timestamp createdAt) {
+    public PostModel(String description, String userID, String userName, String postImageURL, String proofBeforeImageURL, String proofAfterImageURL, String postType, Timestamp createdAt) {
         this.postID = "";
         this.userName = userName;
         this.userID = userID;
         this.postDescription = description;
         this.postImageURL = postImageURL;
+        this.proofBeforeImageURL = proofBeforeImageURL;
+        this.proofAfterImageURL = proofAfterImageURL;
+        this.postType = postType;
         this.createdAt = createdAt;
         this.likesCount = 0;
         this.commentsCount = 0;
