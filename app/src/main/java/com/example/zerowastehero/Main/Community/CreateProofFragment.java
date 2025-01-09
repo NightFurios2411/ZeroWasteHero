@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.zerowastehero.DataBinding.Model.PostModel;
 import com.example.zerowastehero.DataBinding.Model.UserModel;
 import com.example.zerowastehero.DataBinding.ViewModel.SharedPostModel;
+import com.example.zerowastehero.Main.Community.Interface.UploadCallbackInterface;
 import com.example.zerowastehero.R;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.Timestamp;
@@ -29,6 +30,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,6 +48,8 @@ public class CreateProofFragment extends Fragment {
     private FirebaseUser user;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
 
     private Button BtnSubmitProof;
     private EditText ETProofDescriptionText;
@@ -92,6 +97,8 @@ public class CreateProofFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         user = mAuth.getCurrentUser();
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
     }
 
     @Override
@@ -164,13 +171,44 @@ public class CreateProofFragment extends Fragment {
                     if (documentSnapshot.exists()) {
                         UserModel user = documentSnapshot.toObject(UserModel.class);
                         String username = user.getUsername();
-                        createProof(username, userID, description, Uri.parse(beforeImageURL), Uri.parse(afterImageURL));
-                        Log.d("Firestore", "User Name: " + username + ", Email: " + email);
+
+                        uploadImageToStorage(beforeImageURL, "before_image", (beforeImageStorageURL) -> {
+                            uploadImageToStorage(afterImageURL, "after_image", (afterImageStorageURL) -> {
+                                // Once both images are uploaded, create the proof in Firestore
+                                createProof(username, userID, description, Uri.parse(beforeImageStorageURL), Uri.parse(afterImageStorageURL));
+                            });
+                        });Log.d("Firestore", "User Name: " + username + ", Email: " + email);
                     } else {
                         Log.e("Firestore", "No such user found!");
                     }
                 })
                 .addOnFailureListener(e -> Log.e("Firestore", "Error fetching user data", e));
+    }
+
+    private void uploadImageToStorage(String imageURL, String imageName, UploadCallbackInterface callback) {
+        if (imageURL.isEmpty()) {
+            callback.onUploadComplete(""); // If no image selected, return empty URL
+            return;
+        }
+
+        Uri fileUri = Uri.parse(imageURL); // Convert the string URL to Uri
+        StorageReference imageRef = storageReference.child("images/" + imageName + "/" + System.currentTimeMillis() + ".jpg");
+
+        imageRef.putFile(fileUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                        String downloadURL = uri.toString();
+                        Log.d("FirebaseStorage", "Image uploaded successfully: " + downloadURL);
+                        callback.onUploadComplete(downloadURL); // Callback with the image download URL
+                    }).addOnFailureListener(e -> {
+                        Log.e("FirebaseStorage", "Error getting download URL: ", e);
+                        callback.onUploadComplete(""); // In case of failure, return empty URL
+                    });
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("FirebaseStorage", "Error uploading image: ", e);
+                    callback.onUploadComplete(""); // In case of failure, return empty URL
+                });
     }
 
     private void createProof(String username, String userID, String description, Uri beforeImageUri, Uri afterImageUri) {
