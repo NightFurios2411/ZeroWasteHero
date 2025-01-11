@@ -78,10 +78,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
             holder.postBind(post);
 
-            holder.itemView.setOnClickListener(v -> {
+            // Navigate to the next fragment when TVPostDescription is clicked
+            holder.TVPostDescription.setOnClickListener(v -> {
                 if (postInterface != null) {
-                    postInterface.onPostClick(adjustedPosition);
+                    postInterface.onPostClick(adjustedPosition); // Use the existing interface method
                 }
+            });
+
+            // Set click listener for other card actions (e.g., like button)
+            holder.itemView.setOnClickListener(v -> {
+                // Example: Perform a like action (you can add a method in PostInterface for this)
             });
         }
         // No binding needed for VIEW_TYPE_CHALLENGE and VIEW_TYPE_TIPS
@@ -106,15 +112,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             TVUserName = itemView.findViewById(R.id.TVUserName);
             TVPostDate = itemView.findViewById(R.id.TVPostDate);
 
-            itemView.setOnClickListener(v -> {
-                if (postInterface != null) {
-                    int position = getAbsoluteAdapterPosition();
-
-                    if (position != RecyclerView.NO_POSITION) {
-                        postInterface.onPostClick(position);
-                    }
-                }
-            });
         }
 
         public void postBind(PostModel post) {

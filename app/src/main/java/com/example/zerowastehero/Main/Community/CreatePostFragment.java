@@ -191,7 +191,12 @@ public class CreatePostFragment extends Fragment {
 
     private void submitPost() {
         String description = ETPostDescriptionText.getText().toString().trim();
-        String postImageURL = IVImageSelected.getTag().toString().trim();
+        String postImageURL;
+        if (IVImageSelected.getTag() != null)
+            postImageURL = IVImageSelected.getTag().toString().trim();
+        else {
+            postImageURL = "";
+        }
 
         String userID = user.getUid();
         String email = user.getEmail();

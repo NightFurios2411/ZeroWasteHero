@@ -2,10 +2,10 @@ package com.example.zerowastehero.Main.Home;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,10 +34,8 @@ public class HomeFragment extends Fragment {
     private UserModel user;
     private FirebaseFirestore db;
 
-
     private Button BtnLogOut;
-    private TextView TVEmailHome;
-    private TextView TVUsernameHome;
+    private TextView TVUsernameHome, TVViewAllView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -89,8 +87,8 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         BtnLogOut = view.findViewById(R.id.BtnLogOut);
-        TVEmailHome = view.findViewById(R.id.TVEmailHome);
-        TVUsernameHome = view.findViewById(R.id.TVUsernameHome);
+        TVUsernameHome = view.findViewById(R.id.TVHomeUsername);
+        TVViewAllView = view.findViewById(R.id.TVViewAllView);
 
         fetchUser();
 
@@ -101,6 +99,7 @@ public class HomeFragment extends Fragment {
         }
 
         BtnLogOut.setOnClickListener(v -> logOutAlert());
+//        TVViewAllView.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.DestViewAll));
 
         return view;
     }
@@ -113,8 +112,6 @@ public class HomeFragment extends Fragment {
                     if (documentSnapshot.exists()) {
                         user = documentSnapshot.toObject(UserModel.class);
                         String username = user.getUsername();
-
-                        TVEmailHome.setText(user.getEmail());
                         TVUsernameHome.setText(user.getUsername());
                         // Use these details in your activity
                         Log.d("Firestore", "User Name: " + username + ", Email: " + email);
