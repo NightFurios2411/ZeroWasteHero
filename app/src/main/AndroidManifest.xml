@@ -12,18 +12,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ZeroWasteHero"
         tools:targetApi="31">
+
+        <!-- Existing activities -->
         <activity
             android:name=".Auth.AuthActivity"
             android:exported="false" />
+
         <activity
             android:name=".Main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Add HabitTrackerActivity here -->
+        <activity
+            android:name=".Main.Home.Habit.HabitTrackerActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".Main.Home.Habit.UploadProofActivity"
+            android:exported="true" />
+
     </application>
 
 </manifest>
