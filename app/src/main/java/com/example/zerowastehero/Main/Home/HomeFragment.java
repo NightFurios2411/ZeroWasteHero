@@ -88,7 +88,7 @@ public class HomeFragment extends Fragment {
 
         BtnLogOut = view.findViewById(R.id.BtnLogOut);
         TVUsernameHome = view.findViewById(R.id.TVHomeUsername);
-        TVViewAllView = view.findViewById(R.id.TVViewAllView);
+
 
         fetchUser();
 
