@@ -106,15 +106,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             TVUserName = itemView.findViewById(R.id.TVUserName);
             TVPostDate = itemView.findViewById(R.id.TVPostDate);
 
-            itemView.setOnClickListener(v -> {
-                if (postInterface != null) {
-                    int position = getAbsoluteAdapterPosition();
 
-                    if (position != RecyclerView.NO_POSITION) {
-                        postInterface.onPostClick(position);
-                    }
-                }
-            });
         }
 
         public void postBind(PostModel post) {

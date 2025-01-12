@@ -129,4 +129,12 @@
         android:id="@+id/DestRecycleCenter"
         android:name="com.example.zerowastehero.Main.Map.RecycleCenterFragment"
         android:label="Recycle Center" />
+    <fragment
+        android:id="@+id/DestGoogleMap"
+        android:name="com.example.zerowastehero.Main.Map.GoogleMapFragment"
+        android:label="GoogleMap"
+        tools:layout="@layout/fragment_google_map"
+        />
+
+
 </navigation>
