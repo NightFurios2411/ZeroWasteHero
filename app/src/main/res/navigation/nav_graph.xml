@@ -83,7 +83,8 @@
     <fragment
         android:id="@+id/DestProfilePage"
         android:name="com.example.zerowastehero.Main.Profile.ProfilePageFragment"
-        android:label="Profile Page">
+        android:label="Profile Page"
+        tools:layout="@layout/fragment_profile_page">
         <action
             android:id="@+id/action_profilePageFragment_to_statisticsProfileFragment"
             app:destination="@id/DestMyStats" />
@@ -103,27 +104,33 @@
     <fragment
         android:id="@+id/DestMyStats"
         android:name="com.example.zerowastehero.Main.Profile.StatisticsProfileFragment"
-        android:label="My Stats" />
+        android:label="My Stats"
+        tools:layout="@layout/fragment_statisticprofile"/>
     <fragment
         android:id="@+id/DestReward"
         android:name="com.example.zerowastehero.Main.Profile.RewardFragment"
-        android:label="Reward" />
+        android:label="Reward"
+        tools:layout="@layout/fragment_reward"/>
     <fragment
         android:id="@+id/DestLoyalty"
         android:name="com.example.zerowastehero.Main.Profile.LoyaltyFragment"
-        android:label="Loyalty Programme" />
+        android:label="Loyalty Programme"
+        tools:layout="@layout/fragment_loyalty"/>
     <fragment
         android:id="@+id/DestRedeemed"
         android:name="com.example.zerowastehero.Main.Profile.RedeemedFragment"
-        android:label="Redeemed Rewards" />
+        android:label="Redeemed Rewards"
+        tools:layout="@layout/fragment_redeemed"/>
     <fragment
         android:id="@+id/DestChallenges"
         android:name="com.example.zerowastehero.Main.Profile.ChallengesActivityFragment"
-        android:label="Challenges" />
+        android:label="Challenges"
+        tools:layout="@layout/fragment_challenges"/>
     <fragment
         android:id="@+id/DestSearchMap"
         android:name="com.example.zerowastehero.Main.Map.SearchMapFragment"
-        android:label="Location Search" >
+        android:label="Location Search"
+        tools:layout="@layout/fragment_search_map">
         <action
             android:id="@+id/action_DestSearchMap_to_recycleCenterFragment"
             app:destination="@id/DestRecycleCenter" />
@@ -131,7 +138,12 @@
     <fragment
         android:id="@+id/DestRecycleCenter"
         android:name="com.example.zerowastehero.Main.Map.RecycleCenterFragment"
-        android:label="Recycle Center" />
+        android:label="Recycle Center"
+        tools:layout="@layout/fragment_recycle_center">
+        <action
+            android:id="@+id/action_DestRecycleCenter_to_DestRepostList"
+            app:destination="@id/DestRepostList" />
+    </fragment>
     <fragment
         android:id="@+id/DestHabitTracker"
         android:name="com.example.zerowastehero.Main.Home.HabitTrackerFragment"
@@ -146,4 +158,21 @@
         android:name="com.example.zerowastehero.Main.Home.UploadProofFragment"
         android:label="Upload Proof"
         tools:layout="@layout/fragment_upload_proof" />
+    <fragment
+        android:id="@+id/DestScanStorage"
+        android:name="com.example.zerowastehero.Main.Scan.ScanStorageFragment"
+        android:label="Storage"
+        tools:layout="@layout/fragment_scan_storage" />
+    <fragment android:id="@+id/DestRepostList"
+        android:name="com.example.zerowastehero.Main.Map.ReportListFragment"
+        android:label="Report List"
+        tools:layout="@layout/fragment_report_list">
+        <action
+            android:id="@+id/action_DestRepostList_to_DestReportRequest"
+            app:destination="@id/DestReportRequest" />
+    </fragment>
+    <fragment android:id="@+id/DestReportRequest"
+        android:name="com.example.zerowastehero.Main.Map.ReportRequestFragment"
+        android:label="Report Request"
+        tools:layout="@layout/fragment_report_request"/>
 </navigation>

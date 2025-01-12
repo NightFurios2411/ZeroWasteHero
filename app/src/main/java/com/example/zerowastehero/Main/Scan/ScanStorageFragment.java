@@ -1,25 +1,21 @@
-package com.example.zerowastehero.Main.Map;
+package com.example.zerowastehero.Main.Scan;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.example.zerowastehero.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link RecycleCenterFragment#newInstance} factory method to
+ * Use the {@link ScanStorageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RecycleCenterFragment extends Fragment {
-
-    private Button BtnReport;
+public class ScanStorageFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,7 +26,7 @@ public class RecycleCenterFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public RecycleCenterFragment() {
+    public ScanStorageFragment() {
         // Required empty public constructor
     }
 
@@ -40,11 +36,11 @@ public class RecycleCenterFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment DonationCentreFragment.
+     * @return A new instance of fragment ScanStorageFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static RecycleCenterFragment newInstance(String param1, String param2) {
-        RecycleCenterFragment fragment = new RecycleCenterFragment();
+    public static ScanStorageFragment newInstance(String param1, String param2) {
+        ScanStorageFragment fragment = new ScanStorageFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -65,14 +61,6 @@ public class RecycleCenterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_recycle_center, container, false);
-
-        BtnReport = view.findViewById(R.id.BtnRecycleCenterReport);
-
-        BtnReport.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.DestRepostList);
-        });
-
-        return view;
+        return inflater.inflate(R.layout.fragment_scan_storage, container, false);
     }
 }

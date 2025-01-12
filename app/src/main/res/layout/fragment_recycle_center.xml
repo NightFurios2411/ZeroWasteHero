@@ -111,7 +111,7 @@
 
         <!-- Report Button -->
         <Button
-            android:id="@+id/reportButton"
+            android:id="@+id/BtnRecycleCenterReport"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Report"
