@@ -2,8 +2,6 @@ package com.example.zerowastehero.DataBinding.Model;
 
 import com.google.firebase.Timestamp;
 
-import java.util.UUID;
-
 public class ReplyModel {
 
     private String replyID; // PK
@@ -12,8 +10,7 @@ public class ReplyModel {
     private String userName;
     private Timestamp createdAt;
     private String replyDescription;
-    private int likesCount;
-    private boolean isLiked;
+    private int likeCount;
 
     public ReplyModel() {}
 
@@ -23,6 +20,7 @@ public class ReplyModel {
         this.userID = userID;
         this.userName = userName;
         this.createdAt = createdAt;
+        this.likeCount = 0;
     }
 
     public String getReplyDescription() { return replyDescription; }
@@ -32,10 +30,8 @@ public class ReplyModel {
     public String getUserID() { return userID; }
     public String getUserName() { return userName; }
     public void setReplyDescription(String replyDescription) { this.replyDescription = replyDescription; }
-    public int getLikesCount() { return likesCount; }
-    public void setLikesCount(int likesCount) { this.likesCount = likesCount; }
-    public boolean isLiked() { return isLiked; }
-    public void setLiked(boolean liked) { isLiked = liked; }
+    public int getLikeCount() { return likeCount; }
+    public void setLikeCount(int likeCount) { this.likeCount = likeCount; }
     public void setReplyID(String replyID) { this.replyID = replyID; }
     public void setPostID(String postID) { this.postID = postID; }
     public void setUserID(String userID) { this.userID = userID; }

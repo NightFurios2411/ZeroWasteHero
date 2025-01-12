@@ -2,8 +2,6 @@ package com.example.zerowastehero.DataBinding.Model;
 
 import com.google.firebase.Timestamp;
 
-import java.util.UUID;
-
 public class PostModel {
 
     private String postID; // PK
@@ -15,14 +13,12 @@ public class PostModel {
     private String proofBeforeImageURL;
     private String proofAfterImageURL;
     private String postType;
-    private int likesCount;
-    private int commentsCount;
-    private boolean isLiked;
+    private int likeCount;
+    private int replyCount;
     private boolean isBookmarked;
 
     // No-argument constructor required by Firestore
-    public PostModel() {
-    }
+    public PostModel() {}
 
     public PostModel(String description, String userID, String userName, String postImageURL, String proofBeforeImageURL, String proofAfterImageURL, String postType, Timestamp createdAt) {
         this.postID = "";
@@ -34,9 +30,8 @@ public class PostModel {
         this.proofAfterImageURL = proofAfterImageURL;
         this.postType = postType;
         this.createdAt = createdAt;
-        this.likesCount = 0;
-        this.commentsCount = 0;
-        this.isLiked = false;
+        this.likeCount = 0;
+        this.replyCount = 0;
         this.isBookmarked = false;
     }
 
@@ -49,12 +44,10 @@ public class PostModel {
     public Timestamp getCreatedAt() { return createdAt; }
     public void setPostImageURL(String postImageURL) { this.postImageURL = postImageURL; }
     public String getPostImageURL() { return postImageURL; }
-    public int getLikesCount() { return likesCount; }
-    public void setLikesCount(int likesCount) { this.likesCount = likesCount; }
-    public int getCommentsCount() { return commentsCount; }
-    public void setCommentsCount(int commentsCount) { this.commentsCount = commentsCount; }
-    public boolean isLiked() { return isLiked; }
-    public void setLiked(boolean liked) { isLiked = liked; }
+    public int getLikeCount() { return likeCount; }
+    public void setLikeCount(int likeCount) { this.likeCount = likeCount; }
+    public int getReplyCount() { return replyCount; }
+    public void setReplyCount(int replyCount) { this.replyCount = replyCount; }
     public boolean isBookmarked() { return isBookmarked; }
     public void setBookmarked(boolean bookmarked) { isBookmarked = bookmarked; }
     public void setUserID(String userID) { this.userID = userID; }

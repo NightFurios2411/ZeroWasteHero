@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,8 @@ public class HomeFragment extends Fragment {
     private UserModel user;
     private FirebaseFirestore db;
 
+    private ProgressBar PBCircular;
+    private int progress = 0;
     private Button BtnLogOut;
     private TextView TVUsernameHome, TVViewAllView;
 
@@ -89,6 +92,7 @@ public class HomeFragment extends Fragment {
         BtnLogOut = view.findViewById(R.id.BtnLogOut);
         TVUsernameHome = view.findViewById(R.id.TVHomeUsername);
         TVViewAllView = view.findViewById(R.id.TVViewAllView);
+        PBCircular = view.findViewById(R.id.PBCircular);
 
         fetchUser();
 
@@ -98,6 +102,14 @@ public class HomeFragment extends Fragment {
             getActivity().finish();
         }
 
+        PBCircular.setOnClickListener(v -> {
+            progress++;
+            if (progress > 7) {
+                progress = 0;
+            }
+            System.out.println("Progress value: " + progress);
+            PBCircular.setProgress(progress);
+        });
         BtnLogOut.setOnClickListener(v -> logOutAlert());
 //        TVViewAllView.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.DestViewAll));
 

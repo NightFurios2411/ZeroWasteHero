@@ -293,8 +293,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:text="You've checked in for a better planet!"
-            app:layout_constraintStart_toEndOf="@+id/CircularProgress"
-            app:layout_constraintTop_toTopOf="@+id/CircularProgress" />
+            app:layout_constraintStart_toEndOf="@+id/PBCircular"
+            app:layout_constraintTop_toTopOf="@+id/PBCircular" />
 
         <TextView
             android:id="@+id/textView28"
@@ -303,17 +303,16 @@
             android:layout_marginStart="8dp"
             android:layout_marginBottom="4dp"
             android:text="2 out of 7 days completed"
-            app:layout_constraintBottom_toBottomOf="@+id/CircularProgress"
-            app:layout_constraintStart_toEndOf="@+id/CircularProgress" />
+            app:layout_constraintBottom_toBottomOf="@+id/PBCircular"
+            app:layout_constraintStart_toEndOf="@+id/PBCircular" />
 
         <ProgressBar
-            android:id="@+id/CircularProgress"
-            style="?android:attr/progressBarStyle"
+            android:id="@+id/PBCircular"
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="8dp"
-            android:indeterminate="false"
-            android:max="100"
+            android:max="7"
             android:progress="0"
             android:progressDrawable="@drawable/element_circular_progress"
             app:layout_constraintBottom_toBottomOf="parent"
