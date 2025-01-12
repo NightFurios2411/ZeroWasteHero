@@ -15,7 +15,6 @@
             android:id="@+id/TVPostTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:text="Carry Reusable Items!"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"

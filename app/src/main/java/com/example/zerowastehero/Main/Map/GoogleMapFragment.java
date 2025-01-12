@@ -25,8 +25,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GoogleMapFragment extends Fragment {
 
+    private GoogleMap googleMap;
     private FusedLocationProviderClient fusedLocationClient;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
@@ -52,20 +56,45 @@ public class GoogleMapFragment extends Fragment {
                 googleMap.setMyLocationEnabled(true);
             }
 
-            fusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-                @Override
-                public void onSuccess(Location location) {
-                    if (location != null) {
-                        // Get device's current location
-                        LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                        // Add a marker for the current location
-                        googleMap.addMarker(new MarkerOptions().position(currentLocation).title("You are here"));
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
-                    } else {
-                        Toast.makeText(requireContext(), "Unable to fetch current location", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+            // fetch current location
+//            fusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+//                @Override
+//                public void onSuccess(Location location) {
+//                    if (location != null) {
+//                        // Get device's current location
+//                        LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+//                        // Add a marker for the current location
+//                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
+//                    } else {
+//                        Toast.makeText(requireContext(), "Unable to fetch current location", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            });
+
+            // List of locations to display on the map
+            List<LatLng> locations = new ArrayList<>();
+            List<String> names = new ArrayList<>();
+
+            locations.add(new LatLng(3.133863991441962, 101.68684548502978)); // Location 1
+            names.add("Klean @ KL Sentral"); // Name for Location 1
+
+            locations.add(new LatLng(3.155914535569095, 101.61070137360095)); // Location 2
+            names.add("IPC Recycling & Buy-Back Centre"); // Name for Location 2
+
+            locations.add(new LatLng(3.1933941391698424, 101.65954824313722)); // Location 3
+            names.add("Alam Flora"); // Name for Location 3
+
+            // Add markers for all locations with names
+            for (int i = 0; i < locations.size(); i++) {
+                googleMap.addMarker(new MarkerOptions()
+                        .position(locations.get(i))
+                        .title(names.get(i))); // Assign name to the marker
+            }
+
+            // Move camera to the first location
+            if (!locations.isEmpty()) {
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(locations.get(0), 12));
+            }
         }
     };
 

@@ -12,10 +12,10 @@ import com.example.zerowastehero.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ChallengesActivityFragment#newInstance} factory method to
+ * Use the {@link ChallengesDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChallengesActivityFragment extends Fragment {
+public class ChallengesDetailFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class ChallengesActivityFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ChallengesActivityFragment() {
+    public ChallengesDetailFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class ChallengesActivityFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment challengesactivity.
+     * @return A new instance of fragment ChallengesDetailFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ChallengesActivityFragment newInstance(String param1, String param2) {
-        ChallengesActivityFragment fragment = new ChallengesActivityFragment();
+    public static ChallengesDetailFragment newInstance(String param1, String param2) {
+        ChallengesDetailFragment fragment = new ChallengesDetailFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class ChallengesActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_challenges, container, false);
+        return inflater.inflate(R.layout.fragment_challenges_detail, container, false);
     }
 }

@@ -34,7 +34,7 @@
 
         <!-- Google Maps Button -->
         <Button
-            android:id="@+id/mapsButton"
+            android:id="@+id/BtnMapView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Google Maps"

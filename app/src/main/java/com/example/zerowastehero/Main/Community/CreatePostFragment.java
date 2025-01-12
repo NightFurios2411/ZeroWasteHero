@@ -34,6 +34,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,22 +49,22 @@ public class CreatePostFragment extends Fragment {
 
     ArrayList<PostModel> postModels = new ArrayList<PostModel>();
     SharedPostModel sharedPostModel;
-    UserModel currentUser;
     FirebaseUser user;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
+    private FirebaseStorage storage;
 
     ImageView IVSearchImage, IVImageSelected;
     Button BtnSubmitPost;
     EditText ETPostDescriptionText;
     ActivityResultLauncher<PickVisualMediaRequest> mediaPickerLauncher;
 
-    // TODO: Rename parameter arguments, choose names that match
+    // Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+    // Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -78,7 +80,7 @@ public class CreatePostFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment CreatePostFragment.
      */
-    // TODO: Rename and change types and number of parameters
+    // Rename and change types and number of parameters
     public static CreatePostFragment newInstance(String param1, String param2) {
         CreatePostFragment fragment = new CreatePostFragment();
         Bundle args = new Bundle();
@@ -99,6 +101,7 @@ public class CreatePostFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         user = mAuth.getCurrentUser();
+        storage = FirebaseStorage.getInstance();
 
         if (sharedPostModel.getPosts().getValue() != null) {
             postModels = new ArrayList<>(sharedPostModel.getPosts().getValue());
@@ -170,6 +173,9 @@ public class CreatePostFragment extends Fragment {
     }
 
     private void submitPost() {
+        // Disable button to avoid multiple uploads
+        BtnSubmitPost.setEnabled(false);
+
         String description = ETPostDescriptionText.getText().toString().trim();
         String postImageURL;
         if (IVImageSelected.getTag() != null)
@@ -196,11 +202,62 @@ public class CreatePostFragment extends Fragment {
                         Log.e("Firestore", "No such user found!");
                     }
                 })
-                .addOnFailureListener(e -> Log.e("Firestore", "Error fetching user data", e));
+                .addOnFailureListener(e -> Log.e("Firestore", "Error fetching user data", e))
+                .addOnCompleteListener(task -> BtnSubmitPost.setEnabled(true));
     }
 
     private void createPostWithImage(String userName, String userID, String description, Uri imageUri) {
+        if (user == null) {
+            Toast.makeText(getContext(), "User not authenticated. Please log in.", Toast.LENGTH_SHORT).show();
+            Log.e("CreatePostFragment", "FirebaseUser is null. Can't create a post.");
+            return;
+        }
 
+        // Generate a unique filename for the image
+        String fileName = "images/posts/" + userID + "/" + System.currentTimeMillis() + ".jpg";
+
+        // Reference to Firebase Storage
+        StorageReference storageRef = storage.getReference().child(fileName);
+
+        // Upload the image
+        storageRef.putFile(imageUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    // Get the URL of the uploaded image
+                    storageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
+                        String imageURL = downloadUri.toString();
+
+                        // After the image is uploaded, create the post
+                        DocumentReference newPostRef = db.collection("posts").document();
+                        String postID = newPostRef.getId();
+
+                        PostModel newPost = new PostModel(description, userID, userName, imageURL, "", "", "post", new Timestamp(new Date()));
+                        newPost.setPostID(postID);
+
+                        // Save the post details in Firestore
+                        newPostRef.set(newPost)
+                                .addOnSuccessListener(aVoid -> {
+                                    // Add the new post to the sharedPostModel
+                                    postModels.add(newPost);
+                                    sharedPostModel.setPosts(postModels);
+
+                                    Log.d("CreatePostFragment", "Post with image successfully added to Firestore with ID: " + postID);
+
+                                    // Navigate back or give feedback to the user
+                                    requireActivity().getSupportFragmentManager().popBackStack();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.e("CreatePostFragment", "Error adding post to Firestore: ", e);
+                                    Toast.makeText(getContext(), "Failed to save post in Firestore.", Toast.LENGTH_SHORT).show();
+                                });
+                    }).addOnFailureListener(e -> {
+                        Log.e("CreatePostFragment", "Error getting download URL: ", e);
+                        Toast.makeText(getContext(), "Failed to retrieve image URL.", Toast.LENGTH_SHORT).show();
+                    });
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("CreatePostFragment", "Error uploading image: ", e);
+                    Toast.makeText(getContext(), "Failed to upload image to Firebase.", Toast.LENGTH_SHORT).show();
+                });
     }
 
     private void createPostWithoutImage(String userName,String userID, String description) {

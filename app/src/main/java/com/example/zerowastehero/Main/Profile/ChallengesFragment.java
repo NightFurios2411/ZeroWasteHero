@@ -1,4 +1,4 @@
-package com.example.zerowastehero.Main.Map;
+package com.example.zerowastehero.Main.Profile;
 
 import android.os.Bundle;
 
@@ -14,12 +14,12 @@ import com.example.zerowastehero.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link RecycleCenterFragment#newInstance} factory method to
+ * Use the {@link ChallengesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RecycleCenterFragment extends Fragment {
+public class ChallengesFragment extends Fragment {
 
-    private Button BtnReport, BtnMapView;
+    private Button BtnChallengeDetails1;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,7 +30,7 @@ public class RecycleCenterFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public RecycleCenterFragment() {
+    public ChallengesFragment() {
         // Required empty public constructor
     }
 
@@ -40,11 +40,11 @@ public class RecycleCenterFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment DonationCentreFragment.
+     * @return A new instance of fragment challengesactivity.
      */
     // TODO: Rename and change types and number of parameters
-    public static RecycleCenterFragment newInstance(String param1, String param2) {
-        RecycleCenterFragment fragment = new RecycleCenterFragment();
+    public static ChallengesFragment newInstance(String param1, String param2) {
+        ChallengesFragment fragment = new ChallengesFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -65,13 +65,12 @@ public class RecycleCenterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_recycle_center, container, false);
+        View view = inflater.inflate(R.layout.fragment_challenges, container, false);
 
-        BtnReport = view.findViewById(R.id.BtnRecycleCenterReport);
-        BtnMapView = view.findViewById(R.id.BtnMapView);
+        // Initialize view
+        BtnChallengeDetails1 = view.findViewById(R.id.BtnChallengeDetails1);
 
-        BtnReport.setOnClickListener(v -> { Navigation.findNavController(v).navigate(R.id.DestRepostList); });
-        BtnMapView.setOnClickListener(v -> { Navigation.findNavController(v).navigate(R.id.DestGoogleMap); });
+        BtnChallengeDetails1.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.DestChallengesDetail));
 
         return view;
     }

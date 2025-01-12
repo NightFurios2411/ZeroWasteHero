@@ -190,9 +190,42 @@ public class PostViewFragment extends Fragment{
                     // Clear the EditText and log success
                     ETReplyText.setText("");
                     Log.d("CreateReplyFragment", "Reply successfully added to Firestore with ID: " + replyID);
+
+                    // Update the reply count in the post
+                    updateReplyCount(postID); // Call the method to update the reply count
                 })
                 .addOnFailureListener(e -> {
                     Log.e("CreateReplyFragment", "Error adding reply to Firestore: ", e);
+                });
+    }
+
+    private void updateReplyCount(String postID) {
+        // Get the current post and its reply count
+        db.collection("posts").document(postID)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        PostModel post = documentSnapshot.toObject(PostModel.class);
+
+                        if (post != null) {
+                            // Increment the reply count
+                            int currentReplyCount = post.getReplyCount(); // Assuming you have a getter for replyCount
+                            int newReplyCount = currentReplyCount + 1;
+
+                            // Update the reply count in the post document
+                            documentSnapshot.getReference()
+                                    .update("replyCount", newReplyCount)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Log.d("PostViewFragment", "Reply count updated to: " + newReplyCount);
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Log.e("PostViewFragment", "Error updating reply count: ", e);
+                                    });
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("PostViewFragment", "Error fetching post to update reply count: ", e);
                 });
     }
 

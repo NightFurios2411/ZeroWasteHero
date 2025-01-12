@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.zerowastehero.DataBinding.Model.LikeModel;
 import com.example.zerowastehero.DataBinding.Model.PostModel;
 import com.example.zerowastehero.DataBinding.Model.ReplyModel;
@@ -21,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -93,6 +95,17 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             String currentUserID = mAuth.getCurrentUser().getUid();
 
+            // Bind image to post
+            postViewHolder.IVPostImage.setVisibility(View.GONE);
+            String postImageURL = post.getPostImageURL(); // Assuming getPostImageURL() returns the image URL
+            if (postImageURL != null && !postImageURL.isEmpty()) {
+                // Load the image using Glide
+                postViewHolder.IVPostImage.setVisibility(View.VISIBLE);
+                Glide.with(context)
+                        .load(postImageURL)
+                        .into(postViewHolder.IVPostImage);
+            }
+
             // Check if the user has liked this post
             CollectionReference likesRef = db.collection("likes");
             String likeDocId = post.getPostID() + "_" + currentUserID;
@@ -109,6 +122,23 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         } else {
                             // Default to unliked state in case of error
                             postViewHolder.IVPostLike.setImageResource(R.drawable.icon_heart_empty);
+                        }
+                    });
+
+            // Fetch and update reply count
+            CollectionReference repliesRef = db.collection("posts").document(post.getPostID()).collection("replies");
+            repliesRef.get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot repliesSnapshot = task.getResult();
+                            if (repliesSnapshot != null) {
+                                int replyCount = post.getReplyCount();
+                                post.setReplyCount(replyCount);
+                                postViewHolder.TVPostReplyCount.setText(String.valueOf(replyCount));
+                            }
+                        } else {
+                            // Handle failure (optional)
+                            Toast.makeText(context, "Failed to fetch reply count", Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -279,8 +309,8 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     // ViewHolder for Post data
     public static class PostViewHolder extends RecyclerView.ViewHolder {
-        private TextView TVPostDescription, TVUserName, TVPostDate, TVPostLikeCount, TVReplyCount;
-        private ImageView  IVPostLike;
+        private TextView TVPostDescription, TVUserName, TVPostDate, TVPostLikeCount, TVPostReplyCount;
+        private ImageView  IVPostLike, IVPostImage;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -289,7 +319,8 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             TVPostDate = itemView.findViewById(R.id.TVPostDate);
             IVPostLike = itemView.findViewById(R.id.IVPostLike);
             TVPostLikeCount = itemView.findViewById(R.id.TVPostLikeCount);
-            TVReplyCount = itemView.findViewById(R.id.TVPostReplyCount);
+            TVPostReplyCount = itemView.findViewById(R.id.TVPostReplyCount);
+            IVPostImage = itemView.findViewById(R.id.IVPostImage);
         }
 
         public void postBind(PostModel post) {
@@ -297,7 +328,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             TVUserName.setText(post.getUserName());
             TVPostDate.setText(setDateFormatted(post.getCreatedAt()));
             TVPostLikeCount.setText(String.valueOf(post.getLikeCount()));
-            TVReplyCount.setText(String.valueOf(post.getReplyCount()));
+            TVPostReplyCount.setText(String.valueOf(post.getReplyCount()));
         }
 
         public String setDateFormatted(Timestamp createdAt) {

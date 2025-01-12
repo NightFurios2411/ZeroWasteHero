@@ -159,4 +159,8 @@ public class HomeFragment extends Fragment {
         startActivity(intent);
         getActivity().finish();
     }
+
+    private void createRecycleCenter() {
+
+    }
 }

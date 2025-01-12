@@ -133,9 +133,13 @@
         tools:layout="@layout/fragment_redeemed"/>
     <fragment
         android:id="@+id/DestChallenges"
-        android:name="com.example.zerowastehero.Main.Profile.ChallengesActivityFragment"
+        android:name="com.example.zerowastehero.Main.Profile.ChallengesFragment"
         android:label="Challenges"
-        tools:layout="@layout/fragment_challenges"/>
+        tools:layout="@layout/fragment_challenges">
+        <action
+            android:id="@+id/action_DestChallenges_to_challengesDetailFragment"
+            app:destination="@id/DestChallengesDetail" />
+    </fragment>
     <fragment
         android:id="@+id/DestSearchMap"
         android:name="com.example.zerowastehero.Main.Map.SearchMapFragment"
@@ -197,4 +201,9 @@
         android:name="com.example.zerowastehero.Main.Map.GoogleMapFragment"
         android:label="Google Map"
         tools:layout="@layout/fragment_google_map" />
+    <fragment
+        android:id="@+id/DestChallengesDetail"
+        android:name="com.example.zerowastehero.Main.Profile.ChallengesDetailFragment"
+        android:label="Challenges"
+        tools:layout="@layout/fragment_challenges_detail" />
 </navigation>

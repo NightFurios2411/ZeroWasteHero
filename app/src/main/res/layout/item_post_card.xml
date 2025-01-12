@@ -11,6 +11,19 @@
             android:layout_height="wrap_content"
             android:padding="8dp">
 
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/IVPostImage"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/shape_square_16"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@+id/TVPostDescription"
+                app:layout_constraintStart_toStartOf="@+id/TVPostDescription"
+                app:layout_constraintTop_toBottomOf="@+id/TVPostDescription"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.LargeComponent" />
+
             <ImageView
                 android:id="@+id/IVPostUserProfileImage"
                 android:layout_width="40dp"
@@ -64,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 app:layout_constraintStart_toStartOf="@+id/TVPostDescription"
-                app:layout_constraintTop_toBottomOf="@+id/TVPostDescription"
+                app:layout_constraintTop_toBottomOf="@+id/IVPostImage"
                 app:srcCompat="@drawable/icon_heart_empty" />
 
             <TextView

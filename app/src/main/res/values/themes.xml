@@ -2,7 +2,9 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.ZeroWasteHero" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary Color -->
-        <item name="colorPrimary">#FFBDDBAF</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <!-- Secondary Color -->
+        <item name="colorSecondary">@color/colorSecondary</item>
     </style>
 
     <style name="Theme.ZeroWasteHero" parent="Base.Theme.ZeroWasteHero" />

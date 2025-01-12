@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.zerowastehero.DataBinding.Model.LikeModel;
 import com.example.zerowastehero.DataBinding.Model.PostModel;
 import com.example.zerowastehero.Main.Community.Interface.PostInterface;
@@ -93,6 +94,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
             String currentUserID = mAuth.getCurrentUser().getUid();
 
+            // Bind image to post
+            holder.IVPostImage.setVisibility(View.GONE);
+            String postImageURL = post.getPostImageURL(); // Assuming getPostImageURL() returns the image URL
+            if (postImageURL != null && !postImageURL.isEmpty()) {
+                // Load the image using Glide
+                holder.IVPostImage.setVisibility(View.VISIBLE);
+                Glide.with(context)
+                        .load(postImageURL)
+                        .into(holder.IVPostImage);
+            }
+
             // Check if the user has liked this post
             CollectionReference likesRef = db.collection("likes");
             String likeDocId = post.getPostID() + "_" + currentUserID;
@@ -109,6 +121,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                         } else {
                             // Default to unliked state in case of error
                             holder.IVPostLike.setImageResource(R.drawable.icon_heart_empty);
+                        }
+                    });
+
+            // Fetch and update reply count
+            CollectionReference repliesRef = db.collection("posts").document(post.getPostID()).collection("replies");
+            repliesRef.get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot repliesSnapshot = task.getResult();
+                            if (repliesSnapshot != null) {
+                                int replyCount = post.getReplyCount();
+                                post.setReplyCount(replyCount);
+                                holder.TVPostReplyCount.setText(String.valueOf(replyCount));
+                                System.out.println(replyCount);
+                            }
+                        } else {
+                            // Handle failure (optional)
+                            Toast.makeText(context, "Failed to fetch reply count", Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -196,7 +226,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         // Define views in the item layout
 
         private TextView TVPostDescription, TVPostDate, TVUserName, TVPostLikeCount, TVPostReplyCount;
-        private ImageView IVPostLike;
+        private ImageView IVPostLike, IVPostImage;
 
         public PostViewHolder(@NonNull View itemView, PostInterface postInterface) {
             super(itemView);
@@ -208,6 +238,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             IVPostLike = itemView.findViewById(R.id.IVPostLike);
             TVPostLikeCount = itemView.findViewById(R.id.TVPostLikeCount);
             TVPostReplyCount = itemView.findViewById(R.id.TVPostReplyCount);
+            IVPostImage = itemView.findViewById(R.id.IVPostImage);
         }
 
         public void postBind(PostModel post) {
