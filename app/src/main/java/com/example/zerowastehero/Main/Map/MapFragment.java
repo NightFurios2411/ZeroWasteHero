@@ -8,6 +8,7 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.zerowastehero.R;
@@ -19,7 +20,8 @@ import com.example.zerowastehero.R;
  */
 public class MapFragment extends Fragment {
 
-    TextView BtnSearchView;
+    private TextView BtnSearchView;
+    private Button BtnMapGoogleMapView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -69,8 +71,10 @@ public class MapFragment extends Fragment {
 
         // Initialize view
         BtnSearchView = view.findViewById(R.id.BtnSearchView);
+        BtnMapGoogleMapView = view.findViewById(R.id.BtnMapGoogleMapView);
 
         BtnSearchView.setOnClickListener(v -> navigateView(v, R.id.DestSearchMap));
+        BtnMapGoogleMapView.setOnClickListener(v -> navigateView(v, R.id.DestGoogleMap));
 
         return view;
     }

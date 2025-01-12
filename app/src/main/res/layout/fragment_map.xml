@@ -85,7 +85,7 @@
                 android:textColor="@android:color/black" />
 
             <Button
-                android:id="@+id/google_maps_button"
+                android:id="@+id/BtnMapGoogleMapView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
