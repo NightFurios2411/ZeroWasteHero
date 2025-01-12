@@ -111,7 +111,7 @@ public class HomeFragment extends Fragment {
             PBCircular.setProgress(progress);
         });
         BtnLogOut.setOnClickListener(v -> logOutAlert());
-//        TVViewAllView.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.DestViewAll));
+        TVViewAllView.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.DestHabitTracker));
 
         return view;
     }

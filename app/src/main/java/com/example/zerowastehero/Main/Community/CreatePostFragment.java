@@ -105,6 +105,23 @@ public class CreatePostFragment extends Fragment {
         } else {
             postModels = new ArrayList<>(); // Ensure it's never null
         }
+
+        // Initialize the media picker launcher in onCreate
+        mediaPickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.PickVisualMedia(),
+                uri -> {
+                    if (uri != null) {
+                        // Handle the selected media URI
+                        Log.d("MediaPicker", "Selected URI: " + uri);
+                        // Example: Display the selected image in an ImageView
+                        IVImageSelected.setVisibility(View.VISIBLE);
+                        IVImageSelected.setImageURI(uri);
+                        IVImageSelected.setTag(uri);
+                    } else {
+                        Log.d("MediaPicker", "No media selected");
+                    }
+                }
+        );
     }
 
     @Override
@@ -119,31 +136,7 @@ public class CreatePostFragment extends Fragment {
         BtnSubmitPost = view.findViewById(R.id.BtnSubmitPost);
         ETPostDescriptionText = view.findViewById(R.id.ETPostDescriptionText);
 
-        IVSearchImage.setOnClickListener(v -> pickImage(IVImageSelected));
-
-//        IVSearchImage.setOnClickListener(v -> {
-//            // Create a PickVisualMediaRequest to specify the type of media
-//            PickVisualMediaRequest request = new PickVisualMediaRequest.Builder()
-//                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageAndVideo.INSTANCE)
-//                    .build();
-//
-//            // Launch the media picker
-//            mediaPickerLauncher.launch(request);
-//        });
-//
-//        IVImageSelected.setTag("");
-//        mediaPickerLauncher = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
-//            if (uri != null) {
-//                // Handle the selected media URI
-//                Log.d("MediaPicker", "Selected URI: " + uri);
-//                // Example: Display the selected image in an ImageView
-//                IVImageSelected.setVisibility(View.VISIBLE);
-//                IVImageSelected.setImageURI(uri);
-//                IVImageSelected.setTag(uri);
-//            } else {
-//                Log.d("MediaPicker", "No media selected");
-//            }
-//        });
+        IVSearchImage.setOnClickListener(v -> pickImage());
 
         BtnSubmitPost.setEnabled(false);
         ETPostDescriptionText.addTextChangedListener(new TextWatcher() {
@@ -165,28 +158,15 @@ public class CreatePostFragment extends Fragment {
         return view;
     }
 
-    private void pickImage(ImageView imageViewHolder) {
+    private void pickImage() {
         // Create a PickVisualMediaRequest to specify the type of media
         PickVisualMediaRequest request = new PickVisualMediaRequest.Builder()
                 .setMediaType(ActivityResultContracts.PickVisualMedia.ImageAndVideo.INSTANCE)
                 .build();
 
         // Launch the media picker
+        IVImageSelected.setTag("");
         mediaPickerLauncher.launch(request);
-
-        imageViewHolder.setTag("");
-        mediaPickerLauncher = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
-            if (uri != null) {
-                // Handle the selected media URI
-                Log.d("MediaPicker", "Selected URI: " + uri);
-                // Example: Display the selected image in an ImageView
-                IVImageSelected.setVisibility(View.VISIBLE);
-                IVImageSelected.setImageURI(uri);
-                IVImageSelected.setTag(uri);
-            } else {
-                Log.d("MediaPicker", "No media selected");
-            }
-        });
     }
 
     private void submitPost() {

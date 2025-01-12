@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_DestHome_to_profilePageFragment"
             app:destination="@id/DestProfilePage" />
+        <action
+            android:id="@+id/action_DestHome_to_DestHabitTracker"
+            app:destination="@id/DestHabitTracker" />
     </fragment>
     <fragment
         android:id="@+id/DestCommunity"
@@ -129,4 +132,18 @@
         android:id="@+id/DestRecycleCenter"
         android:name="com.example.zerowastehero.Main.Map.RecycleCenterFragment"
         android:label="Recycle Center" />
+    <fragment
+        android:id="@+id/DestHabitTracker"
+        android:name="com.example.zerowastehero.Main.Home.HabitTrackerFragment"
+        android:label="Habit Tracker"
+        tools:layout="@layout/fragment_habit_tracker" >
+        <action
+            android:id="@+id/action_DestHabitTracker_to_uploadProofFragment"
+            app:destination="@id/DestUploadProof" />
+    </fragment>
+    <fragment
+        android:id="@+id/DestUploadProof"
+        android:name="com.example.zerowastehero.Main.Home.UploadProofFragment"
+        android:label="Upload Proof"
+        tools:layout="@layout/fragment_upload_proof" />
 </navigation>
