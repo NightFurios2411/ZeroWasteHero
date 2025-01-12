@@ -59,7 +59,11 @@
         android:id="@+id/DestScan"
         android:name="com.example.zerowastehero.Main.Scan.ScanFragment"
         android:label="Scan"
-        tools:layout="@layout/fragment_scan" />
+        tools:layout="@layout/fragment_scan" >
+        <action
+            android:id="@+id/action_DestScan_to_DestScanStorage"
+            app:destination="@id/DestScanStorage" />
+    </fragment>
     <fragment
         android:id="@+id/DestCreatePost"
         android:name="com.example.zerowastehero.Main.Community.CreatePostFragment"
@@ -100,6 +104,9 @@
         <action
             android:id="@+id/action_DestProfilePage_to_challengesActivityFragment"
             app:destination="@id/DestChallenges" />
+        <action
+            android:id="@+id/action_DestProfilePage_to_DestLeaderboard2"
+            app:destination="@id/DestLeaderboard" />
     </fragment>
     <fragment
         android:id="@+id/DestMyStats"
@@ -163,7 +170,8 @@
         android:name="com.example.zerowastehero.Main.Scan.ScanStorageFragment"
         android:label="Storage"
         tools:layout="@layout/fragment_scan_storage" />
-    <fragment android:id="@+id/DestRepostList"
+    <fragment
+        android:id="@+id/DestRepostList"
         android:name="com.example.zerowastehero.Main.Map.ReportListFragment"
         android:label="Report List"
         tools:layout="@layout/fragment_report_list">
@@ -171,8 +179,14 @@
             android:id="@+id/action_DestRepostList_to_DestReportRequest"
             app:destination="@id/DestReportRequest" />
     </fragment>
-    <fragment android:id="@+id/DestReportRequest"
+    <fragment
+        android:id="@+id/DestReportRequest"
         android:name="com.example.zerowastehero.Main.Map.ReportRequestFragment"
         android:label="Report Request"
         tools:layout="@layout/fragment_report_request"/>
+    <fragment
+        android:id="@+id/DestLeaderboard"
+        android:name="com.example.zerowastehero.Main.Profile.LeaderboardFragment"
+        android:label="Leaderboard"
+        tools:layout="@layout/fragment_leaderboard" />
 </navigation>

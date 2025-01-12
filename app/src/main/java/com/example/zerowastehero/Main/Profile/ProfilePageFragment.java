@@ -19,7 +19,7 @@ import com.example.zerowastehero.R;
  */
 public class ProfilePageFragment extends Fragment {
 
-    ImageButton IBChallengesView, IBLoyaltyView, IBRedeemedView, IBMyStatsView;
+    ImageButton IBChallengesView, IBLoyaltyView, IBRedeemedView, IBMyStatsView, IBLeaderboardView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -72,11 +72,13 @@ public class ProfilePageFragment extends Fragment {
         IBLoyaltyView = view.findViewById(R.id.IBLoyaltyView);
         IBRedeemedView = view.findViewById(R.id.IBRedeemedView);
         IBMyStatsView = view.findViewById(R.id.IBMyStatsView);
+        IBLeaderboardView = view.findViewById(R.id.IBLeaderboardView);
 
         IBChallengesView.setOnClickListener(v -> viewNavigation(v, R.id.DestChallenges));
         IBLoyaltyView.setOnClickListener(v -> viewNavigation(v, R.id.DestLoyalty));
         IBRedeemedView.setOnClickListener(v -> viewNavigation(v, R.id.DestRedeemed));
         IBMyStatsView.setOnClickListener(v -> viewNavigation(v, R.id.DestMyStats));
+        IBLeaderboardView.setOnClickListener(v -> viewNavigation(v, R.id.DestLeaderboard));
         return view;
     }
 

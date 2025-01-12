@@ -2,23 +2,119 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/CSScan"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Main.Scan.ScanFragment" >
+    app:layout_constraintEnd_toEndOf="parent"
+    tools:context=".Main.Scan.ScanFragment">
 
-    <TextView
-        android:id="@+id/textView4"
+
+    <ImageView
+        android:id="@+id/scan"
+        android:layout_width="376dp"
+        android:layout_height="521dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="188dp"
+        android:src="@drawable/scan"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/recycletext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="176dp"
-        android:layout_marginTop="276dp"
-        android:layout_marginEnd="161dp"
-        android:layout_marginBottom="436dp"
-        android:text="Im the Scan"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="246dp"
+        android:src="@drawable/recycletext"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <TextView
+        android:id="@+id/textrecycle"
+        android:layout_width="247dp"
+        android:layout_height="61dp"
+        android:layout_marginEnd="57dp"
+        android:layout_marginBottom="248dp"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="Consider switching to an eco-friendly  reusable bottle to reduce plastic waste  and help protect the environment!"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <TextView
+        android:id="@+id/showmemore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="67dp"
+        android:layout_marginBottom="248dp"
+        android:fontFamily="@font/montserrat_semi_bold"
+        android:text="Show Me More"
+        android:textColor="#0F5132"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <TextView
+        android:id="@+id/history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="328dp"
+        android:layout_marginBottom="212dp"
+        android:fontFamily="@font/montserrat_semi_bold"
+        android:text="History"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/boxpic"
+        android:layout_width="111dp"
+        android:layout_height="87dp"
+        android:layout_marginStart="49dp"
+        android:layout_marginBottom="113dp"
+        android:src="@drawable/boxpic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/piepic"
+        android:layout_width="111dp"
+        android:layout_height="87dp"
+        android:layout_marginEnd="46dp"
+        android:layout_marginBottom="113dp"
+        android:src="@drawable/pieinsidepic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/totebagpic"
+        android:layout_width="111dp"
+        android:layout_height="87dp"
+        android:layout_marginStart="49dp"
+        android:layout_marginBottom="26dp"
+        android:src="@drawable/totebagpic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/netbagpic"
+        android:layout_width="111dp"
+        android:layout_height="87dp"
+        android:layout_marginEnd="46dp"
+        android:layout_marginBottom="26dp"
+        android:src="@drawable/netbagpic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

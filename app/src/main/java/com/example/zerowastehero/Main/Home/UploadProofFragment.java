@@ -79,6 +79,7 @@ public class UploadProofFragment extends Fragment {
                         Log.d("MediaPicker", "Selected URI: " + uri);
                         // Example: Display the selected image in an ImageView
                         IVImageSelected.setVisibility(View.VISIBLE);
+                        BtnUploadProof.setVisibility(View.VISIBLE);
                         IVImageSelected.setImageURI(uri);
                         IVImageSelected.setTag(uri);
                     } else {
