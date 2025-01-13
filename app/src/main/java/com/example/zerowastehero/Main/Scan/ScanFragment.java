@@ -1,5 +1,6 @@
 package com.example.zerowastehero.Main.Scan;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.zerowastehero.R;
@@ -36,6 +38,7 @@ public class ScanFragment extends Fragment {
     private ImageView IVScan, IVScanImageSelected;
     private ActivityResultLauncher<PickVisualMediaRequest> mediaPickerLauncher;
     private ConstraintLayout CLTips;
+    private Button BtnUploadScan;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -91,6 +94,7 @@ public class ScanFragment extends Fragment {
                         IVScanImageSelected.setImageURI(uri);
                         IVScanImageSelected.setTag(uri);
                         CLTips.setVisibility(View.VISIBLE);
+                        BtnUploadScan.setVisibility(View.VISIBLE);
                     } else {
                         Log.d("MediaPicker", "No media selected");
                     }
@@ -107,9 +111,62 @@ public class ScanFragment extends Fragment {
         IVScan = view.findViewById(R.id.IVScan);
         IVScanImageSelected = view.findViewById(R.id.IVScanImageSelected);
         CLTips = view.findViewById(R.id.CLTips);
+        BtnUploadScan = view.findViewById(R.id.BtnUploadScan);
 
         IVScan.setOnClickListener(v -> pickImage());
+        BtnUploadScan.setOnClickListener(v -> uploadScan());
         return view;
+    }
+
+    private void uploadScan() {
+        // Get the URI of the selected image
+        Uri imageUri = (Uri) IVScanImageSelected.getTag();
+        if (imageUri != null) {
+            // Generate a unique name for the image (e.g., using the user's UID and a timestamp)
+            String imageName = "scan_images/" + user.getUid() + "_" + System.currentTimeMillis() + ".jpg";
+
+            // Reference to Firebase Storage
+            StorageReference storageRef = storage.getReference().child(imageName);
+
+            // Upload the image to Firebase Storage
+            storageRef.putFile(imageUri)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        // Get the download URL after the upload is successful
+                        storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                            // Get the download URL
+                            String imageUrl = uri.toString();
+
+                            // Optional: Save the image URL to Firestore for the user
+                            saveImageUrlToFirestore(imageUrl);
+
+                            // Log success
+                            Log.d("Upload", "Image uploaded successfully. URL: " + imageUrl);
+                            // You can also show a success message to the user or update the UI
+                        });
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle failure
+                        Log.e("Upload", "Image upload failed: " + e.getMessage());
+                        // Optionally show an error message to the user
+                    });
+        } else {
+            Log.d("Upload", "No image selected.");
+        }
+    }
+
+    private void saveImageUrlToFirestore(String imageUrl) {
+        // Save the image URL to Firestore under the user's document
+        if (user != null) {
+            db.collection("users").document(user.getUid())
+                    .update("scanImageUrl", imageUrl)
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d("Firestore", "Image URL saved to Firestore.");
+                        // Optionally, show a success message
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("Firestore", "Error saving image URL to Firestore: " + e.getMessage());
+                    });
+        }
     }
 
     private void pickImage() {

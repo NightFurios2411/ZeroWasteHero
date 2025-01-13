@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.zerowastehero.DataBinding.Cache.CurrentUser;
@@ -54,6 +55,7 @@ public class CreatePostFragment extends Fragment {
     FirebaseAuth mAuth;
     private FirebaseStorage storage;
 
+    private ProgressBar PBCreatePost;
     ImageView IVSearchImage, IVImageSelected;
     Button BtnSubmitPost;
     EditText ETPostDescriptionText;
@@ -138,6 +140,7 @@ public class CreatePostFragment extends Fragment {
         IVImageSelected = view.findViewById(R.id.IVImageSelected);
         BtnSubmitPost = view.findViewById(R.id.BtnSubmitPost);
         ETPostDescriptionText = view.findViewById(R.id.ETPostDescriptionText);
+        PBCreatePost = view.findViewById(R.id.PBCreatePost);
 
         IVSearchImage.setOnClickListener(v -> pickImage());
 
@@ -175,6 +178,7 @@ public class CreatePostFragment extends Fragment {
     private void submitPost() {
         // Disable button to avoid multiple uploads
         BtnSubmitPost.setEnabled(false);
+        PBCreatePost.setVisibility(View.VISIBLE);
 
         String description = ETPostDescriptionText.getText().toString().trim();
         String postImageURL;

@@ -3,17 +3,22 @@
 
     <item
         android:id="@id/DestHome"
-        android:icon="@drawable/icon_home" />
+        android:icon="@drawable/icon_home"
+        android:title="Home" />
     <item
         android:id="@id/DestCommunity"
-        android:icon="@drawable/icon_community" />
+        android:icon="@drawable/icon_community"
+        android:title="Community" />
     <item
         android:id="@id/DestScan"
-        android:icon="@drawable/icon_scan" />
+        android:icon="@drawable/icon_scan"
+        android:title="Scan" />
     <item
         android:id="@id/DestMap"
-        android:icon="@drawable/icon_location" />
+        android:icon="@drawable/icon_location"
+        android:title="Map" />
     <item
         android:id="@id/DestProfilePage"
-        android:icon="@drawable/icon_user_profile" />
+        android:icon="@drawable/icon_user_profile"
+        android:title="Profile" />
 </menu>
