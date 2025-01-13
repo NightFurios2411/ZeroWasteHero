@@ -135,7 +135,7 @@
 
 
                 <Button
-                    android:id="@+id/challenge_details_button_2"
+                    android:id="@+id/BtnChallengeDetails2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -187,7 +187,7 @@
 
 
                 <Button
-                    android:id="@+id/challenge_details_button_3"
+                    android:id="@+id/BtnChallengeDetails3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"

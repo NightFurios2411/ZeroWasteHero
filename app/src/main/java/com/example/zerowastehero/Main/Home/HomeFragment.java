@@ -23,6 +23,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link HomeFragment#newInstance} factory method to
@@ -38,7 +45,7 @@ public class HomeFragment extends Fragment {
     private ProgressBar PBCircular;
     private int progress = 0;
     private Button BtnLogOut;
-    private TextView TVUsernameHome, TVViewAllView;
+    private TextView TVUsernameHome, TVViewAllView, TVHomeDayTracker, TVHomePoints;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -93,8 +100,11 @@ public class HomeFragment extends Fragment {
         TVUsernameHome = view.findViewById(R.id.TVHomeUsername);
         TVViewAllView = view.findViewById(R.id.TVViewAllView);
         PBCircular = view.findViewById(R.id.PBCircular);
+        TVHomeDayTracker = view.findViewById(R.id.TVHomeDayTracker);
+        TVHomePoints = view.findViewById(R.id.TVHomePoints);
 
         fetchUser();
+        updateLoginDate();
 
         if (firebaseUser == null) {
             Intent intent = new Intent(getContext(), AuthActivity.class);
@@ -102,14 +112,6 @@ public class HomeFragment extends Fragment {
             getActivity().finish();
         }
 
-        PBCircular.setOnClickListener(v -> {
-            progress++;
-            if (progress > 7) {
-                progress = 0;
-            }
-            System.out.println("Progress value: " + progress);
-            PBCircular.setProgress(progress);
-        });
         BtnLogOut.setOnClickListener(v -> logOutAlert());
         TVViewAllView.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.DestHabitTracker));
 
@@ -124,15 +126,62 @@ public class HomeFragment extends Fragment {
                     if (documentSnapshot.exists()) {
                         user = documentSnapshot.toObject(UserModel.class);
                         String username = user.getUsername();
-                        TVUsernameHome.setText(user.getUsername());
-                        // Use these details in your activity
-                        Log.d("Firestore", "User Name: " + username + ", Email: " + email);
+                        String point = String.valueOf(user.getPoint());
+                        TVUsernameHome.setText(username);
+                        TVHomePoints.setText(point);
+
+                        // Fetch login dates
+                        Map<String, Boolean> loginDates = (Map<String, Boolean>) documentSnapshot.get("loginDates");
+                        updateStreak(loginDates);
                     } else {
                         Log.d("Firestore", "No such user found!");
                     }
                 })
                 .addOnFailureListener(e -> Log.e("Firestore", "Error fetching user data", e));
     }
+
+    private void updateStreak(Map<String, Boolean> loginDates) {
+        if (loginDates == null) {
+            TVHomeDayTracker.setText("No activity tracked yet.");
+            PBCircular.setProgress(0);
+            return;
+        }
+
+        // Get the current streak
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String today = dateFormat.format(new Date());
+        int streak = 0;
+
+        for (int i = 0; i < 7; i++) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DAY_OF_YEAR, -i);
+            String day = dateFormat.format(calendar.getTime());
+
+            if (Boolean.TRUE.equals(loginDates.get(day))) {
+                streak++;
+            } else {
+                break; // Stop streak if a day is missing
+            }
+        }
+
+        // Update the UI
+        TVHomeDayTracker.setText("7-Day Streak: " + streak + " days");
+        PBCircular.setProgress(streak);
+    }
+
+    private void updateLoginDate() {
+        String userID = firebaseUser.getUid();
+        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+        Map<String, Object> update = new HashMap<>();
+        update.put("loginDates." + today, true);
+
+        db.collection("users").document(userID).update(update)
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Login date updated"))
+                .addOnFailureListener(e -> Log.e("Firestore", "Error updating login date", e));
+    }
+
+
 
     private void logOutAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

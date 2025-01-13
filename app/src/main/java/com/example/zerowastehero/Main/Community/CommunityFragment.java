@@ -176,8 +176,8 @@
             FABCommunity.setVisibility(View.GONE);
             FABCreatePost.setVisibility(View.VISIBLE);
             TVCreatePost.setVisibility(View.VISIBLE);
-            FABCreateProof.setVisibility(View.VISIBLE);
-            TVCreateProof.setVisibility(View.VISIBLE);
+//            FABCreateProof.setVisibility(View.VISIBLE);
+//            TVCreateProof.setVisibility(View.VISIBLE);
             darkOverlayCommunity.setVisibility(View.VISIBLE);
     //        darkOverlay.setVisibility(View.VISIBLE);
             isFABOpen = true;

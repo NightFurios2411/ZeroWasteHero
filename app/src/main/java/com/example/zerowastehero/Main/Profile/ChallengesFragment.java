@@ -19,7 +19,7 @@ import com.example.zerowastehero.R;
  */
 public class ChallengesFragment extends Fragment {
 
-    private Button BtnChallengeDetails1;
+    private Button BtnChallengeDetails1, BtnChallengeDetails2, BtnChallengeDetails3;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -69,8 +69,12 @@ public class ChallengesFragment extends Fragment {
 
         // Initialize view
         BtnChallengeDetails1 = view.findViewById(R.id.BtnChallengeDetails1);
+        BtnChallengeDetails2 = view.findViewById(R.id.BtnChallengeDetails2);
+        BtnChallengeDetails3 = view.findViewById(R.id.BtnChallengeDetails3);
 
         BtnChallengeDetails1.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.DestChallengesDetail));
+        BtnChallengeDetails2.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.DestChallengesDetail));
+        BtnChallengeDetails3.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.DestChallengesDetail));
 
         return view;
     }

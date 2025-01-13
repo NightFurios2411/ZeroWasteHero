@@ -38,13 +38,15 @@
             android:id="@+id/BtnLogOut"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/shape_button"
             android:text="LOGOUT"
             android:textColor="#000000"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/IVHomeBackdrop" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
 
         <TextView
             android:id="@+id/TVHomeUsername"
@@ -52,6 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:fontFamily="@font/montserrat_semi_bold"
             android:text="Username here"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/IVHomeUserProfile" />
@@ -62,18 +65,21 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/montserrat_medium"
             android:text="Let's Turn Trash into Treasure!"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/TVHomeUsername" />
 
         <TextView
-            android:id="@+id/textView29"
+            android:id="@+id/TVHomePoints"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="TextView"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="0000"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toStartOf="@+id/textView28"
             app:layout_constraintTop_toBottomOf="@+id/IVHomeBackdrop" />
 
         <LinearLayout
@@ -94,7 +100,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="4dp"
                 android:layout_weight="1"
-                android:background="@drawable/home_calendar_not_filled"
+                android:background="@drawable/home_calendar_filled"
                 android:gravity="center|center_horizontal"
                 android:orientation="vertical"
                 android:padding="4dp">
@@ -103,7 +109,7 @@
                     android:id="@+id/TVCalendarNo1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="1"
+                    android:text="13"
                     android:textAlignment="center"
                     android:textSize="18sp" />
 
@@ -131,7 +137,7 @@
                     android:id="@+id/TVCalendarNo2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="2"
+                    android:text="14"
                     android:textAlignment="center"
                     android:textSize="18sp" />
 
@@ -158,7 +164,7 @@
                     android:id="@+id/TVCalendarNo3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="3"
+                    android:text="15"
                     android:textAlignment="center"
                     android:textSize="18sp" />
 
@@ -185,7 +191,7 @@
                     android:id="@+id/TVCalendarNo4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="4"
+                    android:text="16"
                     android:textAlignment="center"
                     android:textSize="18sp" />
 
@@ -212,7 +218,7 @@
                     android:id="@+id/TVCalendarNo5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="5"
+                    android:text="17"
                     android:textAlignment="center"
                     android:textSize="18sp" />
 
@@ -239,7 +245,7 @@
                     android:id="@+id/TVCalendarNo6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="6"
+                    android:text="18"
                     android:textAlignment="center"
                     android:textSize="18sp" />
 
@@ -265,7 +271,7 @@
                     android:id="@+id/TVCalendarNo7"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="7"
+                    android:text="19"
                     android:textAlignment="center"
                     android:textSize="18sp" />
 
@@ -298,16 +304,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
+                android:fontFamily="@font/montserrat_semi_bold"
                 android:text="You've checked in for a better planet!"
                 app:layout_constraintStart_toEndOf="@+id/PBCircular"
                 app:layout_constraintTop_toTopOf="@+id/PBCircular" />
 
             <TextView
-                android:id="@+id/textView28"
+                android:id="@+id/TVHomeDayTracker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="4dp"
+                android:fontFamily="@font/montserrat_medium"
                 android:text="2 out of 7 days completed"
                 app:layout_constraintBottom_toBottomOf="@+id/PBCircular"
                 app:layout_constraintStart_toEndOf="@+id/PBCircular" />
@@ -333,6 +341,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
+            android:fontFamily="@font/montserrat_semi_bold"
             android:text="Habits"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
@@ -343,7 +352,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            android:text="1 of 4 completed"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="0 of 3 completed"
             android:textSize="10sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView18" />
@@ -354,12 +364,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
+            android:fontFamily="@font/montserrat_semi_bold"
             android:gravity="start"
             android:text="View All"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
         <LinearLayout
+            android:id="@+id/linearLayout6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -516,6 +528,16 @@
             </androidx.cardview.widget.CardView>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="pts"
+            app:layout_constraintBottom_toBottomOf="@+id/TVHomePoints"
+            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- GridLayout for Calendar -->

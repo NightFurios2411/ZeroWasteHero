@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CalendarDateNormal" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">#000000</item> <!-- Normal date color -->
+        <item name="android:textStyle">normal</item> <!-- Optional: Make it normal -->
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="CalendarDateHighlighted" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">#7fa96b</item> <!-- Highlighted date color -->
+        <item name="android:textStyle">bold</item> <!-- Optional: Make it bold -->
+        <item name="android:textSize">14sp</item>
+    </style>
+</resources>

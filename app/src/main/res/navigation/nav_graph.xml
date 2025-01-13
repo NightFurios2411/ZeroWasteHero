@@ -157,12 +157,15 @@
         <action
             android:id="@+id/action_DestRecycleCenter_to_DestRepostList"
             app:destination="@id/DestRepostList" />
+        <action
+            android:id="@+id/action_DestRecycleCenter_to_googleMapRecycleCenterFragment"
+            app:destination="@id/DestGoogleMapRecycleCenter" />
     </fragment>
     <fragment
         android:id="@+id/DestHabitTracker"
         android:name="com.example.zerowastehero.Main.Home.HabitTrackerFragment"
-        android:label="Habit Tracker"
-        tools:layout="@layout/fragment_habit_tracker" >
+        android:label="Habit"
+        tools:layout="@layout/fragment_habit_tracker">
         <action
             android:id="@+id/action_DestHabitTracker_to_uploadProofFragment"
             app:destination="@id/DestUploadProof" />
@@ -206,4 +209,9 @@
         android:name="com.example.zerowastehero.Main.Profile.ChallengesDetailFragment"
         android:label="Challenges"
         tools:layout="@layout/fragment_challenges_detail" />
+    <fragment
+        android:id="@+id/DestGoogleMapRecycleCenter"
+        android:name="com.example.zerowastehero.Main.Map.GoogleMapRecycleCenterFragment"
+        android:label="Recycle Center Location"
+        tools:layout="@layout/fragment_google_map_recycle_center" />
 </navigation>

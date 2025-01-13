@@ -71,7 +71,7 @@ public class RecycleCenterFragment extends Fragment {
         BtnMapView = view.findViewById(R.id.BtnMapView);
 
         BtnReport.setOnClickListener(v -> { Navigation.findNavController(v).navigate(R.id.DestRepostList); });
-        BtnMapView.setOnClickListener(v -> { Navigation.findNavController(v).navigate(R.id.DestGoogleMap); });
+        BtnMapView.setOnClickListener(v -> { Navigation.findNavController(v).navigate(R.id.DestGoogleMapRecycleCenter); });
 
         return view;
     }

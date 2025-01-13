@@ -6,25 +6,75 @@
     android:layout_height="wrap_content"
     android:layout_margin="1dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp">
 
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/IVPostImage"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/shape_square_16"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/TVPostDescription"
+            app:layout_constraintStart_toStartOf="@+id/TVPostDescription"
+            app:layout_constraintTop_toBottomOf="@+id/CSProofConcept"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.LargeComponent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/CSProofConcept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/TVPostDescription"
+            app:layout_constraintStart_toStartOf="@+id/TVPostDescription"
+            app:layout_constraintTop_toBottomOf="@+id/TVPostDescription">
+
+            <TextView
+                android:id="@+id/TVBefore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Before"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/IVPostImage"
+                android:id="@+id/IVPostBeforeImage"
                 android:layout_width="300dp"
                 android:layout_height="300dp"
-                android:layout_marginTop="4dp"
                 android:background="@drawable/shape_square_16"
                 android:scaleType="centerCrop"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="@+id/TVPostDescription"
-                app:layout_constraintStart_toStartOf="@+id/TVPostDescription"
-                app:layout_constraintTop_toBottomOf="@+id/TVPostDescription"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/TVBefore"
                 app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.LargeComponent" />
 
-            <ImageView
+            <TextView
+                android:id="@+id/TVAfter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="After"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/IVPostBeforeImage" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/IVPostAfterImage"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:background="@drawable/shape_square_16"
+                android:scaleType="centerCrop"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/TVAfter"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.LargeComponent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
                 android:id="@+id/IVPostUserProfileImage"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -115,5 +165,5 @@
                 app:layout_constraintTop_toTopOf="@+id/IVPostReply"
                 app:layout_constraintVertical_bias="0.0" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

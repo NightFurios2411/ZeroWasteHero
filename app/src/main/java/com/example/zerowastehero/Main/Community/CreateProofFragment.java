@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.zerowastehero.DataBinding.Model.PostModel;
@@ -53,8 +52,10 @@ public class CreateProofFragment extends Fragment {
 
     private Button BtnSubmitProof;
     private EditText ETProofDescriptionText;
-    private ShapeableImageView IVCreatePostBeforeImage, IVCreateProofAfterImage;
+    private ShapeableImageView IVCreateProofBeforeImage, IVCreateProofAfterImage;
     private ActivityResultLauncher<PickVisualMediaRequest> mediaPickerLauncher;
+    private Uri beforeImageUri, afterImageUri;
+    private boolean isBeforeImageSelected = false;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -99,6 +100,26 @@ public class CreateProofFragment extends Fragment {
         user = mAuth.getCurrentUser();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+
+        mediaPickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.PickVisualMedia(),
+                uri -> {
+                    if (uri != null) {
+                        if (isBeforeImageSelected) {
+                            beforeImageUri = uri;
+                            IVCreateProofBeforeImage.setImageURI(uri);
+                            IVCreateProofBeforeImage.setTag(uri.toString());
+                        } else {
+                            afterImageUri = uri;
+                            IVCreateProofAfterImage.setImageURI(uri);
+                            IVCreateProofAfterImage.setTag(uri.toString());
+                        }
+                    } else {
+                        Log.d("MediaPicker", "No media selected");
+                        Toast.makeText(requireContext(), "No media selected", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
     }
 
     @Override
@@ -110,11 +131,13 @@ public class CreateProofFragment extends Fragment {
         // Initialize view
         BtnSubmitProof = view.findViewById(R.id.BtnSubmitProof);
         ETProofDescriptionText = view.findViewById(R.id.ETProofDescriptionText);
-        IVCreatePostBeforeImage = view.findViewById(R.id.IVCreatePostBeforeImage);
+        IVCreateProofBeforeImage = view.findViewById(R.id.IVCreateProofBeforeImage);
         IVCreateProofAfterImage = view.findViewById(R.id.IVCreateProofAfterImage);
 
-        IVCreatePostBeforeImage.setOnClickListener(v -> pickImage(IVCreatePostBeforeImage));
-        IVCreateProofAfterImage.setOnClickListener(v -> pickImage(IVCreateProofAfterImage));
+        IVCreateProofBeforeImage.setTag("");
+        IVCreateProofAfterImage.setTag("");
+        IVCreateProofBeforeImage.setOnClickListener(v -> pickImage(true));
+        IVCreateProofAfterImage.setOnClickListener(v -> pickImage(false));
 
         BtnSubmitProof.setEnabled(false);
         ETProofDescriptionText.addTextChangedListener(new TextWatcher() {
@@ -125,7 +148,7 @@ public class CreateProofFragment extends Fragment {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 // Check if text is not empty and both images are selected
                 BtnSubmitProof.setEnabled(!charSequence.toString().trim().isEmpty() &&
-                        !IVCreatePostBeforeImage.getTag().toString().isEmpty() &&
+                        !IVCreateProofBeforeImage.getTag().toString().isEmpty() &&
                         !IVCreateProofAfterImage.getTag().toString().isEmpty()); // Enable button
             }
 
@@ -138,30 +161,22 @@ public class CreateProofFragment extends Fragment {
         return view;
     }
 
-    private void pickImage(ShapeableImageView imageView) {
+    private void pickImage(boolean isBeforeImage) {
+        isBeforeImageSelected = isBeforeImage;
+
         PickVisualMediaRequest request = new PickVisualMediaRequest.Builder()
                 .setMediaType(ActivityResultContracts.PickVisualMedia.ImageAndVideo.INSTANCE)
                 .build();
 
         mediaPickerLauncher.launch(request);
-
-        imageView.setTag("");
-        mediaPickerLauncher = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
-            if (uri != null) {
-                // Handle the selected media URI
-                Log.d("MediaPicker", "Selected URI: " + uri);
-                // Example: Display the selected image in an ImageView
-                imageView.setImageURI(uri);
-                imageView.setTag(uri);
-            } else {
-                Log.d("MediaPicker", "No media selected");
-            }
-        });
     }
 
     private void submitProof() {
+        // Disable button to avoid multiple uploads
+        BtnSubmitProof.setEnabled(false);
+
         String description = ETProofDescriptionText.getText().toString().trim();
-        String beforeImageURL = IVCreatePostBeforeImage.getTag().toString().trim();
+        String beforeImageURL = IVCreateProofBeforeImage.getTag().toString().trim();
         String afterImageURL = IVCreateProofAfterImage.getTag().toString().trim();
 
         String userID = user.getUid();
@@ -182,7 +197,8 @@ public class CreateProofFragment extends Fragment {
                         Log.e("Firestore", "No such user found!");
                     }
                 })
-                .addOnFailureListener(e -> Log.e("Firestore", "Error fetching user data", e));
+                .addOnFailureListener(e -> Log.e("Firestore", "Error fetching user data", e))
+                .addOnCompleteListener(task -> BtnSubmitProof.setEnabled(true));
     }
 
     private void uploadImageToStorage(String imageURL, String imageName, UploadCallbackInterface callback) {
@@ -191,10 +207,10 @@ public class CreateProofFragment extends Fragment {
             return;
         }
 
-        Uri fileUri = Uri.parse(imageURL); // Convert the string URL to Uri
+        Uri imageUri = Uri.parse(imageURL); // Convert the string URL to Uri
         StorageReference imageRef = storageReference.child("images/" + imageName + "/" + System.currentTimeMillis() + ".jpg");
 
-        imageRef.putFile(fileUri)
+        imageRef.putFile(imageUri)
                 .addOnSuccessListener(taskSnapshot -> {
                     imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                         String downloadURL = uri.toString();

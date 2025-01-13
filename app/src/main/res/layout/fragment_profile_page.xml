@@ -30,9 +30,8 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:paddingTop="5dp"
                 android:background="@drawable/shape_circle"
-                android:src="@drawable/ryan_gosling" />
+                android:src="@drawable/icon_placeholder_profile" />
 
             <TextView
                 android:id="@+id/TVProfileUserName"
@@ -42,32 +41,34 @@
                 android:text="marcsmith"
                 android:textAlignment="center"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:fontFamily="@font/montserrat_semi_bold" />
 
             <TextView
-                android:id="@+id/TVPorfileUserBio"
+                android:id="@+id/TVProfileUserBio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="🌱 planting seeds of adventure whenever i go"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:fontFamily="@font/montserrat_medium" />
 
             <TextView
                 android:id="@+id/TVProfileUserPoint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="3911"
+                android:text="0000"
                 android:textAlignment="center"
                 android:textSize="34sp"
-                android:textStyle="bold" />
+                android:fontFamily="@font/montserrat_bold" />
 
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Points"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:fontFamily="@font/montserrat_medium"/>
         </LinearLayout>
 
         <LinearLayout
@@ -90,20 +91,20 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/LLPointClaim1"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:orientation="horizontal">
 
                     <ImageButton
-                        android:id="@+id/imageButton"
+                        android:id="@+id/IBPointClaim1"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:layout_gravity="center"
                         android:layout_margin="5dp"
                         android:layout_marginTop="5dp"
-                        android:background="#00FFFFFF"
-                        android:contentDescription="button"
-                        app:srcCompat="@drawable/frame_2608640" />
+                        android:background="@drawable/image_unticked"
+                        android:contentDescription="button" />
 
                     <TextView
                         android:id="@+id/textView5"
@@ -114,25 +115,26 @@
                         android:layout_weight="1"
                         android:text="3000 Points"
                         android:textAlignment="textEnd"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        android:fontFamily="@font/montserrat_medium"/>
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/LLPointClaim2"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:orientation="horizontal">
 
                     <ImageButton
-                        android:id="@+id/imageButton2"
+                        android:id="@+id/IBPointClaim2"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:layout_gravity="center"
                         android:layout_margin="5dp"
                         android:layout_marginTop="5dp"
-                        android:background="#00FFFFFF"
-                        android:contentDescription="button"
-                        app:srcCompat="@drawable/rectangle_11" />
+                        android:background="@drawable/image_unticked"
+                        android:contentDescription="button" />
 
                     <TextView
                         android:id="@+id/textView6"
@@ -143,24 +145,25 @@
                         android:layout_weight="1"
                         android:text="5000 Points"
                         android:textAlignment="textEnd"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        android:fontFamily="@font/montserrat_medium"/>
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/LLPointClaim3"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:orientation="horizontal">
 
                     <ImageButton
-                        android:id="@+id/imageButton3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/IBPointClaim3"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:layout_gravity="center"
                         android:layout_margin="5dp"
                         android:layout_marginTop="5dp"
-                        android:background="#00FFFFFF"
-                        app:srcCompat="@drawable/rectangle_11" />
+                        android:background="@drawable/image_unticked" />
 
                     <TextView
                         android:id="@+id/textView7"
@@ -171,7 +174,8 @@
                         android:layout_weight="1"
                         android:text="10000 Points"
                         android:textAlignment="textEnd"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        android:fontFamily="@font/montserrat_medium"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -180,7 +184,7 @@
                 android:layout_height="match_parent">
 
                 <ImageButton
-                    android:id="@+id/imageButton4"
+                    android:id="@+id/IBPointClaimUser"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -197,7 +201,7 @@
             android:paddingStart="5dp"
             android:text="Others"
             android:textSize="24sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
