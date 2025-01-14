@@ -13,7 +13,7 @@
 
 
         <ImageView
-            android:id="@+id/IVHomeBackdrop"
+            android:id="@+id/IVProfilePic"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:adjustViewBounds="true"
@@ -80,7 +80,7 @@
             android:text="0000"
             android:textSize="22sp"
             app:layout_constraintEnd_toStartOf="@+id/textView28"
-            app:layout_constraintTop_toBottomOf="@+id/IVHomeBackdrop" />
+            app:layout_constraintTop_toBottomOf="@+id/IVProfilePic" />
 
         <LinearLayout
             android:id="@+id/linearLayout5"
@@ -96,6 +96,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView3">
 
             <LinearLayout
+                android:id="@+id/LLHomeCalendar1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="4dp"
@@ -123,6 +124,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/LLHomeCalendar2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="4dp"
@@ -150,6 +152,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/LLHomeCalendar3"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="4dp"
@@ -177,6 +180,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/LLHomeCalendar4"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="4dp"
@@ -204,6 +208,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/LLHomeCalendar5"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="4dp"
@@ -231,6 +236,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/LLHomeCalendar6"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="4dp"
@@ -258,6 +264,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/LLHomeCalendar7"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="4dp"

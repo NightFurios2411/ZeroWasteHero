@@ -115,7 +115,7 @@
         android:id="@+id/DestMyStats"
         android:name="com.example.zerowastehero.Main.Profile.StatisticsProfileFragment"
         android:label="My Stats"
-        tools:layout="@layout/fragment_statisticprofile"/>
+        tools:layout="@layout/fragment_statistics_profile"/>
     <fragment
         android:id="@+id/DestReward"
         android:name="com.example.zerowastehero.Main.Profile.RewardFragment"

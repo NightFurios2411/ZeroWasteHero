@@ -1,15 +1,31 @@
 package com.example.zerowastehero.Main.Profile;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +35,8 @@ import com.example.zerowastehero.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.Map;
 
@@ -28,14 +46,17 @@ import java.util.Map;
  * create an instance of this fragment.
  */
 public class ProfilePageFragment extends Fragment {
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private static final int PICK_CAMERA_REQUEST = 2;
+    private static final int REQUEST_CAMERA_PERMISSION = 3;
 
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
     private UserModel user;
     private FirebaseFirestore db;
 
+    private ImageView IVProfilePic;
     private TextView TVProfileUserName, TVProfileUserBio, TVProfileUserPoint;
-
     private ImageButton IBChallengesView, IBLoyaltyView, IBRedeemedView, IBMyStatsView, IBLeaderboardView;
     private ImageButton IBPointClaim1, IBPointClaim2, IBPointClaim3, IBPointClaimUser;
     private LinearLayout LLPointClaim1, LLPointClaim2, LLPointClaim3;
@@ -43,6 +64,35 @@ public class ProfilePageFragment extends Fragment {
     private boolean isPointClaim1Selected = false;
     private boolean isPointClaim2Selected = false;
     private boolean isPointClaim3Selected = false;
+
+    private final ActivityResultLauncher<Intent> galleryLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Uri selectedImageUri = result.getData().getData();
+                    IVProfilePic.setImageURI(selectedImageUri); // Set the selected image
+                }
+            });
+
+    private final ActivityResultLauncher<Intent> cameraLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Bitmap photo = (Bitmap) result.getData().getExtras().get("data");
+                    IVProfilePic.setImageBitmap(photo); // Set the captured image
+                }
+            });
+
+    private void openGallery() {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        galleryLauncher.launch(galleryIntent);
+    }
+
+    private void openCamera() {
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraLauncher.launch(cameraIntent);
+    }
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -109,8 +159,12 @@ public class ProfilePageFragment extends Fragment {
         LLPointClaim1 = view.findViewById(R.id.LLPointClaim1);
         LLPointClaim2 = view.findViewById(R.id.LLPointClaim2);
         LLPointClaim3 = view.findViewById(R.id.LLPointClaim3);
+        IVProfilePic = view.findViewById(R.id.IVProfilePic);
 
         fetchUser();
+
+        // Set Profile Pic
+        IVProfilePic.setOnClickListener(v -> showImagePickerOptions());
 
         // Navigation
         IBChallengesView.setOnClickListener(v -> viewNavigation(v, R.id.DestChallenges));
@@ -135,6 +189,61 @@ public class ProfilePageFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private void showImagePickerOptions() {
+        // Show options for Gallery or Camera
+        String[] options = {"Choose from Gallery", "Take a Photo"};
+        new AlertDialog.Builder(getContext())
+                .setTitle("Set Profile Picture")
+                .setItems(options, (dialog, which) -> {
+                    if (which == 0) {
+                        // Choose from Gallery
+                        openGallery();
+                    } else if (which == 1) {
+                        // Take a Photo
+                        openCamera();
+                    }
+                })
+                .show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == PICK_IMAGE_REQUEST) {
+                Uri selectedImageUri = data.getData();
+                IVProfilePic.setImageURI(selectedImageUri); // Set the selected image
+                // Optionally upload the image to Firebase storage
+                uploadProfilePicture(selectedImageUri);
+            } else if (requestCode == PICK_CAMERA_REQUEST) {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                IVProfilePic.setImageBitmap(photo); // Set the captured image
+                // Optionally upload the image to Firebase storage
+                Uri imageUri = getImageUri(getContext(), photo);
+                uploadProfilePicture(imageUri);
+            }
+        }
+    }
+
+    // You can use this utility method to convert Bitmap to Uri:
+    private Uri getImageUri(Context context, Bitmap bitmap) {
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "Title", null);
+        return Uri.parse(path);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openCamera(); // Permission granted, proceed to open camera
+            } else {
+                Toast.makeText(getContext(), "Camera permission is required", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void togglePointClaim(int point, ImageButton imageButton, int claimNumber) {
@@ -202,6 +311,26 @@ public class ProfilePageFragment extends Fragment {
                     }
                 })
                 .addOnFailureListener(e -> Log.e("Firestore", "Error fetching user data", e));
+    }
+
+    private void uploadProfilePicture(Uri imageUri) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference().child("profile_pictures").child(firebaseUser.getUid() + ".jpg");
+
+        storageRef.putFile(imageUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    // Get the download URL and save it in Firestore
+                    storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                        String profilePicUrl = uri.toString();
+                        db.collection("users").document(firebaseUser.getUid())
+                                .update("profilePicUrl", profilePicUrl)
+                                .addOnSuccessListener(aVoid -> {
+                                    Log.d("Firestore", "Profile picture URL saved successfully");
+                                })
+                                .addOnFailureListener(e -> Log.e("Firestore", "Error saving profile picture URL", e));
+                    });
+                })
+                .addOnFailureListener(e -> Log.e("Storage", "Error uploading image", e));
     }
 
     private void resetPointClaims() {

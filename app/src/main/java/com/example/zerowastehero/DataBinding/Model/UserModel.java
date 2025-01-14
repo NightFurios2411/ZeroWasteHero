@@ -9,7 +9,10 @@ public class UserModel {
     private String username;
     private String email;
     private String bio;
-    private int point;
+    private Integer point;
+    private Integer totalPoint;
+    private Integer totalTrash;
+    private Integer totalRecycle;
     private String profilePictureURL;
 
     public UserModel() {}
@@ -21,6 +24,9 @@ public class UserModel {
         this.email = email;
         this.joinDate = joinDate;
         point = 0;
+        totalPoint = 0;
+        totalTrash = 0;
+        totalRecycle = 0;
         profilePictureURL = "";
     }
 
@@ -36,4 +42,10 @@ public class UserModel {
     public void setPoint(int point) { this.point = point; }
     public String getProfilePictureURL() { return profilePictureURL; }
     public void setProfilePictureURL(String profilePictureURL) { this.profilePictureURL = profilePictureURL; }
+    public Integer getTotalPoint() { return totalPoint; }
+    public void setTotalPoint(Integer totalPoint) { this.totalPoint = totalPoint; }
+    public Integer getTotalTrash() { return totalTrash; }
+    public void setTotalTrash(Integer totalTrash) { this.totalTrash = totalTrash; }
+    public Integer getTotalRecycle() { return totalRecycle; }
+    public void setTotalRecycle(Integer totalRecycle) { this.totalRecycle = totalRecycle; }
 }

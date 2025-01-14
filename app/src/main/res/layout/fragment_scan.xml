@@ -33,117 +33,76 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/CLTips"
-        android:layout_width="wrap_content"
+        android:id="@+id/CLScanProductInformation"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:padding="2dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/shape_card_dark_green"
+        android:padding="8dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/IVScan">
 
-        <ImageView
-            android:id="@+id/recycletext"
+        <TextView
+            android:id="@+id/textView34"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/recycletext"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="Product Name: "
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textrecycle"
-            android:layout_width="247dp"
-            android:layout_height="61dp"
+            android:id="@+id/TVScanProductName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_medium"
-            android:text="Consider switching to an eco-friendly  reusable bottle to reduce plastic waste  and help protect the environment!"
-            android:textColor="#000000"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="Product Name"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/textView34"
+            app:layout_constraintTop_toTopOf="@+id/textView34" />
 
         <TextView
-            android:id="@+id/showmemore"
+            android:id="@+id/textView35"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="2dp"
-            android:layout_marginBottom="2dp"
-            android:fontFamily="@font/montserrat_semi_bold"
-            android:text="Show Me More"
-            android:textColor="#0F5132"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:fontFamily="@font/montserrat_medium"
+            android:text="Product Description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView34" />
+
+        <TextView
+            android:id="@+id/TVScanProductDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="Product Description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView35" />
+
+        <TextView
+            android:id="@+id/textView36"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="Product Eco Info"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/TVScanProductDescription" />
+
+        <TextView
+            android:id="@+id/TVScanEcoFriendlyInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="Product Eco Info"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView36" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/history"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/montserrat_semi_bold"
-        android:text="History"
-        android:textColor="#000000"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/CLTips" />
-
-
-    <ImageView
-        android:id="@+id/boxpic"
-        android:layout_width="111dp"
-        android:layout_height="87dp"
-        android:layout_marginStart="49dp"
-        android:layout_marginBottom="113dp"
-        android:src="@drawable/boxpic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-    <ImageView
-        android:id="@+id/piepic"
-        android:layout_width="111dp"
-        android:layout_height="87dp"
-        android:layout_marginEnd="46dp"
-        android:layout_marginBottom="113dp"
-        android:src="@drawable/pieinsidepic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-
-    <ImageView
-        android:id="@+id/totebagpic"
-        android:layout_width="111dp"
-        android:layout_height="87dp"
-        android:layout_marginStart="49dp"
-        android:layout_marginBottom="26dp"
-        android:src="@drawable/totebagpic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-    <ImageView
-        android:id="@+id/netbagpic"
-        android:layout_width="111dp"
-        android:layout_height="87dp"
-        android:layout_marginEnd="46dp"
-        android:layout_marginBottom="26dp"
-        android:src="@drawable/netbagpic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/BtnUploadScan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Upload Scan"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/IVScan"
-        app:layout_constraintStart_toStartOf="@+id/IVScan"
-        app:layout_constraintTop_toTopOf="@+id/history" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -121,9 +121,6 @@
 
             bottomNavigationView.setVisibility(View.VISIBLE);
 
-            // Initialize Firestore
-            db = FirebaseFirestore.getInstance();
-
             // Fetch posts
             postModels = new ArrayList<>();
             loadPosts();

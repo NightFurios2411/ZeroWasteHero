@@ -62,6 +62,9 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(libs.recyclerview)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.barcode.scanning)
 
     // Import the Firebase BoM
     implementation(platform(libs.firebase.bom))

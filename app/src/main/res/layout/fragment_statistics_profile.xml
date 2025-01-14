@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
@@ -30,9 +31,10 @@
                 android:padding="8dp">
 
                 <TextView
-                    android:id="@+id/total_recycled_value"
+                    android:id="@+id/TVStatisticTotalRecycledItem"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_medium"
                     android:text="1413"
                     android:textColor="@android:color/black"
                     android:textSize="34sp"
@@ -57,9 +59,10 @@
                 android:padding="8dp">
 
                 <TextView
-                    android:id="@+id/total_trash_value"
+                    android:id="@+id/TVStatisticTotalTrashCollected"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_medium"
                     android:text="346"
                     android:textColor="@android:color/black"
                     android:textSize="34sp"
@@ -84,9 +87,10 @@
                 android:padding="8dp">
 
                 <TextView
-                    android:id="@+id/waste_repurposed_value"
+                    android:id="@+id/TVStatisticTotalPointCollected"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_medium"
                     android:text="75"
                     android:textColor="@android:color/black"
                     android:textSize="34sp"
@@ -96,7 +100,7 @@
                     android:id="@+id/waste_repurposed_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="waste repurposed"
+                    android:text="total point collected"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -108,7 +112,8 @@
             android:layout_marginTop="16dp"
             android:background="#FFE7C2"
             android:orientation="horizontal"
-            android:padding="12dp">
+            android:padding="12dp"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/achievement_icon"
