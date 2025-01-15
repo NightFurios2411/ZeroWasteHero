@@ -132,10 +132,13 @@ public class HabitTrackerFragment extends Fragment {
                     if (documentSnapshot.exists()) {
                         int habitTracker = 0;
                         user = documentSnapshot.toObject(UserModel.class);
-                        TVHabitTrackerProgressHabit1.setText(String.valueOf(user.getTrashCollectProofCount() + " / 5 Trash"));
-                        TVHabitTrackerProgressHabit2.setText(String.valueOf(user.getRecycleProofCount() + " / 5 Items"));
-                        if (user.getTrashCollectProofCount() == 5) habitTracker += 1;
-                        if (user.getRecycleProofCount() == 5) habitTracker += 1;
+                        int trashCollectCount = user.getTrashCollectProofCount() != null ? user.getTrashCollectProofCount() : 0;
+                        int recycleCount = user.getRecycleProofCount() != null ? user.getRecycleProofCount() : 0;
+
+                        TVHabitTrackerProgressHabit1.setText(String.valueOf(trashCollectCount + " / 5 Trash"));
+                        TVHabitTrackerProgressHabit2.setText(String.valueOf(recycleCount + " / 5 Items"));
+                        if (trashCollectCount == 5) habitTracker += 1;
+                        if (recycleCount == 5) habitTracker += 1;
                         TVHabitTrackerDailyProgress.setText(String.valueOf(habitTracker + " of 2 completed"));
                     } else {
                         Log.d("Firestore", "No such user found!");

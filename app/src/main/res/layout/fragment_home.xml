@@ -354,13 +354,13 @@
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
         <TextView
-            android:id="@+id/textView23"
+            android:id="@+id/TVHomeDailyProgress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
             android:fontFamily="@font/montserrat_medium"
-            android:text="0 of 3 completed"
+            android:text="0 of 2 completed"
             android:textSize="10sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView18" />
@@ -385,7 +385,7 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView23">
+            app:layout_constraintTop_toBottomOf="@+id/TVHomeDailyProgress">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/habit1_card"
@@ -412,27 +412,19 @@
                             android:id="@+id/habit_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Log 10 Eco-Points."
+                            android:text="Collect 5 Trash"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/TVHabitTrackerProgressHabit1"
+                            android:id="@+id/TVHomeProgressHabit1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="0/10 POINTS"
+                            android:text="0 / 5 Trash"
                             android:textSize="14sp" />
                     </LinearLayout>
 
-                    <Button
-                        android:id="@+id/add_habit_progress"
-                        android:layout_width="58dp"
-                        android:layout_height="49dp"
-                        android:backgroundTint="?attr/colorPrimary"
-                        android:text="+"
-                        android:textColor="@android:color/white"
-                        android:textSize="20sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -461,76 +453,19 @@
                             android:id="@+id/habit2_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Dispose 2 Trashers."
+                            android:text="Recycle 5 Items"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/TVHabitTrackerProgressHabit2"
+                            android:id="@+id/TVHomeProgressHabit2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="0/2 TRASHER"
+                            android:text="0 / 5 Items"
                             android:textSize="14sp" />
                     </LinearLayout>
 
-                    <Button
-                        android:id="@+id/add_habit2_progress"
-                        android:layout_width="58dp"
-                        android:layout_height="49dp"
-                        android:backgroundTint="?attr/colorPrimary"
-                        android:text="+"
-                        android:textColor="@android:color/white"
-                        android:textSize="20sp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/habit3_card"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="4dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/habit3_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Save 10 Eco-Points."
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/habit3_description"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="0/10 POINTS"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-
-                    <Button
-                        android:id="@+id/add_habit3_progress"
-                        android:layout_width="58dp"
-                        android:layout_height="49dp"
-                        android:backgroundTint="?attr/colorPrimary"
-                        android:text="+"
-                        android:textColor="@android:color/white"
-                        android:textSize="20sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

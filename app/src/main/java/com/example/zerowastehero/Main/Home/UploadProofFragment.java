@@ -32,6 +32,7 @@ import com.google.firebase.storage.StorageReference;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -100,6 +101,7 @@ public class UploadProofFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         firebaseUser = mAuth.getCurrentUser();
+        userID = firebaseUser.getUid();
 
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -118,6 +120,7 @@ public class UploadProofFragment extends Fragment {
                         BtnUploadProof.setVisibility(View.VISIBLE);
                         IVImageSelected.setImageURI(uri);
                         IVImageSelected.setTag(uri);
+                        imageUri = uri;
                     } else {
                         Log.d("MediaPicker", "No media selected");
                     }
@@ -182,6 +185,8 @@ public class UploadProofFragment extends Fragment {
         BtnUploadProof.setVisibility(View.GONE);
         PBUploadProof.setVisibility(View.VISIBLE);
 
+        userName = user.getUsername();
+
         // Get the current date to track the reset
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
@@ -196,7 +201,8 @@ public class UploadProofFragment extends Fragment {
                 long totalTrash = documentSnapshot.getLong("totalTrash") != null ? documentSnapshot.getLong("totalTrash") : 0;
                 long trashCollectProofCount = documentSnapshot.getLong("trashCollectProofCount") != null ? documentSnapshot.getLong("trashCollectProofCount") : 0;
                 long totalRecycle = documentSnapshot.getLong("totalRecycle") != null ? documentSnapshot.getLong("totalRecycle") : 0;
-                long totalPoints = documentSnapshot.getLong("totalPoints") != null ? documentSnapshot.getLong("totalPoints") : 0;
+                long totalPoint = documentSnapshot.getLong("totalPoint") != null ? documentSnapshot.getLong("totalPoint") : 0;
+                long point = documentSnapshot.getLong("point") != null ? documentSnapshot.getLong("point") : 0;
 
                 // If the tracker was not reset today, reset the counts
                 if (lastResetDate == null || !lastResetDate.equals(currentDate)) {
@@ -236,7 +242,7 @@ public class UploadProofFragment extends Fragment {
                                 DocumentReference newProofRef = db.collection("proofs").document();
                                 String proofID = newProofRef.getId();
 
-                                ProofModel newProof = new ProofModel(imageURL, userID, userName, new Timestamp(new Date()), habitType);
+                                ProofModel newProof = new ProofModel(userID, userName, imageURL, new Timestamp(new Date()), habitType);
                                 newProof.setProofID(proofID);
 
                                 // Save the post details in Firestore
@@ -244,26 +250,25 @@ public class UploadProofFragment extends Fragment {
                                         .addOnSuccessListener(aVoid -> {
                                             Log.d("Upload Proof Fragment", "Proof with image successfully added to Firestore with ID: " + proofID);
 
+                                            Map<String, Object> updates = new HashMap<>();
                                             // Increment the proof count for the respective habit type
                                             if (habitType.equals("Recycle")) {
-                                                userRef.update("recycleProofCount", recycleProofCount + 1);
-                                                userRef.update("totalRecycle", totalRecycle + 1);
-                                                // Add 2 points for recycling proof
-                                                userRef.update("recyclePoints", documentSnapshot.getLong("recyclePoints") + 2);
+                                                updates.put("recycleProofCount", recycleProofCount + 1);
+                                                updates.put("totalRecycle", totalRecycle + 1);
                                             } else if (habitType.equals("TrashCollect")) {
-                                                userRef.update("trashCollectProofCount", trashCollectProofCount + 1);
-                                                userRef.update("totalTrash", totalTrash + 1);
-                                                // Add 2 points for trash collection proof
-                                                userRef.update("trashCollectPoints", documentSnapshot.getLong("trashCollectPoints") + 2);
+                                                updates.put("trashCollectProofCount", trashCollectProofCount + 1);
+                                                updates.put("totalTrash", totalTrash + 1);
                                             }
+                                            updates.put("totalPoint", totalPoint + 2);
+                                            updates.put("point", point + 2);
 
-                                            // Increment total points by 2 for any proof upload
-                                            userRef.update("totalPoints", totalPoints + 2)
-                                                    .addOnSuccessListener(aVoid2 -> {
-                                                        Log.d("Upload Proof Fragment", "Points updated successfully.");
+                                            // Update the user's document in Firestore
+                                            userRef.update(updates)
+                                                    .addOnSuccessListener(aVoid1 -> {
+                                                        Log.d("Upload Proof Fragment", "Proof count updated successfully.");
                                                     })
                                                     .addOnFailureListener(e -> {
-                                                        Log.e("Upload Proof Fragment", "Error updating points: ", e);
+                                                        Log.e("Upload Proof Fragment", "Error updating proof count: ", e);
                                                     });
 
                                             // Navigate back or give feedback to the user

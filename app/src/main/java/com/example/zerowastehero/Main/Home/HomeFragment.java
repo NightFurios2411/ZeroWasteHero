@@ -47,7 +47,7 @@ public class HomeFragment extends Fragment {
     private ProgressBar PBCircular;
     private int progress = 0;
     private Button BtnLogOut;
-    private TextView TVUsernameHome, TVViewAllView, TVHomeDayTracker, TVHomePoints;
+    private TextView TVUsernameHome, TVViewAllView, TVHomeDayTracker, TVHomePoints, TVHomeDailyProgress, TVHomeProgressHabit1, TVHomeProgressHabit2;
 
     //  Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -104,6 +104,9 @@ public class HomeFragment extends Fragment {
         PBCircular = view.findViewById(R.id.PBCircular);
         TVHomeDayTracker = view.findViewById(R.id.TVHomeDayTracker);
         TVHomePoints = view.findViewById(R.id.TVHomePoints);
+        TVHomeDailyProgress = view.findViewById(R.id.TVHomeDailyProgress);
+        TVHomeProgressHabit1 = view.findViewById(R.id.TVHomeProgressHabit1);
+        TVHomeProgressHabit2 = view.findViewById(R.id.TVHomeProgressHabit2);
 
         // Fetch the LinearLayouts for the calendar
         LinearLayout[] calendarLayouts = new LinearLayout[]{
@@ -196,8 +199,18 @@ public class HomeFragment extends Fragment {
                         if (user != null) {
                             String username = user.getUsername();
                             String point = String.valueOf(user.getPoint());
+
+                            int habitTracker = 0;
                             TVUsernameHome.setText(username);
                             TVHomePoints.setText(point);
+                            int trashCollectCount = user.getTrashCollectProofCount() != null ? user.getTrashCollectProofCount() : 0;
+                            int recycleCount = user.getRecycleProofCount() != null ? user.getRecycleProofCount() : 0;
+
+                            TVHomeProgressHabit1.setText(String.valueOf(trashCollectCount + " / 5 Trash"));
+                            TVHomeProgressHabit2.setText(String.valueOf(recycleCount + " / 5 Items"));
+                            if (trashCollectCount == 5) habitTracker += 1;
+                            if (recycleCount == 5) habitTracker += 1;
+                            TVHomeDailyProgress.setText(String.valueOf(habitTracker + " of 2 completed"));
                         }
 
                         // Fetch loginDates safely
