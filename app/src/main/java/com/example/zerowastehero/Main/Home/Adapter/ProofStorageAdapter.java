@@ -1,6 +1,7 @@
 package com.example.zerowastehero.Main.Home.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +55,7 @@ public class ProofStorageAdapter extends BaseAdapter {
         ProofModel proof = proofModels.get(position);
 
         if (proof.getImageURL() != null && !proof.getImageURL().isEmpty()) {
+            Log.d("ProofStorageAdapter", "Image URL: " + proof.getImageURL());
             Glide.with(context)
                     .load(proof.getImageURL())
                     .into(holder.IVProofViewImage);

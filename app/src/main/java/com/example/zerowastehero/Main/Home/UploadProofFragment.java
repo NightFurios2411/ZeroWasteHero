@@ -196,7 +196,6 @@ public class UploadProofFragment extends Fragment {
         // Check if the proof upload tracker is reset today
         userRef.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
-                String lastResetDate = documentSnapshot.getString("lastResetDate");
                 long recycleProofCount = documentSnapshot.getLong("recycleProofCount") != null ? documentSnapshot.getLong("recycleProofCount") : 0;
                 long totalTrash = documentSnapshot.getLong("totalTrash") != null ? documentSnapshot.getLong("totalTrash") : 0;
                 long trashCollectProofCount = documentSnapshot.getLong("trashCollectProofCount") != null ? documentSnapshot.getLong("trashCollectProofCount") : 0;
@@ -204,29 +203,8 @@ public class UploadProofFragment extends Fragment {
                 long totalPoint = documentSnapshot.getLong("totalPoint") != null ? documentSnapshot.getLong("totalPoint") : 0;
                 long point = documentSnapshot.getLong("point") != null ? documentSnapshot.getLong("point") : 0;
 
-                // If the tracker was not reset today, reset the counts
-                if (lastResetDate == null || !lastResetDate.equals(currentDate)) {
-                    // Reset proof counts and update lastResetDate
-                    userRef.update("recycleProofCount", 0, "trashCollectProofCount", 0, "lastResetDate", currentDate)
-                            .addOnSuccessListener(aVoid -> {
-                                Log.d("Upload Proof Fragment", "Tracker reset successfully.");
-                            })
-                            .addOnFailureListener(e -> {
-                                Log.e("Upload Proof Fragment", "Error resetting tracker: ", e);
-                            });
-                }
-
-                // Check if the user has already uploaded 5 proofs for the current habit type
-                if (habitType.equals("Recycle") && recycleProofCount >= 5) {
-                    Toast.makeText(getContext(), "You can only upload 5 proofs for recycling items per day.", Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (habitType.equals("TrashCollect") && trashCollectProofCount >= 5) {
-                    Toast.makeText(getContext(), "You can only upload 5 proofs for trash collection per day.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
                 // Generate a unique filename for the image
-                String fileName = "images/posts/" + userID + "/proof/" + System.currentTimeMillis() + ".jpg";
+                String fileName = "images/proofs/" + userID + "/" + System.currentTimeMillis() + ".jpg";
 
                 // Reference to Firebase Storage
                 StorageReference storageRef = storage.getReference().child(fileName);
@@ -252,13 +230,17 @@ public class UploadProofFragment extends Fragment {
 
                                             Map<String, Object> updates = new HashMap<>();
                                             // Increment the proof count for the respective habit type
-                                            if (habitType.equals("Recycle")) {
+                                            if (habitType.equals("recycleItem")) {
+                                                Log.d("Upload Proof Fragment", "Type of proof uploaded: " + habitType);
                                                 updates.put("recycleProofCount", recycleProofCount + 1);
                                                 updates.put("totalRecycle", totalRecycle + 1);
-                                            } else if (habitType.equals("TrashCollect")) {
+                                            }
+                                            if (habitType.equals("collectTrash")) {
+                                                Log.d("Upload Proof Fragment", "Type of proof uploaded: " + habitType);
                                                 updates.put("trashCollectProofCount", trashCollectProofCount + 1);
                                                 updates.put("totalTrash", totalTrash + 1);
                                             }
+
                                             updates.put("totalPoint", totalPoint + 2);
                                             updates.put("point", point + 2);
 

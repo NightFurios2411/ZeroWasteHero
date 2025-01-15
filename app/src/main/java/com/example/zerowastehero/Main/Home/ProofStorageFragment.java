@@ -10,15 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.zerowastehero.DataBinding.Model.ProofModel;
+import com.example.zerowastehero.DataBinding.Model.ReportModel;
 import com.example.zerowastehero.DataBinding.Model.UserModel;
 import com.example.zerowastehero.Main.Home.Adapter.ProofStorageAdapter;
 import com.example.zerowastehero.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +40,7 @@ public class ProofStorageFragment extends Fragment {
     private FirebaseUser firebaseUser;
     private List<ProofModel> proofModels;
     private ProofStorageAdapter adapter;
+    private ProgressBar PBProofStorage;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -89,6 +94,7 @@ public class ProofStorageFragment extends Fragment {
 
         // Initialize view
         GVProofStorage = view.findViewById(R.id.GVProofStorage);
+        PBProofStorage = view.findViewById(R.id.PBProofStorage);
 
         fetchProofs();
 
@@ -99,26 +105,37 @@ public class ProofStorageFragment extends Fragment {
     }
 
     private void fetchProofs() {
-        db.collection("users")
-                .document(firebaseUser.getUid())
-                .collection("proofs")
+        db.collection("proofs")
+                .whereEqualTo("userID", firebaseUser.getUid())
+                .orderBy("createdAt", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
+                        // Clear existing data to avoid duplicates if method is called again
+                        proofModels.clear();
+
+                        // Iterate through snapshots and add to proofModels
                         for (int i = 0; i < queryDocumentSnapshots.size(); i++) {
-                            // Convert document snapshot to ProofModel
                             ProofModel proof = queryDocumentSnapshots.getDocuments().get(i).toObject(ProofModel.class);
                             if (proof != null) {
                                 proofModels.add(proof);
                             }
                         }
+
+                        // Notify adapter of data change
+                        adapter.notifyDataSetChanged();
                     } else {
                         Log.d("fetchProofs", "No proofs found for this user.");
+                        Toast.makeText(getContext(), "No proofs found.", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(e -> {
                     Log.e("fetchProofs", "Error fetching proofs: ", e);
                     Toast.makeText(getContext(), "Failed to fetch proofs.", Toast.LENGTH_SHORT).show();
+                })
+                .addOnCompleteListener(task -> {
+                    // Hide progress bar regardless of success or failure
+                    PBProofStorage.setVisibility(View.GONE);
                 });
     }
 

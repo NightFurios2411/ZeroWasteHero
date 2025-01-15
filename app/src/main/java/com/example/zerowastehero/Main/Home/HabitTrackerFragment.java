@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.zerowastehero.DataBinding.Model.UserModel;
 import com.example.zerowastehero.R;
@@ -22,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -110,6 +112,7 @@ public class HabitTrackerFragment extends Fragment {
         TVHabitTrackerProgressHabit2 = view.findViewById(R.id.TVHabitTrackerProgressHabit2);
 
         fetchUser();
+        resetTracker();
 
         addHabitProgress.setOnClickListener(v -> uploadProofNavigation(view, "collectTrash"));
         addHabit2Progress.setOnClickListener(v -> uploadProofNavigation(view, "recycleItem"));
@@ -119,6 +122,52 @@ public class HabitTrackerFragment extends Fragment {
 
         return view;
     }
+
+    private void resetTracker() {
+        // Get the current date
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+        // Reference to the user's document in Firestore
+        DocumentReference userRef = db.collection("users").document(userID);
+
+        userRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                // Fetch current user data
+                String lastResetDate = documentSnapshot.getString("lastResetDate");
+                long recycleProofCount = documentSnapshot.getLong("recycleProofCount") != null ? documentSnapshot.getLong("recycleProofCount") : 0;
+                long trashCollectProofCount = documentSnapshot.getLong("trashCollectProofCount") != null ? documentSnapshot.getLong("trashCollectProofCount") : 0;
+
+                // Log for debugging
+                Log.d("Upload Proof Fragment", "Recycle Proof Count: " + recycleProofCount);
+                Log.d("Upload Proof Fragment", "Trash Collect Proof Count: " + trashCollectProofCount);
+
+                // Check if the tracker needs resetting
+                if (lastResetDate == null || !lastResetDate.equals(currentDate)) {
+                    userRef.update("recycleProofCount", 0, "trashCollectProofCount", 0, "lastResetDate", currentDate)
+                            .addOnSuccessListener(aVoid -> {
+                                Log.d("Upload Proof Fragment", "Tracker reset successfully.");
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.e("Upload Proof Fragment", "Error resetting tracker: ", e);
+                            });
+                }
+
+                // Update visibility of UI components based on proof limits
+                if (recycleProofCount >= 5) {
+                    addHabitProgress.setVisibility(View.GONE);
+                }
+                if (trashCollectProofCount >= 5) {
+                    addHabit2Progress.setVisibility(View.GONE);
+                }
+            } else {
+                Log.e("Upload Proof Fragment", "Document does not exist for user.");
+            }
+        }).addOnFailureListener(e -> {
+            Log.e("Upload Proof Fragment", "Error fetching user data: ", e);
+            Toast.makeText(getContext(), "Failed to fetch user data.", Toast.LENGTH_SHORT).show();
+        });
+    }
+
 
     private void fetchUser() {
         if (firebaseUser == null) {
@@ -137,8 +186,8 @@ public class HabitTrackerFragment extends Fragment {
 
                         TVHabitTrackerProgressHabit1.setText(String.valueOf(trashCollectCount + " / 5 Trash"));
                         TVHabitTrackerProgressHabit2.setText(String.valueOf(recycleCount + " / 5 Items"));
-                        if (trashCollectCount == 5) habitTracker += 1;
-                        if (recycleCount == 5) habitTracker += 1;
+                        if (trashCollectCount >= 5) habitTracker += 1;
+                        if (recycleCount >= 5) habitTracker += 1;
                         TVHabitTrackerDailyProgress.setText(String.valueOf(habitTracker + " of 2 completed"));
                     } else {
                         Log.d("Firestore", "No such user found!");

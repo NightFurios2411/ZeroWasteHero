@@ -76,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="0 / 5 Trash"
+                    android:text="Loading..."
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -129,7 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="0 / 5 Items"
+                    android:text="Loading..."
                     android:textSize="14sp" />
             </LinearLayout>
 
