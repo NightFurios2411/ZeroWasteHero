@@ -21,6 +21,7 @@
     import android.view.MenuInflater;
     import android.view.View;
     import android.view.ViewGroup;
+    import android.widget.ProgressBar;
     import android.widget.TextView;
     import android.widget.Toast;
 
@@ -57,6 +58,7 @@
         private ListenerRegistration firestoreListener;
         private BottomNavigationView bottomNavigationView;
 
+        private ProgressBar PBCommunity;
         private FloatingActionButton FABCommunity, FABCreatePost, FABCreateProof;
         private TextView TVCreatePost, TVCreateProof;
         private View darkOverlayCommunity, darkOverlay;
@@ -118,6 +120,7 @@
             TVCreatePost = view.findViewById(R.id.TVCreatePost);
             TVCreateProof = view.findViewById(R.id.TVCreateProof);
             bottomNavigationView = requireActivity().findViewById(R.id.BottomNavView);
+            PBCommunity = view.findViewById(R.id.PBCommunity);
 
             bottomNavigationView.setVisibility(View.VISIBLE);
 
@@ -128,7 +131,6 @@
             // Set up RecyclerView for post
             RecyclerView RVPost = view.findViewById(R.id.RVPost);
             RVPost.setLayoutManager(new LinearLayoutManager(getContext()));
-
             adapter = new PostAdapter(getContext(), postModels, this);
             RVPost.setAdapter(adapter);
 
@@ -158,7 +160,8 @@
                         }
                         adapter.notifyDataSetChanged();
                     })
-                    .addOnFailureListener(e -> Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                    .addOnFailureListener(e -> Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show())
+                    .addOnCompleteListener(task -> PBCommunity.setVisibility(View.GONE));
         }
 
         private void toggleFABMenu() {

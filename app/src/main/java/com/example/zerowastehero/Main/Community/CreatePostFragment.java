@@ -48,18 +48,18 @@ import java.util.Date;
  */
 public class CreatePostFragment extends Fragment {
 
-    ArrayList<PostModel> postModels = new ArrayList<PostModel>();
-    SharedPostModel sharedPostModel;
-    FirebaseUser user;
-    FirebaseFirestore db;
-    FirebaseAuth mAuth;
+    private ArrayList<PostModel> postModels = new ArrayList<PostModel>();
+    private SharedPostModel sharedPostModel;
+    private FirebaseUser user;
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
     private FirebaseStorage storage;
 
     private ProgressBar PBCreatePost;
-    ImageView IVSearchImage, IVImageSelected;
-    Button BtnSubmitPost;
-    EditText ETPostDescriptionText;
-    ActivityResultLauncher<PickVisualMediaRequest> mediaPickerLauncher;
+    private ImageView IVSearchImage, IVImageSelected;
+    private Button BtnSubmitPost;
+    private EditText ETPostDescriptionText;
+    private ActivityResultLauncher<PickVisualMediaRequest> mediaPickerLauncher;
 
     // Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -175,10 +175,20 @@ public class CreatePostFragment extends Fragment {
         mediaPickerLauncher.launch(request);
     }
 
-    private void submitPost() {
-        // Disable button to avoid multiple uploads
+    private void loading() {
         BtnSubmitPost.setEnabled(false);
+        BtnSubmitPost.setVisibility(View.GONE);
         PBCreatePost.setVisibility(View.VISIBLE);
+    }
+
+    private void doneLoading() {
+        BtnSubmitPost.setEnabled(true);
+        BtnSubmitPost.setVisibility(View.VISIBLE);
+        PBCreatePost.setVisibility(View.GONE);
+    }
+
+    private void submitPost() {
+        loading();
 
         String description = ETPostDescriptionText.getText().toString().trim();
         String postImageURL;
@@ -207,7 +217,7 @@ public class CreatePostFragment extends Fragment {
                     }
                 })
                 .addOnFailureListener(e -> Log.e("Firestore", "Error fetching user data", e))
-                .addOnCompleteListener(task -> BtnSubmitPost.setEnabled(true));
+                .addOnCompleteListener(task -> doneLoading());
     }
 
     private void createPostWithImage(String userName, String userID, String description, Uri imageUri) {

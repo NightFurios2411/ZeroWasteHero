@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.zerowastehero.DataBinding.Model.UserModel;
@@ -26,6 +28,8 @@ import java.util.Map;
 public class StatisticsProfileFragment extends Fragment {
 
     private TextView TVStatisticTotalRecycledItem, TVStatisticTotalTrashCollected, TVStatisticTotalPointCollected;
+    private ProgressBar PBStatisticsProfile;
+    private LinearLayout LLStatisticsProfile;
 
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
@@ -85,6 +89,8 @@ public class StatisticsProfileFragment extends Fragment {
         TVStatisticTotalRecycledItem = view.findViewById(R.id.TVStatisticTotalRecycledItem);
         TVStatisticTotalTrashCollected = view.findViewById(R.id.TVStatisticTotalTrashCollected);
         TVStatisticTotalPointCollected = view.findViewById(R.id.TVStatisticTotalPointCollected);
+        PBStatisticsProfile = view.findViewById(R.id.PBStatisticsProfile);
+        LLStatisticsProfile = view.findViewById(R.id.LLStatisticsProfile);
 
         fetchStatisticData();
         return view;
@@ -116,6 +122,10 @@ public class StatisticsProfileFragment extends Fragment {
                         Log.d("Firestore", "No such user found!");
                     }
                 })
-                .addOnFailureListener(e -> Log.e("Firestore", "Error fetching user data", e));
+                .addOnFailureListener(e -> Log.e("Firestore", "Error fetching user data", e))
+                .addOnCompleteListener(task -> {
+                    PBStatisticsProfile.setVisibility(View.GONE);
+                    LLStatisticsProfile.setVisibility(View.VISIBLE);
+                });
     }
 }

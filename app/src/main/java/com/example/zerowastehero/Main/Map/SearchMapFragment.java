@@ -109,6 +109,7 @@ public class SearchMapFragment extends Fragment implements RecycleLocationInterf
                     filterLocations(newText);
                     return true;
                 } else {
+                    LLSearchMapRecentQueries.setVisibility(View.GONE);
                     RVLocationSearch.setVisibility(View.VISIBLE);
                     filterLocations(newText);
                     return true;

@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -38,6 +39,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -54,12 +56,13 @@ public class ProfilePageFragment extends Fragment {
     private FirebaseUser firebaseUser;
     private UserModel user;
     private FirebaseFirestore db;
+    private ActivityResultLauncher<PickVisualMediaRequest> mediaPickerLauncher;
 
     private ImageView IVProfilePic;
     private TextView TVProfileUserName, TVProfileUserBio, TVProfileUserPoint;
     private ImageButton IBChallengesView, IBLoyaltyView, IBRedeemedView, IBMyStatsView, IBLeaderboardView;
     private ImageButton IBPointClaim1, IBPointClaim2, IBPointClaim3, IBPointClaimUser;
-    private LinearLayout LLPointClaim1, LLPointClaim2, LLPointClaim3;
+    private LinearLayout LLPointClaim1, LLPointClaim2, LLPointClaim3, LLProfilePageClaimReward;
     private int selectedPoints = 0;
     private boolean isPointClaim1Selected = false;
     private boolean isPointClaim2Selected = false;
@@ -84,8 +87,14 @@ public class ProfilePageFragment extends Fragment {
             });
 
     private void openGallery() {
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        galleryLauncher.launch(galleryIntent);
+        // Create a PickVisualMediaRequest to specify the type of media
+        PickVisualMediaRequest request = new PickVisualMediaRequest.Builder()
+                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageAndVideo.INSTANCE)
+                .build();
+
+        // Launch the media picker
+        IVProfilePic.setTag("");
+        mediaPickerLauncher.launch(request);
     }
 
     private void openCamera() {
@@ -135,6 +144,22 @@ public class ProfilePageFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
+
+        // Initialize the media picker launcher in onCreate
+        mediaPickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.PickVisualMedia(),
+                uri -> {
+                    if (uri != null) {
+                        // Handle the selected media URI
+                        Log.d("MediaPicker", "Selected URI: " + uri);
+                        // Example: Display the selected image in an ImageView
+                        IVProfilePic.setImageURI(uri);
+                        IVProfilePic.setTag(uri);
+                    } else {
+                        Log.d("MediaPicker", "No media selected");
+                    }
+                }
+        );
     }
 
     @Override
@@ -160,6 +185,7 @@ public class ProfilePageFragment extends Fragment {
         LLPointClaim2 = view.findViewById(R.id.LLPointClaim2);
         LLPointClaim3 = view.findViewById(R.id.LLPointClaim3);
         IVProfilePic = view.findViewById(R.id.IVProfilePic);
+        LLProfilePageClaimReward = view.findViewById(R.id.LLProfilePageClaimReward);
 
         fetchUser();
 
@@ -174,9 +200,9 @@ public class ProfilePageFragment extends Fragment {
         IBLeaderboardView.setOnClickListener(v -> viewNavigation(v, R.id.DestLeaderboard));
 
         // Point claim button click listeners
-        IBPointClaim1.setOnClickListener(v -> togglePointClaim(3000, IBPointClaim1, 1));  // Select 3000 points
-        IBPointClaim2.setOnClickListener(v -> togglePointClaim(5000, IBPointClaim2, 2));  // Select 5000 points
-        IBPointClaim3.setOnClickListener(v -> togglePointClaim(10000, IBPointClaim3, 3));  // Select 10000 points
+        IBPointClaim1.setOnClickListener(v -> togglePointClaim(500, IBPointClaim1, 1));  // Select 3000 points
+        IBPointClaim2.setOnClickListener(v -> togglePointClaim(1000, IBPointClaim2, 2));  // Select 5000 points
+        IBPointClaim3.setOnClickListener(v -> togglePointClaim(2000, IBPointClaim3, 3));  // Select 10000 points
 
         // Claim points button click listener
         IBPointClaimUser.setEnabled(false);
@@ -249,32 +275,32 @@ public class ProfilePageFragment extends Fragment {
     private void togglePointClaim(int point, ImageButton imageButton, int claimNumber) {
         if (claimNumber == 1 && isPointClaim1Selected) {
             // Untick: Remove points and reset button background
-            selectedPoints -= point;
+            selectedPoints += point;
             isPointClaim1Selected = false;
             imageButton.setBackgroundResource(R.drawable.image_unticked);  // Reset to default background
         } else if (claimNumber == 1) {
             // Tick: Add points and change button background
-            selectedPoints += point;
+            selectedPoints -= point;
             isPointClaim1Selected = true;
             imageButton.setBackgroundResource(R.drawable.image_ticked);  // Show ticked background
         } else if (claimNumber == 2 && isPointClaim2Selected) {
             // Untick: Remove points and reset button background
-            selectedPoints -= point;
+            selectedPoints += point;
             isPointClaim2Selected = false;
             imageButton.setBackgroundResource(R.drawable.image_unticked);  // Reset to default background
         } else if (claimNumber == 2) {
             // Tick: Add points and change button background
-            selectedPoints += point;
+            selectedPoints -= point;
             isPointClaim2Selected = true;
             imageButton.setBackgroundResource(R.drawable.image_ticked);  // Show ticked background
         } else if (claimNumber == 3 && isPointClaim3Selected) {
             // Untick: Remove points and reset button background
-            selectedPoints -= point;
+            selectedPoints += point;
             isPointClaim3Selected = false;
             imageButton.setBackgroundResource(R.drawable.image_unticked);  // Reset to default background
         } else if (claimNumber == 3) {
             // Tick: Add points and change button background
-            selectedPoints += point;
+            selectedPoints -= point;
             isPointClaim3Selected = true;
             imageButton.setBackgroundResource(R.drawable.image_ticked);  // Show ticked background
         }
@@ -297,13 +323,22 @@ public class ProfilePageFragment extends Fragment {
                         // Add the claimed points to the current points
                         int updatedPoints = currentPoints + point;
 
+                        user.setPointClaimed1(isPointClaim1Selected);
+                        user.setPointClaimed2(isPointClaim2Selected);
+                        user.setPointClaimed3(isPointClaim3Selected);
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("point", updatedPoints);
+                        updates.put("pointClaimed1", isPointClaim1Selected);
+                        updates.put("pointClaimed2", isPointClaim2Selected);
+                        updates.put("pointClaimed3", isPointClaim3Selected);
+
                         // Update the points in Firestore
                         db.collection("users").document(userID)
-                                .update("point", updatedPoints)
+                                .update(updates)
                                 .addOnSuccessListener(aVoid -> {
                                     // Update the UI to show the new points
                                     TVProfileUserPoint.setText(String.valueOf(updatedPoints));
-                                    Log.d("Firestore", "Points updated successfully");
+                                    Log.d("Firestore", "Points and claim updated successfully");
                                 })
                                 .addOnFailureListener(e -> Log.e("Firestore", "Error updating points", e));
                     } else {
@@ -366,6 +401,12 @@ public class ProfilePageFragment extends Fragment {
                         TVProfileUserName.setText(username);
                         TVProfileUserBio.setText(bio);
                         TVProfileUserPoint.setText(point);
+                        if (!user.isPointClaimed1() || !user.isPointClaimed2() || !user.isPointClaimed3()) {
+                            LLProfilePageClaimReward.setVisibility(View.VISIBLE);
+                            if (!user.isPointClaimed1()) LLPointClaim1.setVisibility(View.VISIBLE);
+                            if (!user.isPointClaimed2()) LLPointClaim2.setVisibility(View.VISIBLE);
+                            if (!user.isPointClaimed3()) LLPointClaim3.setVisibility(View.VISIBLE);
+                        }
                     } else {
                         Log.d("Firestore", "No such user found!");
                     }

@@ -55,7 +55,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/montserrat_semi_bold"
-            android:text="Username here"
+            android:text="Loading..."
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/IVHomeUserProfile" />
 
@@ -77,7 +77,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/montserrat_medium"
-            android:text="0000"
+            android:text="Loading points..."
             android:textSize="22sp"
             app:layout_constraintEnd_toStartOf="@+id/textView28"
             app:layout_constraintTop_toBottomOf="@+id/IVProfilePic" />
@@ -323,7 +323,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="4dp"
                 android:fontFamily="@font/montserrat_medium"
-                android:text="2 out of 7 days completed"
+                android:text="7-Day Streak: Loading..."
                 app:layout_constraintBottom_toBottomOf="@+id/PBCircular"
                 app:layout_constraintStart_toEndOf="@+id/PBCircular" />
 
@@ -417,7 +417,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/habit_description"
+                            android:id="@+id/TVHabitTrackerProgressHabit1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
@@ -466,7 +466,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/habit2_description"
+                            android:id="@+id/TVHabitTrackerProgressHabit2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"

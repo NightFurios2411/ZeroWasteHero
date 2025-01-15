@@ -27,13 +27,13 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/tv_progress_tracker"
+        android:id="@+id/TVHabitTrackerDailyProgress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:fontFamily="@font/montserrat_medium"
-        android:text="0 of 3 completed"
+        android:text="0 of 2 completed"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/calendar_card" />
@@ -41,14 +41,14 @@
     <!-- Habit 1 Card -->
     <androidx.cardview.widget.CardView
         android:id="@+id/habit1_card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_progress_tracker"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp">
+        app:layout_constraintTop_toBottomOf="@+id/TVProofStorage">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -67,16 +67,16 @@
                     android:id="@+id/habit_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Log 10 Eco-Points."
+                    android:text="Collect 5 Trash"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/habit_description"
+                    android:id="@+id/TVHabitTrackerProgressHabit1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="0/10 POINTS"
+                    android:text="0 / 5 Trash"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -120,16 +120,16 @@
                     android:id="@+id/habit2_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Dispose 2 Trashers."
+                    android:text="Recycle 5 Items"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/habit2_description"
+                    android:id="@+id/TVHabitTrackerProgressHabit2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="0/2 TRASHER"
+                    android:text="0 / 5 Items"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -144,57 +144,14 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Habit 3 Card -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/habit3_card"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/habit2_card"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/TVProofStorage"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/habit3_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Save 10 Eco-Points."
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/habit3_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="0/10 POINTS"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/add_habit3_progress"
-                android:layout_width="58dp"
-                android:layout_height="49dp"
-                android:backgroundTint="?attr/colorPrimary"
-                android:text="+"
-                android:textColor="@android:color/white"
-                android:textSize="20sp" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="View Proof Uploaded"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/TVHabitTrackerDailyProgress" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

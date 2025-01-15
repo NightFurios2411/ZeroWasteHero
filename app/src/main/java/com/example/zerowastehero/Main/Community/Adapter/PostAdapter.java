@@ -39,7 +39,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     private PostInterface postInterface;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
-
     private Context context;
     private static ArrayList<PostModel> postModels;
     private AlertDialog.Builder builder;
@@ -143,12 +142,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     });
 
             // Navigate to the next fragment when TVPostDescription is clicked
-            holder.TVPostDescription.setOnClickListener(v -> {
-                if (postInterface != null) {
-                    postInterface.onPostClick(adjustedPosition);
-                }
-            });
-
+            holder.TVPostDescription.setOnClickListener(v -> { if (postInterface != null) postInterface.onPostClick(adjustedPosition); });
+            holder.IVPostImage.setOnClickListener(v -> { if (postInterface != null) postInterface.onPostClick(adjustedPosition); });
             // Set click listener for like button
             holder.IVPostLike.setOnClickListener(v -> toggleLike(post, holder, currentUserID));
         }

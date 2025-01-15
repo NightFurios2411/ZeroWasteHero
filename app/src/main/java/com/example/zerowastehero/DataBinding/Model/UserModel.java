@@ -14,6 +14,8 @@ public class UserModel {
     private Integer totalTrash;
     private Integer totalRecycle;
     private String profilePictureURL;
+    private boolean isPointClaimed1, isPointClaimed2, isPointClaimed3;
+    private Integer recycleProofCount, trashCollectProofCount;
 
     public UserModel() {}
 
@@ -28,6 +30,11 @@ public class UserModel {
         totalTrash = 0;
         totalRecycle = 0;
         profilePictureURL = "";
+        isPointClaimed1 = false;
+        isPointClaimed2 = false;
+        isPointClaimed3 = false;
+        recycleProofCount = 0;
+        trashCollectProofCount = 0;
     }
 
     public String getUserID() { return userID; }
@@ -48,4 +55,14 @@ public class UserModel {
     public void setTotalTrash(Integer totalTrash) { this.totalTrash = totalTrash; }
     public Integer getTotalRecycle() { return totalRecycle; }
     public void setTotalRecycle(Integer totalRecycle) { this.totalRecycle = totalRecycle; }
+    public boolean isPointClaimed1() { return isPointClaimed1; }
+    public void setPointClaimed1(boolean pointClaimed1) { isPointClaimed1 = pointClaimed1; }
+    public boolean isPointClaimed2() { return isPointClaimed2; }
+    public void setPointClaimed2(boolean pointClaimed2) { isPointClaimed2 = pointClaimed2; }
+    public boolean isPointClaimed3() { return isPointClaimed3; }
+    public void setPointClaimed3(boolean pointClaimed3) { isPointClaimed3 = pointClaimed3; }
+    public Integer getRecycleProofCount() { return recycleProofCount; }
+    public void setRecycleProofCount(Integer recycleProofCount) { this.recycleProofCount = recycleProofCount; }
+    public Integer getTrashCollectProofCount() { return trashCollectProofCount; }
+    public void setTrashCollectProofCount(Integer trashCollectProofCount) { this.trashCollectProofCount = trashCollectProofCount; }
 }

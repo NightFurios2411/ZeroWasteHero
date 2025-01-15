@@ -169,6 +169,9 @@
         <action
             android:id="@+id/action_DestHabitTracker_to_uploadProofFragment"
             app:destination="@id/DestUploadProof" />
+        <action
+            android:id="@+id/action_DestHabitTracker_to_proofStorageFragment"
+            app:destination="@id/DestProofStorage" />
     </fragment>
     <fragment
         android:id="@+id/DestUploadProof"
@@ -188,6 +191,9 @@
         <action
             android:id="@+id/action_DestRepostList_to_DestReportRequest"
             app:destination="@id/DestReportRequest" />
+        <action
+            android:id="@+id/action_DestRepostList_to_reportViewFragment"
+            app:destination="@id/DestReportView" />
     </fragment>
     <fragment
         android:id="@+id/DestReportRequest"
@@ -214,4 +220,14 @@
         android:name="com.example.zerowastehero.Main.Map.GoogleMapRecycleCenterFragment"
         android:label="Recycle Center Location"
         tools:layout="@layout/fragment_google_map_recycle_center" />
+    <fragment
+        android:id="@+id/DestReportView"
+        android:name="com.example.zerowastehero.Main.Map.ReportViewFragment"
+        android:label="Report View"
+        tools:layout="@layout/fragment_report_view" />
+    <fragment
+        android:id="@+id/DestProofStorage"
+        android:name="com.example.zerowastehero.Main.Home.ProofStorageFragment"
+        android:label="Proof Uploaded"
+        tools:layout="@layout/fragment_proof_storage" />
 </navigation>

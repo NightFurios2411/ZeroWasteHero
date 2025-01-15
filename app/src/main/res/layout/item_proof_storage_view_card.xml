@@ -5,6 +5,7 @@
     android:layout_gravity="center">
 
     <ImageView
+        android:id="@+id/IVProofViewImage"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:scaleType="centerCrop"

@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.zerowastehero.DataBinding.Model.PostModel;
@@ -52,6 +53,7 @@ public class PostViewFragment extends Fragment{
     private ReplyAdapter adapter;
     private PostModel post;
     private RecyclerView RVReply;
+    private ProgressBar PBPostView;
 
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
@@ -110,6 +112,7 @@ public class PostViewFragment extends Fragment{
         ETReplyText = view.findViewById(R.id.ETReplyText);
         BtnSubmitReply = view.findViewById(R.id.BtnSubmitReply);
         BottomNavView = getActivity().findViewById(R.id.BottomNavView);
+        PBPostView = view.findViewById(R.id.PBPostView);
 
         BottomNavView.setVisibility(View.GONE);
 
@@ -131,7 +134,7 @@ public class PostViewFragment extends Fragment{
         // Fetch the post and replies
         String finalPostID = postID;
         fetchPost(finalPostID);
-        fetchReplies(finalPostID);
+//        fetchReplies(finalPostID);
 
         ETReplyText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -246,6 +249,7 @@ public class PostViewFragment extends Fragment{
                             Log.d("FetchPost", "Post fetched successfully: " + post.getPostID());
                             adapter.setPost(post); // Update the adapter with the fetched post
                             adapter.notifyDataSetChanged();
+                            fetchReplies(finalPostID);
                         } else {
                             Log.e("FetchPost", "Post object is null");
                         }
@@ -280,6 +284,7 @@ public class PostViewFragment extends Fragment{
                         Log.d("PostViewFragment", "Replies fetched: " + replyModels.size());
                         adapter.setReplyModels(replyModels);
                         adapter.notifyDataSetChanged();
+                        PBPostView.setVisibility(View.GONE);
                     } else {
                         Log.d("PostViewFragment", "No replies found for PostID: " + finalPostID);
                     }

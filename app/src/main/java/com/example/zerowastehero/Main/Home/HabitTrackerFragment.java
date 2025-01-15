@@ -7,13 +7,15 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.Toast;
+import android.widget.TextView;
 
+import com.example.zerowastehero.DataBinding.Model.UserModel;
 import com.example.zerowastehero.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -38,10 +40,12 @@ public class HabitTrackerFragment extends Fragment {
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
     private Context context;
-    private FirebaseUser user;
+    private FirebaseUser firebaseUser;
     private DatabaseReference userDatabase;
+    private UserModel user;
 
-    private Button addHabitProgress, addHabit2Progress, addHabit3Progress;
+    private TextView TVProofStorage, TVHabitTrackerDailyProgress, TVHabitTrackerProgressHabit1, TVHabitTrackerProgressHabit2;
+    private Button addHabitProgress, addHabit2Progress;
     private CalendarView calendarView;
     private String userID;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -86,8 +90,8 @@ public class HabitTrackerFragment extends Fragment {
         }
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
-        userID = user.getUid();
+        firebaseUser = mAuth.getCurrentUser();
+        userID = firebaseUser.getUid();
         userDatabase = FirebaseDatabase.getInstance().getReference("users").child(userID).child("loginDates");
     }
 
@@ -99,29 +103,45 @@ public class HabitTrackerFragment extends Fragment {
 
         addHabitProgress = view.findViewById(R.id.add_habit_progress);
         addHabit2Progress = view.findViewById(R.id.add_habit2_progress);
-        addHabit3Progress = view.findViewById(R.id.add_habit3_progress);
         calendarView = view.findViewById(R.id.calendarView);
+        TVProofStorage = view.findViewById(R.id.TVProofStorage);
+        TVHabitTrackerDailyProgress = view.findViewById(R.id.TVHabitTrackerDailyProgress);
+        TVHabitTrackerProgressHabit1 = view.findViewById(R.id.TVHabitTrackerProgressHabit1);
+        TVHabitTrackerProgressHabit2 = view.findViewById(R.id.TVHabitTrackerProgressHabit2);
 
-        addHabitProgress.setOnClickListener(this::uploadProofNavgiation);
-        addHabit2Progress.setOnClickListener(this::uploadProofNavgiation);
-        addHabit3Progress.setOnClickListener(this::uploadProofNavgiation);
+        fetchUser();
 
-        String today = dateFormat.format(new Date());
-        updateLoginDate(today);
+        addHabitProgress.setOnClickListener(v -> uploadProofNavigation(view, "collectTrash"));
+        addHabit2Progress.setOnClickListener(v -> uploadProofNavigation(view, "recycleItem"));
+        TVProofStorage.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.DestProofStorage));
+
         highlightConsecutiveDays();
 
         return view;
     }
 
-    private void updateLoginDate(String date) {
-        // Update login date in Firebase
-        Map<String, Object> dateMap = new HashMap<>();
-        dateMap.put(date, true);
-        userDatabase.updateChildren(dateMap).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Toast.makeText(getContext(), "Login date updated!", Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void fetchUser() {
+        if (firebaseUser == null) {
+            Log.e("Firestore", "User is not logged in!");
+            return;
+        }
+
+        String userID = firebaseUser.getUid();
+        db.collection("users").document(userID).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        int habitTracker = 0;
+                        user = documentSnapshot.toObject(UserModel.class);
+                        TVHabitTrackerProgressHabit1.setText(String.valueOf(user.getTrashCollectProofCount() + " / 5 Trash"));
+                        TVHabitTrackerProgressHabit2.setText(String.valueOf(user.getRecycleProofCount() + " / 5 Items"));
+                        if (user.getTrashCollectProofCount() == 5) habitTracker += 1;
+                        if (user.getRecycleProofCount() == 5) habitTracker += 1;
+                        TVHabitTrackerDailyProgress.setText(String.valueOf(habitTracker + " of 2 completed"));
+                    } else {
+                        Log.d("Firestore", "No such user found!");
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("Firestore", "Error fetching user data", e));
     }
 
     private void highlightConsecutiveDays() {
@@ -145,7 +165,12 @@ public class HabitTrackerFragment extends Fragment {
         }
     }
 
-    private void uploadProofNavgiation(View view) {
-        Navigation.findNavController(view).navigate(R.id.DestUploadProof);
+    private void uploadProofNavigation(View view, String habitType) {
+        // Create a Bundle to pass the habitType
+        Bundle bundle = new Bundle();
+        bundle.putString("habitType", habitType); // Add the habitType to the Bundle
+
+        // Navigate to DestUploadProof with the Bundle
+        Navigation.findNavController(view).navigate(R.id.DestUploadProof, bundle);
     }
 }

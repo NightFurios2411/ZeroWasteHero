@@ -125,12 +125,14 @@ public class LoginFragment extends Fragment {
                 if (hasError) return;
 
                 PBLogin.setVisibility(View.VISIBLE);
+                BtnLogin.setVisibility(View.GONE);
 
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 PBLogin.setVisibility(View.GONE);
+                                BtnLogin.setVisibility(View.VISIBLE);
                                 if (task.isSuccessful()) {
                                     Toast.makeText(getContext(), "Login successful!", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getActivity(), MainActivity.class);

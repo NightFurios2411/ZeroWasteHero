@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.zerowastehero.DataBinding.Model.UserModel;
@@ -37,6 +38,7 @@ public class LeaderboardFragment extends Fragment {
     private ArrayList<UserModel> userModels;
     private LeaderboardAdapter adapter;
     private UserModel currentUser;
+    private ProgressBar PBLeaderboard;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -88,6 +90,7 @@ public class LeaderboardFragment extends Fragment {
 
         // Initialize view
         RVLeaderboard = view.findViewById(R.id.RVLeaderboard);
+        PBLeaderboard = view.findViewById(R.id.PBLeaderboard);
 
         // Fetch leaderboard data
         userModels = new ArrayList<>();
@@ -115,13 +118,14 @@ public class LeaderboardFragment extends Fragment {
                         userModels.add(user);
                     }
                     adapter.notifyDataSetChanged();
-                    fetchCurrentUser(); // Fetch current user ranking
+                    fetchCurrentUserRanking(); // Fetch current user ranking
                 })
-                .addOnFailureListener(e -> Log.e("Firestore", "Error fetching leaderboard", e));
+                .addOnFailureListener(e -> Log.e("Firestore", "Error fetching leaderboard", e))
+                .addOnCompleteListener(task -> PBLeaderboard.setVisibility(View.GONE));
     }
 
 
-    private void fetchCurrentUser() {
+    private void fetchCurrentUserRanking() {
         String currentUserID = mAuth.getCurrentUser().getUid();
         db.collection("users").document(currentUserID).get()
                 .addOnSuccessListener(documentSnapshot -> {

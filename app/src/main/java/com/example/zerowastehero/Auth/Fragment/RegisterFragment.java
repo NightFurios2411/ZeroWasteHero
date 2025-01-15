@@ -153,6 +153,7 @@ public class RegisterFragment extends Fragment {
                 // If any error was found, stop execution
                 if (hasError) return;
                 PBRegister.setVisibility(View.VISIBLE);
+                BtnRegister.setVisibility(View.GONE);
 
                 db.collection("users")
                         .whereEqualTo("username", username)
@@ -161,6 +162,7 @@ public class RegisterFragment extends Fragment {
                             if (task.isSuccessful()) {
                                 if (!task.getResult().isEmpty()) {
                                     PBRegister.setVisibility(View.GONE);
+                                    BtnRegister.setVisibility(View.VISIBLE);
                                     // Username exists
                                     Log.d("CheckUsername", "Username is already taken");
                                     ETUsername.setError("Username is already taken");
