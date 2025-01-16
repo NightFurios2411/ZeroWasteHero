@@ -1,6 +1,5 @@
 package com.example.zerowastehero.Main.Profile;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -12,11 +11,8 @@ import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -200,15 +196,15 @@ public class ProfilePageFragment extends Fragment {
         IBLeaderboardView.setOnClickListener(v -> viewNavigation(v, R.id.DestLeaderboard));
 
         // Point claim button click listeners
-        IBPointClaim1.setOnClickListener(v -> togglePointClaim(500, IBPointClaim1, 1));  // Select 3000 points
-        IBPointClaim2.setOnClickListener(v -> togglePointClaim(1000, IBPointClaim2, 2));  // Select 5000 points
-        IBPointClaim3.setOnClickListener(v -> togglePointClaim(2000, IBPointClaim3, 3));  // Select 10000 points
+        IBPointClaim1.setOnClickListener(v -> toggleRewardClaim(500, IBPointClaim1, 1));  // Select 500 points
+        IBPointClaim2.setOnClickListener(v -> toggleRewardClaim(1000, IBPointClaim2, 2));  // Select 1000 points
+        IBPointClaim3.setOnClickListener(v -> toggleRewardClaim(2000, IBPointClaim3, 3));  // Select 2000 points
 
         // Claim points button click listener
         IBPointClaimUser.setEnabled(false);
         IBPointClaimUser.setOnClickListener(v -> {
             if (selectedPoints > 0) {
-                pointClaim(selectedPoints);  // Claim the selected points
+                rewardClaim(selectedPoints);  // Claim the selected points
                 resetPointClaims();
             } else {
                 Toast.makeText(getContext(), "Please select a point option first!", Toast.LENGTH_SHORT).show();
@@ -272,44 +268,45 @@ public class ProfilePageFragment extends Fragment {
         }
     }
 
-    private void togglePointClaim(int point, ImageButton imageButton, int claimNumber) {
+    private void toggleRewardClaim(int point, ImageButton imageButton, int claimNumber) {
         if (claimNumber == 1 && isPointClaim1Selected) {
             // Untick: Remove points and reset button background
-            selectedPoints += point;
+            selectedPoints -= point;
             isPointClaim1Selected = false;
             imageButton.setBackgroundResource(R.drawable.image_unticked);  // Reset to default background
         } else if (claimNumber == 1) {
             // Tick: Add points and change button background
-            selectedPoints -= point;
+            selectedPoints += point;
             isPointClaim1Selected = true;
             imageButton.setBackgroundResource(R.drawable.image_ticked);  // Show ticked background
         } else if (claimNumber == 2 && isPointClaim2Selected) {
             // Untick: Remove points and reset button background
-            selectedPoints += point;
+            selectedPoints -= point;
             isPointClaim2Selected = false;
             imageButton.setBackgroundResource(R.drawable.image_unticked);  // Reset to default background
         } else if (claimNumber == 2) {
             // Tick: Add points and change button background
-            selectedPoints -= point;
+            selectedPoints += point;
             isPointClaim2Selected = true;
             imageButton.setBackgroundResource(R.drawable.image_ticked);  // Show ticked background
         } else if (claimNumber == 3 && isPointClaim3Selected) {
             // Untick: Remove points and reset button background
-            selectedPoints += point;
+            selectedPoints -= point;
             isPointClaim3Selected = false;
             imageButton.setBackgroundResource(R.drawable.image_unticked);  // Reset to default background
         } else if (claimNumber == 3) {
             // Tick: Add points and change button background
-            selectedPoints -= point;
+            selectedPoints += point;
             isPointClaim3Selected = true;
             imageButton.setBackgroundResource(R.drawable.image_ticked);  // Show ticked background
         }
 
+        Log.d("PointClaim", "Selected Points: " + selectedPoints);
         // Enable the claim points button if points are selected
         IBPointClaimUser.setEnabled(selectedPoints > 0);
     }
 
-    private void pointClaim(int point) {
+    private void rewardClaim(int point) {
         String userID = firebaseUser.getUid();
 
         // Get the user's document reference
@@ -320,17 +317,23 @@ public class ProfilePageFragment extends Fragment {
                         user = documentSnapshot.toObject(UserModel.class);
                         int currentPoints = user.getPoint();
 
-                        // Add the claimed points to the current points
-                        int updatedPoints = currentPoints + point;
+                        // Minus the claimed reward to the current points
+                        int updatedPoints = currentPoints - point;
 
-                        user.setPointClaimed1(isPointClaim1Selected);
-                        user.setPointClaimed2(isPointClaim2Selected);
-                        user.setPointClaimed3(isPointClaim3Selected);
                         Map<String, Object> updates = new HashMap<>();
                         updates.put("point", updatedPoints);
-                        updates.put("pointClaimed1", isPointClaim1Selected);
-                        updates.put("pointClaimed2", isPointClaim2Selected);
-                        updates.put("pointClaimed3", isPointClaim3Selected);
+                        if (isPointClaim1Selected) {
+                            user.setPointClaimed1(true);
+                            updates.put("pointClaimed1", true);
+                        }
+                        if (isPointClaim2Selected) {
+                            user.setPointClaimed2(true);
+                            updates.put("pointClaimed2", true);
+                        }
+                        if (isPointClaim3Selected) {
+                            user.setPointClaimed3(true);
+                            updates.put("pointClaimed3", true);
+                        }
 
                         // Update the points in Firestore
                         db.collection("users").document(userID)
@@ -374,10 +377,15 @@ public class ProfilePageFragment extends Fragment {
         if (isPointClaim1Selected) {
             isPointClaim1Selected = false;
             LLPointClaim1.setVisibility(View.GONE);
-
         }
-        isPointClaim2Selected = false;
-        isPointClaim3Selected = false;
+        if (isPointClaim2Selected) {
+            isPointClaim2Selected = false;
+            LLPointClaim2.setVisibility(View.GONE);
+        }
+        if (isPointClaim3Selected) {
+            isPointClaim3Selected = false;
+            LLPointClaim3.setVisibility(View.GONE);
+        }
 
         // Reset all buttons to their default state
         IBPointClaim1.setBackgroundResource(R.drawable.image_unticked);

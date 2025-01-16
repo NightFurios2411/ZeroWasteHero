@@ -58,6 +58,7 @@ public class ProofStorageAdapter extends BaseAdapter {
             Log.d("ProofStorageAdapter", "Image URL: " + proof.getImageURL());
             Glide.with(context)
                     .load(proof.getImageURL())
+                    .placeholder(R.drawable.shape_gray_card)
                     .into(holder.IVProofViewImage);
         }
 
