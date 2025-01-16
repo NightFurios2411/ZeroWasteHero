@@ -56,6 +56,7 @@ public class ProofStorageAdapter extends BaseAdapter {
         if (proof.getImageURL() != null && !proof.getImageURL().isEmpty()) {
             Glide.with(context)
                     .load(proof.getImageURL())
+                    .placeholder(R.drawable.shape_gray_card)
                     .into(holder.IVProofViewImage);
         }
 
